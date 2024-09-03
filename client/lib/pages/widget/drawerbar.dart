@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/pages/constants/constants.dart';
 import 'package:soul_connection/pages/models/user.module.dart';
+import 'package:soul_connection/pages/utility/utility.dart';
 
 class Drawerbar extends StatefulWidget {
   const Drawerbar({super.key, required this.user, required this.onTabChange});
@@ -42,17 +43,6 @@ class _DrawerbarState extends State<Drawerbar> {
         ),
       ),
     );
-  }
-
-  String tabName(int index) {
-    return [
-      'Home',
-      'Coaches',
-      'Customers',
-      'Statistics',
-      'Tips',
-      'Events'
-    ][index];
   }
 
   @override
@@ -102,7 +92,7 @@ class _DrawerbarState extends State<Drawerbar> {
               widget.onTabChange(i);
             },
             child: tabButton(
-              tabName(i),
+              Utility.tabName(i),
               i,
             ),
           ),

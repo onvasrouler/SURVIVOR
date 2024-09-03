@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/home.dart';
+import 'package:soul_connection/pages/menu.dart';
 import 'package:soul_connection/pages/models/user.module.dart';
 import 'package:soul_connection/pages/provider/auth.service.dart';
 
@@ -79,7 +79,7 @@ class _LoginPageState extends State<SignInPage> {
                     Navigator.pushAndRemoveUntil<void>(
                       context,
                       MaterialPageRoute<void>(
-                        builder: (BuildContext context) => HomePage(user: user),
+                        builder: (BuildContext context) => MenuPage(user: user),
                       ),
                       (route) => false,
                     );
