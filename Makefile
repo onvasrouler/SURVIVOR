@@ -1,8 +1,8 @@
 ##
 ## EPITECH PROJECT, 2024
-## MAKEFILE
+## SURVIVOR
 ## File description:
-## Makefile that compiles soul connection
+## Makefile
 ##
 
 all: build
@@ -17,6 +17,12 @@ run:
 	cd client && flutter run
 
 server:
-	cd server && nodemon
+	cd server && npm run dev
+
+server-prod:
+	cd server && npm run start
+
+server-lint:
+	cd server && npm run lint 
 
 .PHONY: build clean run server
