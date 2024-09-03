@@ -1,18 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/pages/constants/constants.dart';
 import 'package:soul_connection/pages/models/user.module.dart';
+import 'package:soul_connection/pages/subpages/coaches.dart';
+import 'package:soul_connection/pages/subpages/customers.dart';
+import 'package:soul_connection/pages/subpages/event.dart';
+import 'package:soul_connection/pages/subpages/home.dart';
+import 'package:soul_connection/pages/subpages/statistics.dart';
+import 'package:soul_connection/pages/subpages/tips.dart';
+import 'package:soul_connection/pages/utility/utility.dart';
 import 'package:soul_connection/pages/widget/drawerbar.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key, required this.user});
+class MenuPage extends StatefulWidget {
+  const MenuPage({super.key, required this.user});
   final UserModel user;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MenuPage> createState() => _MenuPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MenuPageState extends State<MenuPage> {
   int tabIndex = 0;
+
+  Widget tabPage(int index) {
+    return [
+      const HomePage(),
+      const CoachesPage(),
+      const EventPage(),
+      const TipsPage(),
+      const CustomersPage(),
+      const StatisticsPage(),
+    ][index];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,31 +45,12 @@ class _HomePageState extends State<HomePage> {
               },
               selectedItemColor: Colors.blue,
               currentIndex: tabIndex,
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.home, color: Colors.blue),
-                  label: 'Home',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.people, color: Colors.blue),
-                  label: 'Coaches',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person, color: Colors.blue),
-                  label: 'Customers',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.bar_chart, color: Colors.blue),
-                  label: 'Statistics',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.lightbulb, color: Colors.blue),
-                  label: 'Tips',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.event, color: Colors.blue),
-                  label: 'Events',
-                ),
+              items: [
+                for (int i = 0; i < 6; i++)
+                  BottomNavigationBarItem(
+                    icon: Utility.tabIcon(i),
+                    label: Utility.tabName(i),
+                  ),
               ],
             )
           : null,
@@ -77,11 +77,14 @@ class _HomePageState extends State<HomePage> {
               width: 1,
               height: dh(context) - 80,
             ),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              width: (dw(context) * 0.8) - 1,
-              height: dh(context),
-              color: [Colors.white, Colors.red][tabIndex % 2],
+            Expanded(
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+                child: tabPage(tabIndex),
+              ),
             ),
           ],
         ),
