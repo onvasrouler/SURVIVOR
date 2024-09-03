@@ -4,55 +4,34 @@ const checkAuthenticated = require("../../middleware/auth.js");
 const redirects = require("../../middleware/redirect.js");
 
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser')
-const e = require('express')
 const crypto = require('crypto');
 
 var hour = 3600000;
-var day = hour * 24;
+var day = hour * 24; Session
 var month = day * 30;
-
-
-exports.index = (req, res) => {
-}
 
 exports.register = async (req, res) => {
     try {
-        console.log(req.body);
-        let register_data = {
+        const register_data = {
             "email": req.body.email,
             "password": req.body.password,
             "username": req.body.username,
             "ip": req.headers['x-forwarded-for'] || req.connection.remoteAddress,
         }
-        console.log(register_data);
 
-        if (await check_json_data(register_data))
-            return redirects.missing_infos(req, res);
-        if (await User.emailExists(register_data.email))
-            return redirects.email_already_exist(req, res);
-        if (await User.usernameExists(register_data.username))
-            return redirects.username_already_exist(req, res);
 
-        const new_unique_id = crypto.randomUUID();
+        if (await check_json_data(register_data)) return res.status(400).send({ "message": "missing informations" });
+        if (await User.emailExists(register_data.email)) return res.status(400).send({ "message": "email already exist" });
+        if (await User.usernameExists(register_data.username)) return res.status(400).send({ "message": "username already exist" });
+
         const newUser = new User({
-            unique_id: new_unique_id,
             email: register_data.email,
             username: register_data.username,
-            role: "normal",
             password: register_data.password,
-            //                    adress: register_data.adress,
-            //                    phonenumber: register_data.phonenumber,
-            //                    firstName: register_data.firstName,
-            //                    lastName: register_data.lastName,
             creationIp: register_data.ip,
-            LastModificationIp: register_data.ip,
         });
-        console.log(`a new user has registered with the following informations: ${newUser}`);
-
         newUser.save().then(function (User, err) {
-            if (err)
-                return redirects.register_inservererr(req, res);
+            if (err) return error_occured(req, res, err);
 
             const newSession = new Session({
                 unique_session_id: crypto.randomUUID(),
@@ -63,91 +42,82 @@ exports.register = async (req, res) => {
             });
 
             newSession.save().then(function (Session, err) {
-                if (err)
-                    return redirects.register_inservererr(req, res);
+                if (err) return error_occured(req, res, err);
 
-
-
-                User.updateOne({ unique_id: User.unique_id }, { $push: { link_session_id: newSession.signed_id } }).then(function (newuser, err) {
-                    if (err)
-                        return redirects.register_inservererr(req, res);
-
-                    if (User.link_session_id.includes(Session.signed_id))
-                        return return_signed_cookies(req, res, uuid_session_id, User);
-                    else
-                        return redirects.register_inservererr(req, res);
-                })
+                User.updateOne({
+                    unique_id: User.unique_id
+                }, {
+                    $addToSet: {
+                        link_session_id: Session.signed_id
+                    }
+                }).then(function (newuser, err) {
+                    if (err) return error_occured(req, res, err);
+                    if (!User.link_session_id.includes(Session.signed_id))
+                        return error_occured(req, res);
+                    return return_signed_cookies(req, res, newSession.unique_session_id, newuser);
+                }).catch(function (err) {
+                    return error_occured(req, res, err);
+                });
+            }).catch(function (err) {
+                return error_occured(req, res, err);
             })
         }).catch(function (err) {
-            console.log(err);
-            return res.status(500).send(err);
+            return error_occured(req, res, err);
         });
-    } catch (error) {
-        console.log("REGISTER -> " + error);
-        return res.status(500).send(error);
+    } catch (err) {
+        return error_occured(req, res, err);
     }
 }
 
 exports.login = async (req, res) => {
     try {
         let login_data = {
-            "email": req.body.email,
+            "emailOrUsername": req.body.emailOrUsername,
             "password": req.body.password,
             "ip": req.headers['x-forwarded-for'] || req.connection.remoteAddress,
         }
-
         if (await check_json_data(login_data))
-            return redirects.missing_infos(req, res);
+            return res.status(400).send({ "message": "missing informations" });
+        User.findOne({
+            $or: [
+                {
+                    email: login_data.emailOrUsername
+                }, {
+                    username: login_data.emailOrUsername
+                }]
+        }).then(async function (user) {
+            if (!user) return res.status(401).send({ "message": "incorrect email or username" });
+            if (!user.comparePassword(login_data.password))
+                return res.status(401).send({ "message": "incorrect password" });
 
-        User.findOne({ email: login_data.email }).then(function (user, err) {
-            if (err)
-                return redirects.login_inservererr(req, res);
-
-            if (user) {
-                if (user.comparePassword(req.body.password)) {
-                    Session.deleteMany({ user_signed_id: user.unique_id }).then(function (session, err) {
-                        if (err)
-                            return redirects.login_inservererr(req, res);
-
-                        const uuid_session_id = crypto.randomUUID()
-                        const unique_link_session_id = crypto.randomUUID()
-                        const newSession = new Session({
-                            unique_session_id: uuid_session_id,
-                            user_signed_id: user.unique_id,
-                            signed_id: unique_link_session_id,
-                            connexionIp: login_data.ip,
-                            expire: Date.now() + month,
-                        });
-                        newSession.save().then(function (Session, err) {
-                            if (err)
-                                return redirects.login_inservererr(req, res);
-
-                            user.link_session_id = unique_link_session_id
-                            user.updateOne({ link_session_id: unique_link_session_id }).then(function (newuser, err) {
-                                if (err)
-                                    return redirects.login_inservererr(req, res);
-                                if (user.link_session_id == Session.signed_id)
-                                    return return_signed_cookies(req, res, uuid_session_id, user);
-                                else
-                                    return redirects.invalid_session(req, res);
-                            })
-                        })
-                    })
-                } else {
-                    return redirects.incorrect_password(req, res);
-                }
-            } else {
-                return redirects.incorrect_email(req, res);
-            }
-        })
-    } catch (error) {
-        console.log("LOGIN -> " + error);
-        redirects.login_inservererr(req, res);
+            const newSession = new Session({
+                unique_session_id: crypto.randomUUID(),
+                signed_id: crypto.randomUUID(),
+                user_signed_id: user.unique_id,
+                connexionIp: login_data.ip,
+                expire: Date.now() + month,
+            });
+            await newSession.save().then(async function (Session) {
+                await user.updateOne({
+                    $addToSet: {
+                        link_session_id: Session.signed_id
+                    }
+                })
+                return return_signed_cookies(req, res, newSession.unique_session_id, user);
+            }).catch(async function (err) {
+                console.log(err);
+                return error_occured(req, res, err);
+            });
+        }).catch(function (err) {
+            return error_occured(req, res, err);
+        });
+    } catch (err) {
+        return error_occured(req, res, err);
     }
 }
 
 exports.profile = async (req, res) => {
-    return res.status(200).send({ "status": "success", "username": req.cookies.username });
+    return res.status(200).send({ "status": "success", "username": req.user.username });
 }
 
 exports.logout = async (req, res) => {
@@ -184,15 +154,30 @@ exports.deleteaccount = async (req, res) => {
             return redirects.incorrect_password(req, res);
         }
     } catch (error) {
-        console.log("DELETE ACCOUNT -> " + error);
         return redirects.account_delete_error(req, res);
     }
 }
 
-async function check_json_data(json_data) {
-    return (Object.values(json_data).includes(undefined) || Object.values(json_data).includes(""));
+
+
+
+function return_signed_cookies(req, res, uuid_session_id, user) {
+    return res.status(200).send({
+        "message": "connecté avec success",
+        "session": jwt.sign({ session_id: uuid_session_id }, process.env.SECRET),
+        "username": user.username
+    });
 }
 
-async function return_signed_cookies(req, res, uuid_session_id, user) {
-    return res.status(200).cookie('session', jwt.sign({ session_id: uuid_session_id }, process.env.SECRET), { maxAge: month }).cookie('name', user.username).send({ "status": "success", "message": "Vous vous êtes enregistré avec succès, redirection ..." }); //.cookie('token', jwt.sign({ _id: Person.unique_id }, 'RESTFULAPIs'), {maxAge : month})
+function error_occured(req, res, errorMsg) {
+    return res.status(500).send({
+        "message": "error occured while creating session!",
+        "session": "",
+        "username": "",
+        "error": errorMsg
+    });
+}
+
+async function check_json_data(json_data) {
+    return (Object.values(json_data).includes(undefined) || Object.values(json_data).includes(""));
 }

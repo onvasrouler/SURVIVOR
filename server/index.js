@@ -40,8 +40,6 @@ app.get("*", function (req, res) {
   res.status(404).send('Not found');
 });
 
-console.log(process.env.SECRET);
-
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
