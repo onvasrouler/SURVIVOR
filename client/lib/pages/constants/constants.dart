@@ -10,3 +10,11 @@ double dh(BuildContext context) {
 double dw(BuildContext context) {
   return MediaQuery.of(context).size.width;
 }
+
+Widget sh(double height) {
+  return Container(height: height);
+}
+
+Widget sw(double width) {
+  return Container(width: width);
+}
