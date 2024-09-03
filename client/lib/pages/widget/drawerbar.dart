@@ -55,7 +55,7 @@ class _DrawerbarState extends State<Drawerbar> {
           borderRadius: BorderRadius.circular(100),
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.blue, width: 2),
+              border: Border.all(color: Colors.blue, width: 3),
               borderRadius: BorderRadius.circular(100),
             ),
             child: ClipRRect(
