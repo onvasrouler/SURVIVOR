@@ -29,7 +29,7 @@ userSchema = new Schema({
     role: {
         type: String,
         enum: ["normal", "admin"],
-        required: [true, "Please specify user role"]
+        default: "normal",
     },
     username: {
         type: String,
@@ -86,15 +86,15 @@ userSchema = new Schema({
 userSchema.pre('save', function (next) {
     const user = this;
 
+    user.unique_id = crypto.randomUUID();
+    user.LastModificationIp = user.creationIp;
 
     if (!user.isModified('password')) return next();
 
     bcrypt.genSalt(10, function (err, salt) {
         if (err) return next(err);
-
         bcrypt.hash(user.password, salt, function (err, hash) {
             if (err) return next(err);
-
             user.password = hash;
             next();
         });
@@ -115,21 +115,16 @@ userSchema.methods.generateJWT = function () {
 
 userSchema.statics.emailExists = async function (email) {
     try {
-        const user = await this.findOne({ email: email });
-        return user ? true : false;
+        return !!(await this.findOne({ email: email }));
     } catch (err) {
-        console.error("Error checking if user exists: ", err);
         return true;
     }
 };
 
 userSchema.statics.usernameExists = async function (username) {
     try {
-        const user = await this.findOne({ username: username });
-        console.log("username is already taken");
-        return user ? true : false;
+        return !!(await this.findOne({ username: username }));
     } catch (err) {
-        console.error("Error checking if user exists: ", err);
         return true;
     }
 };
