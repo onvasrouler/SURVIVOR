@@ -194,131 +194,141 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          sh(30),
-          Text(
-            'Soul Connection',
-            style: TextStyle(
-              fontSize: dw(context) * 0.05,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Arial',
+    return SizedBox(
+      height: dh(context),
+      width: dw(context),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            sh(30),
+            Text(
+              'Soul Connection',
+              style: TextStyle(
+                fontSize: dw(context) * 0.05,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Arial',
+              ),
             ),
-          ),
-          Text(
-            'Dashboard',
-            style: TextStyle(
-              fontSize: dw(context) * 0.02,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              fontFamily: 'Arial',
+            Text(
+              'Dashboard',
+              style: TextStyle(
+                fontSize: dw(context) * 0.02,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                fontFamily: 'Arial',
+              ),
             ),
-          ),
-          sh(10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30.0),
-            child: Container(
-              height: 1,
-              color: Colors.grey,
-              width: dw(context),
+            sh(10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: Container(
+                height: 1,
+                color: Colors.grey,
+                width: dw(context),
+              ),
             ),
-          ),
-          if (dw(context) > 700) ...[
-            SizedBox(
-              height: 200,
-              width: dw(context),
-              child: Row(
+            sh(20),
+            if (dw(context) > 700) ...[
+              SizedBox(
+                height: 200,
+                width: dw(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: graphs(false),
+                ),
+              ),
+            ] else ...[
+              Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: graphs(false),
+                children: graphs(true),
               ),
-            ),
-          ] else ...[
+            ],
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: graphs(true),
-            ),
-          ],
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 3),
-                child: Text(
-                  'Statistics',
-                  style: TextStyle(fontSize: 13),
-                ),
-              ),
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                width:
-                    dw(context) < 700 ? dw(context) / 1.2 : dw(context) / 1.55,
-                height: 289,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.grey),
-                ),
-                child: SingleChildScrollView(
-                  child: Table(
-                    border: const TableBorder.symmetric(
-                      inside: BorderSide(color: Colors.grey),
-                    ),
-                    children: [
-                      for (int row = 0; row <= 8; row++)
-                        if (row == 0)
-                          TableRow(
-                            decoration: const BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(9),
-                                topRight: Radius.circular(9),
-                              ),
-                            ),
-                            children: [
-                              for (int col = 0; col < tableLabels.length; col++)
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    tableLabels[col],
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                            ],
-                          )
-                        else
-                          TableRow(
-                            children: [
-                              for (int col = 0; col < tableLabels.length; col++)
-                                if (col == 0)
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      '$row',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  )
-                                else
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      products[row - 1]
-                                          [tableLabels[col].toLowerCase()],
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                            ],
-                          ),
-                    ],
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 3),
+                  child: Text(
+                    'Statistics',
+                    style: TextStyle(fontSize: 13),
                   ),
                 ),
-              )
-            ],
-          ),
-        ],
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  width: dw(context) < 700
+                      ? dw(context) / 1.2
+                      : dw(context) / 1.55,
+                  height: 253,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Table(
+                      border: const TableBorder.symmetric(
+                        inside: BorderSide(color: Colors.grey),
+                      ),
+                      children: [
+                        for (int row = 0; row <= products.length; row++)
+                          if (row == 0)
+                            TableRow(
+                              decoration: const BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(9),
+                                  topRight: Radius.circular(9),
+                                ),
+                              ),
+                              children: [
+                                for (int col = 0;
+                                    col < tableLabels.length;
+                                    col++)
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      tableLabels[col],
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                              ],
+                            )
+                          else
+                            TableRow(
+                              children: [
+                                for (int col = 0;
+                                    col < tableLabels.length;
+                                    col++)
+                                  if (col == 0)
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        '$row',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    )
+                                  else
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        products[row - 1]
+                                            [tableLabels[col].toLowerCase()],
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                              ],
+                            ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

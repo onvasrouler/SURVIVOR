@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/pages/subpages/widget/appbar.dart';
 
 class CoachesPage extends StatefulWidget {
   const CoachesPage({super.key});
@@ -135,25 +136,7 @@ class _CoachesPageState extends State<CoachesPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        sh(30),
-        Text(
-          'Coaches',
-          style: TextStyle(
-            fontSize: dw(context) * 0.05,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'Arial',
-          ),
-        ),
-        sh(10),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: Container(
-            height: 1,
-            color: Colors.grey,
-            width: dw(context),
-          ),
-        ),
-        sh(20),
+        appBar(context, 'Coaches'),
         AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,

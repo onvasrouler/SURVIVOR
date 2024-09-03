@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soul_connection/pages/subpages/widget/appbar.dart';
 
 class EventPage extends StatefulWidget {
   const EventPage({super.key});
@@ -10,6 +11,12 @@ class EventPage extends StatefulWidget {
 class _EventPageState extends State<EventPage> {
   @override
   Widget build(BuildContext context) {
-    return const Text('event');
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        appBar(context, 'Events'),
+      ],
+    );
   }
 }

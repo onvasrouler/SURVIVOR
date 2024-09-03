@@ -25,7 +25,7 @@ class _MenuPageState extends State<MenuPage> {
     return [
       const HomePage(),
       const CoachesPage(),
-      const CustomersPage(),
+      CustomersPage(user: widget.user,),
       const StatisticsPage(),
       const TipsPage(),
       const EventPage(),
@@ -35,7 +35,7 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 251, 249, 249),
+      backgroundColor: const Color(0xfff2f2f2),
       bottomNavigationBar: dw(context) <= 700
           ? BottomNavigationBar(
               onTap: (int index) {

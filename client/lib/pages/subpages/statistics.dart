@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/pages/subpages/widget/appbar.dart';
 
 class StatisticsPage extends StatefulWidget {
   const StatisticsPage({super.key});
@@ -10,6 +12,12 @@ class StatisticsPage extends StatefulWidget {
 class _StatisticsPageState extends State<StatisticsPage> {
   @override
   Widget build(BuildContext context) {
-    return const Text('statistics');
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        appBar(context, 'Statistics'),
+      ],
+    );
   }
 }
