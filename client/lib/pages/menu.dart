@@ -58,6 +58,7 @@ class _MenuPageState extends State<MenuPage> {
         height: dh(context),
         width: dw(context),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (dw(context) > 700)
               SizedBox(
@@ -72,10 +73,12 @@ class _MenuPageState extends State<MenuPage> {
                   },
                 ),
               ),
-            Container(
-              color: Colors.grey,
-              width: 1,
-              height: dh(context) - 80,
+            Center(
+              child: Container(
+                color: Colors.grey,
+                width: 1,
+                height: dh(context) - 80,
+              ),
             ),
             Expanded(
               child: AnimatedSwitcher(
