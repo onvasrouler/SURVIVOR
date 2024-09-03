@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/pages/home.dart';
 import 'package:soul_connection/pages/models/user.module.dart';
@@ -13,6 +14,7 @@ class SignInPage extends StatefulWidget {
 class _LoginPageState extends State<SignInPage> {
   late TextEditingController _email;
   late TextEditingController _password;
+  bool loader = false;
 
   @override
   void initState() {
@@ -65,29 +67,35 @@ class _LoginPageState extends State<SignInPage> {
             ),
             GestureDetector(
               onTap: () async {
-                UserModel? user = await AuthService.signInManagor(
-                  _email.text,
-                  _password.text,
-                );
-                if (user != null) {
-                  Navigator.push<void>(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => HomePage(user: user),
-                    ),
+                if (!loader) {
+                  setState(() {
+                    loader = true;
+                  });
+                  UserModel? user = await AuthService.signInManagor(
+                    _email.text,
+                    _password.text,
                   );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      backgroundColor: Colors.blue,
-                      duration: Duration(seconds: 5),
-                      content: Center(
-                        child: Text(
-                          'Wrong email or password',
+                  if (user != null) {
+                    Navigator.pushAndRemoveUntil<void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => HomePage(user: user),
+                      ),
+                      (route) => false,
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        backgroundColor: Colors.blue,
+                        duration: Duration(seconds: 5),
+                        content: Center(
+                          child: Text(
+                            'Wrong email or password',
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 }
               },
               child: ClipRRect(
@@ -97,14 +105,16 @@ class _LoginPageState extends State<SignInPage> {
                   height: 70,
                   width: 250,
                   alignment: Alignment.center,
-                  child: const Text(
-                    "Sign in",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                  child: loader
+                      ? const CupertinoActivityIndicator()
+                      : const Text(
+                          "Sign in",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                 ),
               ),
             ),

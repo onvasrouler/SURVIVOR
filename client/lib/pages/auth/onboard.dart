@@ -40,35 +40,6 @@ class _OnBoardPageState extends State<OnBoardPage> {
             Container(
               height: 70,
             ),
-            // GestureDetector(
-            //   onTap: () {
-            //     Navigator.push<void>(
-            //       context,
-            //       MaterialPageRoute<void>(
-            //         builder: (BuildContext context) => const SignUpPage(),
-            //       ),
-            //     );
-            //   },
-            //   child: ClipRRect(
-            //     borderRadius: BorderRadius.circular(50),
-            //     child: Container(
-            //       color: Colors.black,
-            //       height: 70,
-            //       width: 250,
-            //       alignment: Alignment.center,
-            //       child: const Text(
-            //         "Sign Up",
-            //         style: TextStyle(
-            //             color: Colors.white,
-            //             fontSize: 30,
-            //             fontWeight: FontWeight.w700),
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            Container(
-              height: 20,
-            ),
             GestureDetector(
               onTap: () {
                 Navigator.push<void>(
