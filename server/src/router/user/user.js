@@ -121,42 +121,38 @@ exports.profile = async (req, res) => {
 }
 
 exports.logout = async (req, res) => {
-    if (req.user && req.user != null && req.user != undefined) {
-        Session.deleteOne({ signed_id: req.user.link_session_id }).then(function (session, err) {
-            if (session) {
-                return redirects.logout_success(req, res);
-            } else {
-                console.log(err);
-                return redirects.logout_error_occured(req, res);
-            }
-        }).catch(function (err) {
-            console.log(err);
-        });
-    } else {
-        return redirects.logout_success(req, res);
-    }
-}
-
-exports.deleteaccount = async (req, res) => {
     try {
-        if (req.user.comparePassword(req.body.password)) {
-            await User.deleteOne({ _id: req.user._id }).then(async function (user, err) {
-                if (err)
-                    return redirects.account_delete_error(req, res);
-                await Session.deleteOne({ signed_id: req.user.link_session_id }).then(function (session, err) {
-                    if (err)
-                        return redirects.account_delete_error(req, res);
-
-                    return redirects.account_deleted(req, res);
-                })
-            })
+        if (req.user && req.user != null && req.user != undefined) {
+            Session.deleteOne({ signed_id: req.user.link_session_id })
+            return res.status(200).send({ "message": "logout sucessfull" });
         } else {
-            return redirects.incorrect_password(req, res);
+            return res.status(200).send({ "message": "logout sucessfull" });
         }
     } catch (error) {
-        return redirects.account_delete_error(req, res);
+        return res.status(500).send({ "message": "error occured while logging out" });
     }
 }
+
+// exports.deleteaccount = async (req, res) => {
+//     try {
+//         if (req.user.comparePassword(req.body.password)) {
+//             await User.deleteOne({ _id: req.user._id }).then(async function (user, err) {
+//                 if (err)
+//                     return redirects.account_delete_error(req, res);
+//                 await Session.deleteOne({ signed_id: req.user.link_session_id }).then(function (session, err) {
+//                     if (err)
+//                         return redirects.account_delete_error(req, res);
+
+//                     return redirects.account_deleted(req, res);
+//                 })
+//             })
+//         } else {
+//             return redirects.incorrect_password(req, res);
+//         }
+//     } catch (error) {
+//         return redirects.account_delete_error(req, res);
+//     }
+// }
 
 
 
