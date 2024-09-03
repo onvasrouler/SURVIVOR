@@ -19,23 +19,23 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  int tabIndex = 0;
+  int tabIndex = 2;
 
   Widget tabPage(int index) {
     return [
       const HomePage(),
       const CoachesPage(),
-      const EventPage(),
-      const TipsPage(),
       const CustomersPage(),
       const StatisticsPage(),
+      const TipsPage(),
+      const EventPage(),
     ][index];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 251, 249, 249),
       bottomNavigationBar: dw(context) <= 700
           ? BottomNavigationBar(
               onTap: (int index) {

@@ -59,7 +59,7 @@ class _DrawerbarState extends State<Drawerbar> {
         borderRadius: BorderRadius.circular(30),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          color: hoveredIndex == index ? const Color.fromARGB(255, 240, 185, 250) : Colors.blue,
+          color: hoveredIndex == index ? Colors.blueAccent : Colors.blue,
           width: 120 + (hoveredIndex == index ? 10 : 0),
           height: 40 + (hoveredIndex == index ? 10 : 0),
           alignment: Alignment.center,
@@ -100,7 +100,12 @@ class _DrawerbarState extends State<Drawerbar> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: const Text('No'),
+                            child: const Text(
+                              'No',
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(
