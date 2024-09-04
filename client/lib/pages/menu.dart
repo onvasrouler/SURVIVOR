@@ -21,7 +21,7 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  int tabIndex = 5;
+  int tabIndex = 0;
 
   Widget tabPage(int index) {
     return [

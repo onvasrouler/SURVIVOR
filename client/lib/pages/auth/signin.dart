@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:soul_connection/pages/constants/constants.dart';
 import 'package:soul_connection/pages/menu.dart';
 import 'package:soul_connection/pages/models/user.module.dart';
 import 'package:soul_connection/pages/provider/auth.service.dart';
@@ -42,11 +43,10 @@ class _LoginPageState extends State<SignInPage> {
           textAlign: TextAlign.center,
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xfff2f2f2),
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        color: Colors.white,
+        width: dw(context),
+        height: dh(context),
         padding: const EdgeInsets.symmetric(horizontal: 50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -101,16 +101,20 @@ class _LoginPageState extends State<SignInPage> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),
                 child: Container(
-                  color: Colors.black,
                   height: 70,
                   width: 250,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50),
+                    border: Border.all(color: Colors.grey, width: 1),
+                  ),
                   alignment: Alignment.center,
                   child: loader
                       ? const CupertinoActivityIndicator()
                       : const Text(
                           "Sign in",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 30,
                             fontWeight: FontWeight.w700,
                           ),

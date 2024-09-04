@@ -1,5 +1,6 @@
 import 'package:soul_connection/pages/auth/signin.dart';
 import 'package:flutter/material.dart';
+import 'package:soul_connection/pages/constants/constants.dart';
 
 class OnBoardPage extends StatefulWidget {
   const OnBoardPage({super.key});
@@ -21,21 +22,28 @@ class _OnBoardPageState extends State<OnBoardPage> {
           textAlign: TextAlign.center,
         ),
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        color: Colors.white,
+      backgroundColor: const Color(0xfff2f2f2),
+      body: SizedBox(
+        width: dw(context),
+        height: dh(context),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "Connection\nMethod",
-              style: TextStyle(
-                color: Colors.blue,
-                fontSize: 55,
-                fontWeight: FontWeight.w900,
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
               ),
-              textAlign: TextAlign.center,
+              child: const Text(
+                "Connection Method",
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 55,
+                  fontWeight: FontWeight.w900,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
             Container(
               height: 70,
@@ -52,14 +60,18 @@ class _OnBoardPageState extends State<OnBoardPage> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),
                 child: Container(
-                  color: Colors.black,
                   height: 70,
                   width: 250,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50),
+                    border: Border.all(color: Colors.grey, width: 1),
+                  ),
                   alignment: Alignment.center,
                   child: const Text(
                     "Sign In",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 30,
                       fontWeight: FontWeight.w700,
                     ),
