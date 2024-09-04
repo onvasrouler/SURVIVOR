@@ -25,17 +25,19 @@ class _MenuPageState extends State<MenuPage> {
     return [
       const HomePage(),
       const CoachesPage(),
-      const EventPage(),
-      const TipsPage(),
-      const CustomersPage(),
+      CustomersPage(
+        user: widget.user,
+      ),
       const StatisticsPage(),
+      const TipsPage(),
+      const EventPage(),
     ][index];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xfff2f2f2),
       bottomNavigationBar: dw(context) <= 700
           ? BottomNavigationBar(
               onTap: (int index) {
@@ -58,6 +60,7 @@ class _MenuPageState extends State<MenuPage> {
         height: dh(context),
         width: dw(context),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (dw(context) > 700)
               SizedBox(
@@ -72,10 +75,12 @@ class _MenuPageState extends State<MenuPage> {
                   },
                 ),
               ),
-            Container(
-              color: Colors.grey,
-              width: 1,
-              height: dh(context) - 80,
+            Center(
+              child: Container(
+                color: Colors.grey,
+                width: 1,
+                height: dh(context) - 80,
+              ),
             ),
             Expanded(
               child: AnimatedSwitcher(

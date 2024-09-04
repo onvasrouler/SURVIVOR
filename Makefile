@@ -14,7 +14,7 @@ clean:
 	cd client && flutter clean
 
 run:
-	cd client && flutter run
+	cd client && flutter run -d chrome --web-browser-flag --disable-web-security
 
 server:
 	cd server && npm run dev
