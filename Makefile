@@ -25,4 +25,12 @@ server-prod:
 server-lint:
 	cd server && npm run lint 
 
+scrapper:
+	cd server && nodemon scrapper.py
+
+scrapper-prod:
+	cd server && python3 scrapper.py
+
+scrapper-lint:
+	cd server && pylint scrapper.py
 .PHONY: build clean run server

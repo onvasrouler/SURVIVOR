@@ -1,14 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 var hour = 3600000;
 var day = hour * 24;
 var month = day * 30;
 
 
-sessionSchema = new Schema({
+const sessionSchema = new Schema({
     unique_session_id: {
         type: String,
         unique: true,
@@ -35,6 +33,6 @@ sessionSchema = new Schema({
     }
 });
 
-Session = mongoose.model('session', sessionSchema);
+const Session = mongoose.model("session", sessionSchema);
 
 module.exports = Session;
