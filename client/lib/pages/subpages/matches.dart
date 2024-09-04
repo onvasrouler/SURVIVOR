@@ -35,35 +35,46 @@ class _MatchesPageState extends State<MatchesPage>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         sh(55),
-        MouseRegion(
-          onEnter: (event) => onHoverGraph(event, index, context),
-          onHover: (event) => onHoverGraph(event, index, context),
-          onExit: onExit,
-          child: Transform(
-            transform: hoveredIndex == index
-                ? (Matrix4.identity()
-                  ..setEntry(2, 2, 0.001)
-                  ..rotateX(rotationX)
-                  ..rotateY(rotationY))
-                : Matrix4.identity(),
-            alignment: FractionalOffset.center,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              height: (((dw(context) / 10) > 140 ? 140 : (dw(context) / 10)) +
-                  (hoveredIndex != index ? 0 : 40)),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.blue, width: 3),
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.memory(
-                  widget.user.profilePic!,
+        Builder(
+          builder: (context) {
+            return MouseRegion(
+              onEnter: (event) {
+                final renderBox = context.findRenderObject() as RenderBox;
+                onHoverCard(event, index, renderBox);
+              },
+              onHover: (event) {
+                final renderBox = context.findRenderObject() as RenderBox;
+                onHoverCard(event, index, renderBox);
+              },
+              onExit: onExit,
+              child: Transform(
+                transform: hoveredIndex == index
+                    ? (Matrix4.identity()
+                      ..setEntry(3, 2, 0.001)
+                      ..rotateX(rotationX)
+                      ..rotateY(rotationY))
+                    : Matrix4.identity(),
+                alignment: FractionalOffset.center,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  height:
+                      (((dw(context) / 10) > 140 ? 140 : (dw(context) / 10)) +
+                          (hoveredIndex != index ? 0 : 40)),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue, width: 3),
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image.memory(
+                      widget.user.profilePic!,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         ),
         sh(20),
         AnimatedContainer(
@@ -111,13 +122,31 @@ class _MatchesPageState extends State<MatchesPage>
                   children: [
                     sw(20),
                     profilePic(0),
-                    MouseRegion(
-                      onEnter: (event) => onHoverGraph(event, 2, context),
-                      onHover: (event) => onHoverGraph(event, 2, context),
-                      onExit: onExit,
-                      child: CircleProgressIndicator(
-                        hoveredIndex: hoveredIndex,
-                      ),
+                    Builder(
+                      builder: (context) {
+                        return MouseRegion(
+                          onEnter: (event) {
+                            final renderBox =
+                                context.findRenderObject() as RenderBox;
+                            onHoverCard(event, 2, renderBox);
+                          },
+                          onHover: (event) {
+                            final renderBox =
+                                context.findRenderObject() as RenderBox;
+                            onHoverCard(event, 2, renderBox);
+                          },
+                          onExit: onExit,
+                          child: Transform(
+                            transform: hoveredIndex == 2
+                                ? getTransformMatrix()
+                                : Matrix4.identity(),
+                            alignment: FractionalOffset.center,
+                            child: CircleProgressIndicator(
+                              hoveredIndex: hoveredIndex,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                     profilePic(1),
                     sw(20),

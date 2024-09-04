@@ -13,7 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
-
   Widget chartToRun(List<double> data, String label) {
     LabelLayoutStrategy? xContainerLabelLayoutStrategy;
     ChartData chartData;
@@ -49,48 +48,53 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
       for (int i = 0; i < 3; i++)
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: MouseRegion(
-            onEnter: (event) => onHoverGraph(event, i, context),
-            onHover: (event) => onHoverGraph(event, i, context),
-            onExit: onExit,
-            child: Transform(
-              transform: hoveredIndex == i
-                  ? (Matrix4.identity()
-                    ..setEntry(2, 2, 0.001)
-                    ..rotateX(rotationX)
-                    ..rotateY(rotationY))
-                  : Matrix4.identity(),
-              alignment: FractionalOffset.center,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                width: isLandscaped
-                    ? dw(context) / 1.2
-                    : hoveredIndex == i
-                        ? dw(context) / 4.5
-                        : dw(context) / 5,
-                height: hoveredIndex == i ? 160 : 140,
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.grey),
-                  boxShadow: hoveredIndex == i
-                      ? [
-                          const BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 10,
-                          )
-                        ]
-                      : [],
-                ),
-                child: AnimatedBarChart(
-                  data: data[i]['data'],
-                  label: data[i]['label'],
+          child: Builder(builder: (context) {
+            return MouseRegion(
+              onEnter: (event) {
+                final renderBox = context.findRenderObject() as RenderBox;
+                onHoverCard(event, i, renderBox);
+              },
+              onHover: (event) {
+                final renderBox = context.findRenderObject() as RenderBox;
+                onHoverCard(event, i, renderBox);
+              },
+              onExit: onExit,
+              child: Transform(
+                transform: hoveredIndex == i
+                    ? getTransformMatrix()
+                    : Matrix4.identity(),
+                alignment: FractionalOffset.center,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  width: isLandscaped
+                      ? dw(context) / 1.2
+                      : hoveredIndex == i
+                          ? dw(context) / 4.5
+                          : dw(context) / 5,
+                  height: hoveredIndex == i ? 160 : 140,
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey),
+                    boxShadow: hoveredIndex == i
+                        ? [
+                            const BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 10,
+                            )
+                          ]
+                        : [],
+                  ),
+                  child: AnimatedBarChart(
+                    data: data[i]['data'],
+                    label: data[i]['label'],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          }),
         ),
     ];
   }
@@ -164,7 +168,7 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
                   width: dw(context) < 700
                       ? dw(context) / 1.2
                       : dw(context) / 1.55,
-                  height: 253,
+                  height: 289,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),

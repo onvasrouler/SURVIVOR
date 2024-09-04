@@ -120,31 +120,44 @@ class _DrawerbarState extends State<Drawerbar> with HoverMixin<Drawerbar> {
                 ),
               );
             },
-            child: MouseRegion(
-              onEnter: (event) => onHover(event, context),
-              onHover: (event) => onHover(event, context),
-              onExit: onExit,
-              child: Transform(
-                transform: getTransformMatrix(),
-                alignment: FractionalOffset.center,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  height:
-                      (((dw(context) / 10) > 120 ? 120 : (dw(context) / 10)) +
-                          (hoveredIndexProfile == null ? 0 : 20)),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue, width: 3),
-                    borderRadius: BorderRadius.circular(100),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.memory(
-                      widget.user.profilePic!,
+            child: Builder(
+              builder: (context) {
+                return MouseRegion(
+                  onEnter: (event) {
+                    final renderBox = context.findRenderObject() as RenderBox;
+                    onHoverCard(event, 9, renderBox);
+                  },
+                  onHover: (event) {
+                    final renderBox = context.findRenderObject() as RenderBox;
+                    onHoverCard(event, 9, renderBox);
+                  },
+                  onExit: onExit,
+                  child: Transform(
+                    transform: hoveredIndex == 9
+                        ? getTransformMatrix()
+                        : Matrix4.identity(),
+                    alignment: FractionalOffset.center,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      height: (((dw(context) / 10) > 120
+                              ? 120
+                              : (dw(context) / 10)) +
+                          (hoveredIndex != 9 ? 0 : 20)),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue, width: 3),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image.memory(
+                          widget.user.profilePic!,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         ),
