@@ -16,11 +16,35 @@ class _CustomersPageState extends State<CustomersPage> {
   Map<String, dynamic> currentCustomer = {
     'name': 'Louis Delanata',
     'id': 1,
+    'birthday': '02/03/2006',
+    'address': '3 Rue de al Tour 34000 Montpelier, France'
   };
+
   List<Map<String, dynamic>> customers = [
-    {'name': 'Louis Delanata', 'id': 1},
-    {'name': 'lalal eaeza', 'id': 2},
-    {'name': 'matchelou razueaz', 'id': 3},
+    {
+      'name': 'Louis Delanata',
+      'id': 1,
+      'birthday': '02/03/2006',
+      'address': '3 Rue de al Tour 34000 Montpelier, France'
+    },
+    {
+      'name': 'Romain Ruiz',
+      'id': 2,
+      'birthday': '09/06/2016',
+      'address': '78 Rue de la mélinière 44200 Nantes, France'
+    },
+    {
+      'name': 'Paul Boulanger',
+      'id': 3,
+      'birthday': '12/03/1999',
+      'address': '26 Rue des bougainvilliers 97400 Saint-Denis, France'
+    },
+    {
+      'name': 'Max Delanata',
+      'id': 3,
+      'birthday': '09/06/1996',
+      'address': '34 Rue des pivoines 97400 Saint-Denis, France'
+    },
   ];
 
   List<String> table1Labels = ['Date', 'Amount', 'Comment'];
@@ -124,12 +148,12 @@ class _CustomersPageState extends State<CustomersPage> {
                         ],
                       ),
                       sh(5),
-                      const Row(
+                      Row(
                         children: [
-                          Icon(Icons.cake, color: Colors.black),
+                          const Icon(Icons.cake, color: Colors.black),
                           Text(
-                            ' 09/06/1996',
-                            style: TextStyle(
+                            ' ${currentCustomer['birthday'] ?? ''}',
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Arial',
@@ -138,12 +162,13 @@ class _CustomersPageState extends State<CustomersPage> {
                         ],
                       ),
                       sh(5),
-                      const Row(
+                      Row(
                         children: [
-                          Icon(Icons.location_on_outlined, color: Colors.black),
+                          const Icon(Icons.location_on_outlined,
+                              color: Colors.black),
                           Text(
-                            ' 3 Rue de al Tour 34000 Montpelier, France',
-                            style: TextStyle(
+                            ' ${currentCustomer['address'] ?? ''}',
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Arial',
