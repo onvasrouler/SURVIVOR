@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
 import 'package:soul_connection/pages/subpages/widget/appbar.dart';
 
 class StatisticsPage extends StatefulWidget {

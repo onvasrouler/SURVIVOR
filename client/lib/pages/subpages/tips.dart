@@ -37,14 +37,24 @@ class _TipsPageState extends State<TipsPage> {
   }
 
   List<String> tips = [
-    'Asuper tip ot help the coach with their customers',
-    'Asuper tip ot help the coach with their customers',
-    'Asuper tip ot help the coach with their customers',
-    'Asuper tip ot help the coach with their customers',
-    'Asuper tip ot help the coach with their customers',
-    'Asuper tip ot help the coach with their customers',
-    'Asuper tip ot help the coach with their customers',
-    'Asuper tip ot help the coach with their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
+    'Asuper tip ot help the coach\nwith their customers',
   ];
 
   @override
@@ -52,78 +62,101 @@ class _TipsPageState extends State<TipsPage> {
     return SizedBox(
       height: dh(context),
       width: dw(context),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            appBar(context, 'Tips'),
-            Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  mainAxisSpacing: 10.0,
-                  crossAxisSpacing: 10.0,
-                  childAspectRatio: 2.0,
-                ),
-                scrollDirection: Axis.vertical,
-                itemCount: tips.length,
-                itemBuilder: (context, index) {
-                  return Builder(
-                    builder: (context) {
-                      return MouseRegion(
-                        onEnter: (event) {
-                          final renderBox =
-                              context.findRenderObject() as RenderBox;
-                          _onHover(event, index, renderBox);
-                        },
-                        onHover: (event) {
-                          final renderBox =
-                              context.findRenderObject() as RenderBox;
-                          _onHover(event, index, renderBox);
-                        },
-                        onExit: _onExit,
-                        child: Transform(
-                          transform: _hoveredIndex == index
-                              ? (Matrix4.identity()
-                                ..setEntry(3, 2, 0.001)
-                                ..rotateX(_rotationX)
-                                ..rotateY(_rotationY))
-                              : Matrix4.identity(),
-                          alignment: FractionalOffset.center,
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10.0),
-                              border:
-                                  Border.all(color: Colors.grey, width: 1.0),
-                            ),
-                            padding: const EdgeInsets.all(10.0),
-                            child: Center(
-                              child: FittedBox(
-                                child: Text(
-                                  tips[index],
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
+      child: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                appBar(context, 'Tips'),
+                Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 10.0,
+                      crossAxisSpacing: 10.0,
+                      childAspectRatio: 2.0,
+                    ),
+                    scrollDirection: Axis.vertical,
+                    itemCount: tips.length,
+                    itemBuilder: (context, index) {
+                      return Builder(
+                        builder: (context) {
+                          return MouseRegion(
+                            onEnter: (event) {
+                              final renderBox =
+                                  context.findRenderObject() as RenderBox;
+                              _onHover(event, index, renderBox);
+                            },
+                            onHover: (event) {
+                              final renderBox =
+                                  context.findRenderObject() as RenderBox;
+                              _onHover(event, index, renderBox);
+                            },
+                            onExit: _onExit,
+                            child: Transform(
+                              transform: _hoveredIndex == index
+                                  ? (Matrix4.identity()
+                                    ..setEntry(3, 2, 0.001)
+                                    ..rotateX(_rotationX)
+                                    ..rotateY(_rotationY))
+                                  : Matrix4.identity(),
+                              alignment: FractionalOffset.center,
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(
+                                      color: Colors.grey, width: 1.0),
+                                ),
+                                padding: const EdgeInsets.all(10.0),
+                                child: Center(
+                                  child: FittedBox(
+                                    child: Text(
+                                      tips[index],
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       );
                     },
-                  );
-                },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: dw(context),
+              height: 200,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    const Color(0xfff2f2f2),
+                    for (double i = 1; i > 0; i -= 0.1)
+                      const Color(0xfff2f2f2).withOpacity(i)
+                  ],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                ),
               ),
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
