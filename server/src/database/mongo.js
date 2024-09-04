@@ -7,10 +7,10 @@ mongoose.set("strictQuery", false);
 mongoose.connect(MongoDBURI, {
     dbName: process.env.MONGO_DB_NAME,
     useUnifiedTopology: true,
-    useNewUrlParser: true
 });
 
 const db = mongoose.connection;
+console.log("connecting to the database on " + MongoDBURI);
 
 db.on("error", console.error.bind(console, "connection error:"));
 

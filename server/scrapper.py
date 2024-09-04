@@ -19,6 +19,7 @@ def trigger_scrape():
 
 
 def connect_mongodb():
+    print("Connecting to MongoDB on ", config['MONGO_URI'])
     client = MongoClient(config['MONGO_URI'])
     DB = client[config['MONGO_DB_NAME']]
     print("Connected to MongoDB")
