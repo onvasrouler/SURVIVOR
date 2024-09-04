@@ -30,7 +30,7 @@ class _MenuPageState extends State<MenuPage> {
       CustomersPage(user: widget.user),
       const StatisticsPage(),
       const WardrobePage(),
-      const MatchesPage(),
+      MatchesPage(user: widget.user),
       const TipsPage(),
       const EventPage(),
     ][index];

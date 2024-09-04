@@ -53,6 +53,7 @@ mixin HoverMixin<T extends StatefulWidget> on State<T> {
   void onExit(PointerEvent event) {
     setState(() {
       hoveredIndexProfile = null;
+      hoveredIndex = null;
       rotationX = 0;
       rotationY = 0;
     });
