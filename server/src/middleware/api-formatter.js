@@ -19,7 +19,7 @@ module.exports = function sendApiData(
             "messageStatus": messageStatus,
             "message": message,
             "data": data,
-            "error": error,
+            "error": String(error),
             "session": session,
             "username": username,
         }

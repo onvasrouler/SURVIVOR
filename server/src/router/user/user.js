@@ -1,16 +1,17 @@
-const User = require('../../database/models/users')
-const Session = require('../../database/models/session')
+const UserModel = require('../../database/models/users')
+const SessionModel = require('../../database/models/session')
 const checkAuthenticated = require("../../middleware/auth.js");
-const redirects = require("../../middleware/redirect.js");
+const api_formatter = require("../../middleware/api-formatter.js");
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
 var hour = 3600000;
-var day = hour * 24; Session
+var day = hour * 24;
 var month = day * 30;
 
 exports.register = async (req, res) => {
+    var tmpUserRegister = null;
     try {
         const register_data = {
             "email": req.body.email,
@@ -18,100 +19,77 @@ exports.register = async (req, res) => {
             "username": req.body.username,
             "ip": req.headers['x-forwarded-for'] || req.connection.remoteAddress,
         }
+        if (await check_json_data(register_data)) return api_formatter(req, res, 400, "missing_informations", "some of the information were not provided", null, null, null);
+        if (await UserModel.emailExists(register_data.email)) return api_formatter(req, res, 400, "email_already_exist", "an account with the provided email already exist", null, null, null);
+        if (await UserModel.usernameExists(register_data.username)) return api_formatter(req, res, 400, "username_already_exist", "an account with the provided username already exist", null, null, null);
 
-
-        if (await check_json_data(register_data)) return res.status(400).send({ "message": "missing informations" });
-        if (await User.emailExists(register_data.email)) return res.status(400).send({ "message": "email already exist" });
-        if (await User.usernameExists(register_data.username)) return res.status(400).send({ "message": "username already exist" });
-
-        const newUser = new User({
+        await new UserModel({
             email: register_data.email,
             username: register_data.username,
             password: register_data.password,
             creationIp: register_data.ip,
-        });
-        newUser.save().then(function (User, err) {
-            if (err) return error_occured(req, res, err);
-
-            const newSession = new Session({
+        }).save().then(async function (userRegistered) {
+            tmpUserRegister = userRegistered;
+            await new SessionModel({
                 unique_session_id: crypto.randomUUID(),
                 signed_id: crypto.randomUUID(),
-                user_signed_id: User.unique_id,
+                user_signed_id: userRegistered.unique_id,
                 connexionIp: register_data.ip,
                 expire: Date.now() + month,
-            });
-
-            newSession.save().then(function (Session, err) {
-                if (err) return error_occured(req, res, err);
-
-                User.updateOne({
-                    unique_id: User.unique_id
-                }, {
+            }).save().then(async function (sessionRegistered) {
+                await userRegistered.updateOne({
                     $addToSet: {
-                        link_session_id: Session.signed_id
+                        link_session_id: sessionRegistered.signed_id
                     }
-                }).then(function (newuser, err) {
-                    if (err) return error_occured(req, res, err);
-                    if (!User.link_session_id.includes(Session.signed_id))
-                        return error_occured(req, res);
-                    return return_signed_cookies(req, res, newSession.unique_session_id, newuser);
-                }).catch(function (err) {
-                    return error_occured(req, res, err);
-                });
-            }).catch(function (err) {
-                return error_occured(req, res, err);
+                })
+                return return_signed_cookies(req, res, sessionRegistered, userRegistered);
             })
-        }).catch(function (err) {
-            return error_occured(req, res, err);
-        });
+        })
     } catch (err) {
-        return error_occured(req, res, err);
+        await delete_user_account(tmpUserRegister);
+        return api_formatter(req, res, 500, "errorOccured", "An error occured while trying to register", null, err, null);
     }
 }
 
 exports.login = async (req, res) => {
+    var tmpSessuion = null
     try {
-        let login_data = {
+        const login_data = {
             "emailOrUsername": req.body.emailOrUsername,
             "password": req.body.password,
             "ip": req.headers['x-forwarded-for'] || req.connection.remoteAddress,
         }
-        if (await check_json_data(login_data))
-            return res.status(400).send({ "message": "missing informations" });
-        User.findOne({
+        if (await check_json_data(login_data)) return api_formatter(req, res, 400, "missing_informations", "some of the information were not provided", null, null, null);
+        UserModel.findOne({
             $or: [
                 {
                     email: login_data.emailOrUsername
                 }, {
                     username: login_data.emailOrUsername
                 }]
-        }).then(async function (user) {
-            if (!user) return res.status(401).send({ "message": "incorrect email or username" });
-            if (!user.comparePassword(login_data.password))
-                return res.status(401).send({ "message": "incorrect password" });
+        }).then(async function (userToLogin) {
+            if (!userToLogin) return api_formatter(req, res, 401, "user_not_found", "no user found with the provided email or username", null, null, null);
+            if (await !userToLogin.comparePassword(login_data.password))
+                return api_formatter(req, res, 401, "incorrect_password", "the provided password is incorrect for this account", null, null, null);
 
-            const newSession = new Session({
+            await new SessionModel({
                 unique_session_id: crypto.randomUUID(),
                 signed_id: crypto.randomUUID(),
-                user_signed_id: user.unique_id,
+                user_signed_id: userToLogin.unique_id,
                 connexionIp: login_data.ip,
                 expire: Date.now() + month,
-            });
-            await newSession.save().then(async function (Session) {
-                await user.updateOne({
+            }).save().then(async function (newSession) {
+                tmpSessuion = newSession;
+                await userToLogin.updateOne({
                     $addToSet: {
-                        link_session_id: Session.signed_id
+                        link_session_id: newSession.signed_id
                     }
                 })
-                return return_signed_cookies(req, res, newSession.unique_session_id, user);
-            }).catch(async function (err) {
-                console.log(err);
-                return error_occured(req, res, err);
-            });
-        }).catch(function (err) {
-            return error_occured(req, res, err);
-        });
+                return return_signed_cookies(req, res, newSession, userToLogin);
+            })
+        })
     } catch (err) {
+        await reset_user_session(tmpSessuion, null);
         return error_occured(req, res, err);
     }
 }
@@ -122,58 +100,111 @@ exports.profile = async (req, res) => {
 
 exports.logout = async (req, res) => {
     try {
-        if (req.user && req.user != null && req.user != undefined) {
-            Session.deleteOne({ signed_id: req.user.link_session_id })
-            return res.status(200).send({ "message": "logout sucessfull" });
-        } else {
-            return res.status(200).send({ "message": "logout sucessfull" });
-        }
+        if (req.user && req.user != null && req.user != undefined)
+            await reset_user_session(req.session, req.user);
+        return api_formatter(req, res, 200, "success", "logout successful", null, null, null);
     } catch (error) {
-        return res.status(500).send({ "message": "error occured while logging out" });
+        return api_formatter(req, res, 500, "errorOccured", "An error occured while trying to logout", null, error, null);
     }
 }
 
-// exports.deleteaccount = async (req, res) => {
-//     try {
-//         if (req.user.comparePassword(req.body.password)) {
-//             await User.deleteOne({ _id: req.user._id }).then(async function (user, err) {
-//                 if (err)
-//                     return redirects.account_delete_error(req, res);
-//                 await Session.deleteOne({ signed_id: req.user.link_session_id }).then(function (session, err) {
-//                     if (err)
-//                         return redirects.account_delete_error(req, res);
+exports.logouteverywhere = async (req, res) => {
+    try {
+        if (req.user && req.user != null && req.user != undefined)
+            delete_every_user_session(req.user);
+        return api_formatter(req, res, 200, "success", "you logged out everywhere successful", null, null, null);
+    } catch (error) {
+        return api_formatter(req, res, 500, "errorOccured", "An error occured while trying to logout everywhere", null, error, null);
+    }
+}
 
-//                     return redirects.account_deleted(req, res);
-//                 })
-//             })
-//         } else {
-//             return redirects.incorrect_password(req, res);
-//         }
-//     } catch (error) {
-//         return redirects.account_delete_error(req, res);
-//     }
-// }
+exports.deleteaccount = async (req, res) => {
+    try {
+        if (!req.user.comparePassword(req.body.password))
+            return api_formatter(req, res, 401, "incorrect_password", "the provided password is incorrect for this account", null, null, null);
+        await SessionModel.deleteMany({ user_signed_id: req.user.unique_id })
+        await UserModel.deleteOne({ _id: req.user._id })
+        return api_formatter(req, res, 200, "success", "account deleted successfully", null, null, null);
+    } catch (error) {
+        return api_formatter(req, res, 500, "errorOccured", "An error occured while trying to delete the account", null, error, null);
+    }
+}
 
 
-
-
-function return_signed_cookies(req, res, uuid_session_id, user) {
-    return res.status(200).send({
-        "message": "connecté avec success",
-        "session": jwt.sign({ session_id: uuid_session_id }, process.env.SECRET),
-        "username": user.username
-    });
+async function return_signed_cookies(req, res, Session, User) {
+    try {
+        return api_formatter(
+            req,
+            res,
+            200,
+            "success",
+            "successfully registered",
+            null,
+            null,
+            jwt.sign({ session_id: Session.unique_session_id }, process.env.SECRET),
+            User.username
+        );
+    }
+    catch (err) {
+        console.log(err);
+        await reset_user_session(Session, User ? User : null);
+        return api_formatter(req,
+            res,
+            500,
+            "errorOccured",
+            "An error occured while trying to get the auth token",
+            null,
+            err,
+            null,
+            null
+        );
+    }
 }
 
 function error_occured(req, res, errorMsg) {
-    return res.status(500).send({
-        "message": "error occured while creating session!",
-        "session": "",
-        "username": "",
-        "error": errorMsg
-    });
+    console.log(errorMsg);
+    return api_formatter(req, res, 500, "errorOccured", "An error occured while trying to register", null, errorMsg, null, null);
 }
 
 async function check_json_data(json_data) {
     return (Object.values(json_data).includes(undefined) || Object.values(json_data).includes(""));
+}
+
+async function reset_user_session(Session, User = null) {
+    if (User)
+        await User.updateOne({
+            $pull: {
+                link_session_id: Session ? Session.signed_id : null
+            }
+        }).catch(function (err) {
+            console.log(err);
+        });
+    return await SessionModel.deleteOne(
+        { unique_session_id: Session ? Session.unique_session_id : null }
+    ).catch(function (err) {
+        console.log(err);
+    });
+}
+
+async function delete_every_user_session(User) {
+    try {
+        await User.updateOne({
+            link_session_id: []
+        }).catch(function (err) {
+            console.log(err);
+        });
+        return await SessionModel.deleteMany(
+            { user_signed_id: User ? User.unique_id : null })
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+async function delete_user_account(User) {
+    delete_every_user_session(User);
+    return await UserModel.deleteOne({
+        _id: User ? User._id : null
+    }).catch(function (err) {
+        console.log(err);
+    });
 }

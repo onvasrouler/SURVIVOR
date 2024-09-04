@@ -5,6 +5,7 @@ module.exports = function (app) {
     app.post("/register", useractions.register);
     app.post("/login", useractions.login);
     app.get("/logout", checkAuthenticated, useractions.logout);
+    app.get("/logouteverywhere", checkAuthenticated, useractions.logouteverywhere);
     app.get("/profile", checkAuthenticated, useractions.profile);
-    // app.delete("/profile", checkAuthenticated, useractions.deleteaccount);
+    app.delete("/profile", checkAuthenticated, useractions.deleteaccount);
 };
