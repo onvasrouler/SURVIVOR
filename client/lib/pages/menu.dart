@@ -19,13 +19,15 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  int tabIndex = 0;
+  int tabIndex = 3;
 
   Widget tabPage(int index) {
     return [
       const HomePage(),
       const CoachesPage(),
-      CustomersPage(user: widget.user,),
+      CustomersPage(
+        user: widget.user,
+      ),
       const StatisticsPage(),
       const TipsPage(),
       const EventPage(),

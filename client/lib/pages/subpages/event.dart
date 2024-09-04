@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/pages/constants/constants.dart';
 import 'package:soul_connection/pages/subpages/widget/appbar.dart';
@@ -32,7 +31,6 @@ class _EventPageState extends State<EventPage> {
                   child: Image.network(
                     'https://www.google.com/maps/about/images/mymaps/mymaps-desktop-16x9.png',
                     fit: BoxFit.cover,
-                    // 'https://maps.googleapis.com/maps/api/staticmap?center=0,0&zoom=17&size=400x500&key=AIzaSyCw6ctRtCVu_yXCD_WCTjX2mU2FCCk4gPw',
                   ),
                 ),
               ),
