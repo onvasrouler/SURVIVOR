@@ -1,10 +1,9 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const session = require('./session');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-userSchema = new Schema({
+const userSchema = new Schema({
     unique_id: {
         type: String,
         unique: true,
@@ -23,7 +22,7 @@ userSchema = new Schema({
             validator: function (v) {
                 return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
             },
-            message: '{VALUE} is not a valid email!'
+            message: "{VALUE} is not a valid email!"
         },
     },
     role: {
@@ -47,7 +46,7 @@ userSchema = new Schema({
     //    },
     password: {
         type: String,
-        required: 'Your password is required',
+        required: "Your password is required",
         max: 100
     },
     oldPassword: {
@@ -83,13 +82,13 @@ userSchema = new Schema({
     }
 });
 
-userSchema.pre('save', function (next) {
+userSchema.pre("save", function (next) {
     const user = this;
 
     user.unique_id = crypto.randomUUID();
     user.LastModificationIp = user.creationIp;
 
-    if (!user.isModified('password')) return next();
+    if (!user.isModified("password")) return next();
 
     bcrypt.genSalt(10, function (err, salt) {
         if (err) return next(err);
@@ -110,13 +109,14 @@ userSchema.methods.generateJWT = function () {
         email: this.email,
         username: this.username,
         role: this.role
-    }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    }, process.env.JWT_SECRET, { expiresIn: "1h" });
 };
 
 userSchema.statics.emailExists = async function (email) {
     try {
         return !!(await this.findOne({ email: email }));
     } catch (err) {
+        console.error(err);
         return true;
     }
 };
@@ -125,10 +125,11 @@ userSchema.statics.usernameExists = async function (username) {
     try {
         return !!(await this.findOne({ username: username }));
     } catch (err) {
+        console.error(err);
         return true;
     }
 };
 
-User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

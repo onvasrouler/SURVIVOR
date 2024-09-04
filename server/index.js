@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
-require('./src/database/mongo');
-require('dotenv').config()
+const cors = require("cors");
+require("./src/database/mongo");
+require("dotenv").config();
 
 const PORT = process.env.PORT || 3333;
 
@@ -11,25 +11,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-  console.log(`Request: ${req.method} ${req.originalUrl}`);
-  next();
+    console.log(`Request: ${req.method} ${req.originalUrl}`);
+    next();
 });
 
 app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', '*');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    res.setHeader("Access-Control-Allow-Credentials", true);
+    next();
 });
 
-require('./src/router/user/user.query')(app);
-require('./src/router/api/api.query')(app);
+require("./src/router/user/user.query")(app);
+require("./src/router/api/api.query")(app);
 
 app.get("*", function (req, res) {
-  res.status(404).send('Not found');
+    res.status(404).send("Not found");
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+    console.log(`Server is running on port ${PORT}.`);
 });
