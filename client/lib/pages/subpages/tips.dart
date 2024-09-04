@@ -138,20 +138,23 @@ class _TipsPageState extends State<TipsPage> {
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: dw(context),
-              height: 200,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    const Color(0xfff2f2f2),
-                    for (double i = 1; i > 0; i -= 0.1)
-                      const Color(0xfff2f2f2).withOpacity(i)
-                  ],
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
+          IgnorePointer(
+            ignoring: true,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: dw(context),
+                height: 200,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color(0xfff2f2f2),
+                      for (double i = 1; i > 0; i -= 0.1)
+                        const Color(0xfff2f2f2).withOpacity(i)
+                    ],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
                 ),
               ),
             ),

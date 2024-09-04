@@ -5,8 +5,10 @@ import 'package:soul_connection/pages/subpages/coaches.dart';
 import 'package:soul_connection/pages/subpages/customers.dart';
 import 'package:soul_connection/pages/subpages/event.dart';
 import 'package:soul_connection/pages/subpages/home.dart';
+import 'package:soul_connection/pages/subpages/matches.dart';
 import 'package:soul_connection/pages/subpages/statistics.dart';
 import 'package:soul_connection/pages/subpages/tips.dart';
+import 'package:soul_connection/pages/subpages/wardrobe.dart';
 import 'package:soul_connection/pages/utility/utility.dart';
 import 'package:soul_connection/pages/widget/drawerbar.dart';
 
@@ -19,16 +21,16 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  int tabIndex = 0;
+  int tabIndex = 4;
 
   Widget tabPage(int index) {
     return [
       const HomePage(),
       const CoachesPage(),
-      CustomersPage(
-        user: widget.user,
-      ),
+      CustomersPage(user: widget.user),
       const StatisticsPage(),
+      const WardrobePage(),
+      const MatchesPage(),
       const TipsPage(),
       const EventPage(),
     ][index];
@@ -48,7 +50,7 @@ class _MenuPageState extends State<MenuPage> {
               selectedItemColor: Colors.blue,
               currentIndex: tabIndex,
               items: [
-                for (int i = 0; i < 6; i++)
+                for (int i = 0; i < 8; i++)
                   BottomNavigationBarItem(
                     icon: Utility.tabIcon(i),
                     label: Utility.tabName(i),

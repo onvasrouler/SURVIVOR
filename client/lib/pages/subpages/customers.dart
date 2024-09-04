@@ -122,7 +122,7 @@ class _CustomersPageState extends State<CustomersPage> {
                     children: [
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
-                        width: dw(context) / 4 + 165,
+                        width: dw(context) / 6 + 165,
                         child: CustomerDropdown(
                           customers: customers,
                           onCustomerChange:

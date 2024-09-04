@@ -66,7 +66,8 @@ class _EventPageState extends State<EventPage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             'Speed Dating',
@@ -83,7 +84,10 @@ class _EventPageState extends State<EventPage> {
                                       ),
                                       Row(
                                         children: [
-                                          Icon(Icons.location_on, color: Colors.red,),
+                                          Icon(
+                                            Icons.location_on,
+                                            color: Colors.red,
+                                          ),
                                           Text(
                                             'Café Michel',
                                             style: TextStyle(fontSize: 15),
@@ -119,20 +123,23 @@ class _EventPageState extends State<EventPage> {
                         ),
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        width: dw(context),
-                        height: 200,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              const Color(0xfff2f2f2),
-                              for (double i = 1; i > 0; i -= 0.1)
-                                const Color(0xfff2f2f2).withOpacity(i)
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
+                    IgnorePointer(
+                      ignoring: true,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          width: dw(context),
+                          height: 200,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                const Color(0xfff2f2f2),
+                                for (double i = 1; i > 0; i -= 0.1)
+                                  const Color(0xfff2f2f2).withOpacity(i)
+                              ],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                            ),
                           ),
                         ),
                       ),

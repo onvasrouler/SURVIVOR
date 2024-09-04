@@ -59,13 +59,22 @@ class _DrawerbarState extends State<Drawerbar> {
         borderRadius: BorderRadius.circular(30),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          color: hoveredIndex == index ? Colors.blueAccent : Colors.blue,
+          decoration: BoxDecoration(
+            color: hoveredIndex == index ? Colors.white : Colors.blue,
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(
+              color: hoveredIndex == index ? Colors.grey : Colors.transparent,
+            ),
+          ),
           width: 120 + (hoveredIndex == index ? 10 : 0),
           height: 40 + (hoveredIndex == index ? 10 : 0),
           alignment: Alignment.center,
           child: Text(
             title,
-            style: const TextStyle(color: Colors.white, fontSize: 17),
+            style: TextStyle(
+              color: hoveredIndex == index ? Colors.black : Colors.white,
+              fontSize: 17,
+            ),
           ),
         ),
       ),
@@ -101,7 +110,7 @@ class _DrawerbarState extends State<Drawerbar> {
                               Navigator.pop(context);
                             },
                             child: const Text(
-                              'No',
+                              'Cancel',
                               style: TextStyle(
                                 color: Colors.black,
                               ),
@@ -195,8 +204,8 @@ class _DrawerbarState extends State<Drawerbar> {
           ),
           textAlign: TextAlign.center,
         ),
-        sh(70),
-        for (int i = 0; i < 6; i++) ...[
+        sh(20),
+        for (int i = 0; i < 8; i++) ...[
           GestureDetector(
             onTap: () {
               widget.onTabChange(i);
