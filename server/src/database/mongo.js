@@ -6,10 +6,10 @@ const MongoDBURI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/mydb';
 mongoose.set('strictQuery', false);
 
 mongoose.connect(MongoDBURI, {
-    dbName: process.env.DB_NAME,
-    useUnifiedTopology: true,
-    useNewUrlParser: true
- });
+  dbName: process.env.MONGO_DB_NAME,
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+});
 
 const db = mongoose.connection;
 

@@ -1,23 +1,19 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-
+require('./src/database/mongo');
 require('dotenv').config()
 
+const PORT = process.env.PORT || 3333;
+
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
   console.log(`Request: ${req.method} ${req.originalUrl}`);
   next();
 });
-
-
-const PORT = process.env.PORT || 3333;
-
-const db_mongo = require('./src/database/mongo');
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
