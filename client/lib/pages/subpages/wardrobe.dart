@@ -1,10 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/pages/constants/datas.dart';
+import 'package:soul_connection/pages/models/user.module.dart';
 import 'package:soul_connection/pages/subpages/widget/drop_down_button.dart';
 
 class WardrobePage extends StatefulWidget {
-  const WardrobePage({super.key});
+  const WardrobePage({super.key, required this.user});
+  final UserModel user;
 
   @override
   State<WardrobePage> createState() => _WardrobePageState();
@@ -18,33 +21,6 @@ class _WardrobePageState extends State<WardrobePage> {
     'birthday': '02/03/2006',
     'address': '3 Rue de al Tour 34000 Montpelier, France'
   };
-
-  List<Map<String, dynamic>> customers = [
-    {
-      'name': 'Louis Delanata',
-      'id': 1,
-      'birthday': '02/03/2006',
-      'address': '3 Rue de al Tour 34000 Montpelier, France'
-    },
-    {
-      'name': 'Romain Ruiz',
-      'id': 2,
-      'birthday': '09/06/2016',
-      'address': '78 Rue de la mélinière 44200 Nantes, France'
-    },
-    {
-      'name': 'Paul Boulanger',
-      'id': 3,
-      'birthday': '12/03/1999',
-      'address': '26 Rue des bougainvilliers 97400 Saint-Denis, France'
-    },
-    {
-      'name': 'Max Delanata',
-      'id': 3,
-      'birthday': '09/06/1996',
-      'address': '34 Rue des pivoines 97400 Saint-Denis, France'
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -175,12 +151,24 @@ class _WardrobePageState extends State<WardrobePage> {
                           ),
                         ),
                         sh(50),
-                        Container(
-                          width: 120,
-                          height: 120,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.blue,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Container(
+                            width: 120,
+                            height: 120,
+                            decoration: const BoxDecoration(
+                              color: Colors.blue,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(3.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Image.memory(
+                                  widget.user.profilePic!,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                         sh(20),
@@ -191,7 +179,6 @@ class _WardrobePageState extends State<WardrobePage> {
                             'gender',
                             style: TextStyle(
                               fontSize: 20,
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),

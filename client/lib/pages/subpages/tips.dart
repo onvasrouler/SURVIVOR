@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/pages/constants/datas.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/subpages/widget/appbar.dart';
 
@@ -11,27 +12,6 @@ class TipsPage extends StatefulWidget {
 }
 
 class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
-  List<String> tips = [
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-    'Asuper tip ot help the coach\nwith their customers',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(

@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:soul_connection/pages/constants/constants.dart';
 
 class CircleProgressIndicator extends StatefulWidget {
   const CircleProgressIndicator({super.key, this.hoveredIndex});
@@ -46,8 +49,15 @@ class CircleProgressIndicatorState extends State<CircleProgressIndicator>
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
-              height: (widget.hoveredIndex != 2 ? 200 : 270),
-              width: (widget.hoveredIndex != 2 ? 200 : 270),
+              height: (widget.hoveredIndex != 2
+                  ? dw(context) / 6
+                  : dw(context) / 5),
+              width: (widget.hoveredIndex != 2
+                  ? dw(context) / 6
+                  : dw(context) / 5),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(200)),
               child: const CircularProgressIndicator(
                 value: 1.0,
                 strokeWidth: 3.0,
@@ -57,25 +67,60 @@ class CircleProgressIndicatorState extends State<CircleProgressIndicator>
                 backgroundColor: Colors.transparent,
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                height: (widget.hoveredIndex != 2
+                    ? dw(context) / 6
+                    : dw(context) / 5),
+                width: (widget.hoveredIndex != 2
+                    ? dw(context) / 6
+                    : dw(context) / 5),
+                child: CustomPaint(
+                  painter: HeartPainter(_animation.value),
+                ),
+              ),
+            ),
             Text(
               '${(_animation.value * 100).toStringAsFixed(0)}%',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut,
-              height: (widget.hoveredIndex != 2 ? 200 : 270),
-              width: (widget.hoveredIndex != 2 ? 200 : 270),
-              child: CircularProgressIndicator(
-                value: _animation.value,
-                strokeWidth: 3.0,
-                valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
-                backgroundColor: Colors.transparent,
-              ),
             ),
           ],
         );
       },
     );
+  }
+}
+
+class HeartPainter extends CustomPainter {
+  final double progress;
+
+  HeartPainter(this.progress);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.pinkAccent
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 3.0;
+
+    Path path = Path();
+    double width = size.width;
+    double height = size.height;
+    path.moveTo(width / 2, height / 3);
+    path.cubicTo(width * 5 / 6, 0, width, height / 2.5, width / 2, height);
+    path.cubicTo(0, height / 2.5, width / 6, 0, width / 2, height / 3);
+
+    PathMetric pathMetric = path.computeMetrics().first;
+    Path animatedPath = pathMetric.extractPath(0, pathMetric.length * progress);
+
+    canvas.drawPath(animatedPath, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
   }
 }
