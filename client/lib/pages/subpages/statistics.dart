@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/flutter_charts.dart';
 import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/subpages/widget/appbar.dart';
 
 class StatisticsPage extends StatefulWidget {
@@ -10,9 +11,8 @@ class StatisticsPage extends StatefulWidget {
   State<StatisticsPage> createState() => _StatisticsPageState();
 }
 
-class _StatisticsPageState extends State<StatisticsPage> {
-  int? _hoveredIndex;
-
+class _StatisticsPageState extends State<StatisticsPage>
+    with HoverMixin<StatisticsPage> {
   Widget firstGraph() {
     LabelLayoutStrategy? xContainerLabelLayoutStrategy;
     ChartData chartData;
@@ -421,31 +421,6 @@ class _StatisticsPageState extends State<StatisticsPage> {
     ];
   }
 
-  double _rotationX = 0;
-  double _rotationY = 0;
-
-  void _onHover(PointerEvent event, int index, RenderBox renderBox) {
-    final size = renderBox.size;
-    final position = event.localPosition;
-
-    final middleX = size.width / 2;
-    final middleY = size.height / 2;
-
-    setState(() {
-      _hoveredIndex = index;
-      _rotationY = ((position.dx - middleX) / middleX) * 0.1;
-      _rotationX = -((position.dy - middleY) / middleY) * 0.1;
-    });
-  }
-
-  void _onExit(PointerEvent event) {
-    setState(() {
-      _hoveredIndex = null;
-      _rotationX = 0;
-      _rotationY = 0;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -479,20 +454,20 @@ class _StatisticsPageState extends State<StatisticsPage> {
                             onEnter: (event) {
                               final renderBox =
                                   context.findRenderObject() as RenderBox;
-                              _onHover(event, index, renderBox);
+                              onHoverCard(event, index, renderBox);
                             },
                             onHover: (event) {
                               final renderBox =
                                   context.findRenderObject() as RenderBox;
-                              _onHover(event, index, renderBox);
+                              onHoverCard(event, index, renderBox);
                             },
-                            onExit: _onExit,
+                            onExit: onExit,
                             child: Transform(
-                              transform: _hoveredIndex == index
+                              transform: hoveredIndex == index
                                   ? (Matrix4.identity()
                                     ..setEntry(3, 2, 0.001)
-                                    ..rotateX(_rotationX)
-                                    ..rotateY(_rotationY))
+                                    ..rotateX(rotationX)
+                                    ..rotateY(rotationY))
                                   : Matrix4.identity(),
                               alignment: FractionalOffset.center,
                               child: AnimatedContainer(

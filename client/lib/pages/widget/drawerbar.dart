@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:soul_connection/pages/auth/onboard.dart';
 import 'package:soul_connection/pages/constants/constants.dart';
 import 'package:soul_connection/pages/models/user.module.dart';
+import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/utility/utility.dart';
 
 class Drawerbar extends StatefulWidget {
@@ -14,65 +15,29 @@ class Drawerbar extends StatefulWidget {
   State<Drawerbar> createState() => _DrawerbarState();
 }
 
-class _DrawerbarState extends State<Drawerbar> {
-  int? hoveredIndex;
-  int? _hoveredIndexProfile;
-  double _rotationX = 0;
-  double _rotationY = 0;
-
-  void _onHover(PointerEvent event, BuildContext context) {
-    final RenderBox renderBox = context.findRenderObject() as RenderBox;
-    final size = renderBox.size;
-    final position = event.localPosition;
-
-    final middleX = size.width / 2;
-    final middleY = size.height / 2;
-
-    setState(() {
-      _hoveredIndexProfile = 1;
-      _rotationY = (((position.dx - middleX) / middleX) + 0.1) * 0.2;
-      _rotationX = (((position.dy - middleY) / middleY) + 0.8) * 0.8;
-    });
-  }
-
-  void _onExit(PointerEvent event) {
-    setState(() {
-      _hoveredIndexProfile = null;
-      _rotationX = 0;
-      _rotationY = 0;
-    });
-  }
-
+class _DrawerbarState extends State<Drawerbar> with HoverMixin<Drawerbar> {
   Widget tabButton(String title, int index) {
     return MouseRegion(
-      onEnter: (_) {
-        setState(() {
-          hoveredIndex = index;
-        });
-      },
-      onExit: (_) {
-        setState(() {
-          hoveredIndex = null;
-        });
-      },
+      onEnter: (_) => setHoveredIndex(index),
+      onExit: (_) => setHoveredIndex(null),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
-            color: hoveredIndex == index ? Colors.white : Colors.blue,
+            color: isHovered(index) ? Colors.white : Colors.blue,
             borderRadius: BorderRadius.circular(30),
             border: Border.all(
-              color: hoveredIndex == index ? Colors.grey : Colors.transparent,
+              color: isHovered(index) ? Colors.grey : Colors.transparent,
             ),
           ),
-          width: 120 + (hoveredIndex == index ? 10 : 0),
-          height: 40 + (hoveredIndex == index ? 10 : 0),
+          width: 120 + (isHovered(index) ? 10 : 0),
+          height: 40 + (isHovered(index) ? 10 : 0),
           alignment: Alignment.center,
           child: Text(
             title,
             style: TextStyle(
-              color: hoveredIndex == index ? Colors.black : Colors.white,
+              color: isHovered(index) ? Colors.black : Colors.white,
               fontSize: 17,
             ),
           ),
@@ -156,21 +121,18 @@ class _DrawerbarState extends State<Drawerbar> {
               );
             },
             child: MouseRegion(
-              onEnter: (event) => _onHover(event, context),
-              onHover: (event) => _onHover(event, context),
-              onExit: _onExit,
+              onEnter: (event) => onHover(event, context),
+              onHover: (event) => onHover(event, context),
+              onExit: onExit,
               child: Transform(
-                transform: (Matrix4.identity()
-                  ..setEntry(2, 2, 0.001)
-                  ..rotateX(_rotationX)
-                  ..rotateY(_rotationY)),
+                transform: getTransformMatrix(),
                 alignment: FractionalOffset.center,
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
                   height:
                       (((dw(context) / 10) > 120 ? 120 : (dw(context) / 10)) +
-                          (_hoveredIndexProfile == null ? 0 : 20)),
+                          (hoveredIndexProfile == null ? 0 : 20)),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.blue, width: 3),
                     borderRadius: BorderRadius.circular(100),

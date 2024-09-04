@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/pages/constants/datas.dart';
 import 'package:soul_connection/pages/subpages/widget/appbar.dart';
 
 class CoachesPage extends StatefulWidget {
@@ -10,126 +11,6 @@ class CoachesPage extends StatefulWidget {
 }
 
 class _CoachesPageState extends State<CoachesPage> {
-  List<String> tableLabels = [
-    '#',
-    'Name',
-    'Birth date',
-    'Customers',
-    'Last connection'
-  ];
-
-  List<Map<String, dynamic>> users = [
-    {
-      'name': 'Jean Patrick',
-      'birth date': '09-01-1987',
-      'customers': 'Edit list',
-      'last connection': '18-07-2024',
-    },
-    {
-      'name': 'Patrick Michel',
-      'birth date': '29-01-1943',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '12-01-1921',
-      'customers': 'Edit list',
-      'last connection': '15-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-    {
-      'name': 'Jean Patrick',
-      'birth date': '14-01-1999',
-      'customers': 'Edit list',
-      'last connection': '12-07-2024',
-    },
-  ];
-
-  List<String> clients = [
-    'Louis Bagneul',
-    'Véronique Tanson',
-    'Angele Labelge',
-    'Nicolas Tarabavich'
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -164,11 +45,11 @@ class _CoachesPageState extends State<CoachesPage> {
                         ),
                       ),
                       children: [
-                        for (int col = 0; col < tableLabels.length; col++)
+                        for (int col = 0; col < tableCoaches.length; col++)
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              tableLabels[col],
+                              tableCoaches[col],
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -177,7 +58,7 @@ class _CoachesPageState extends State<CoachesPage> {
                   else
                     TableRow(
                       children: [
-                        for (int col = 0; col < tableLabels.length; col++)
+                        for (int col = 0; col < tableCoaches.length; col++)
                           if (col == 0)
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -271,7 +152,7 @@ class _CoachesPageState extends State<CoachesPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   users[row - 1]
-                                      [tableLabels[col].toLowerCase()],
+                                      [tableCoaches[col].toLowerCase()],
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -280,7 +161,7 @@ class _CoachesPageState extends State<CoachesPage> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                users[row - 1][tableLabels[col].toLowerCase()],
+                                users[row - 1][tableCoaches[col].toLowerCase()],
                                 textAlign: TextAlign.center,
                               ),
                             ),

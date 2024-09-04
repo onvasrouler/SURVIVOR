@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:soul_connection/pages/constants/constants.dart';
 
 class CustomerDropdown extends StatefulWidget {
   const CustomerDropdown({
@@ -33,13 +34,13 @@ class CustomerDropdownState extends State<CustomerDropdown> {
         borderRadius: BorderRadius.circular(4.0),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: Text(
-              'Customer : ${selectedCustomer ?? ''}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
+          Text(
+            'Customer:',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
+          sw(5),
           DropdownButtonHideUnderline(
             child: DropdownButton<String>(
               value: selectedCustomer,
@@ -73,7 +74,7 @@ class CustomerDropdownState extends State<CustomerDropdown> {
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Text(value, style: const TextStyle(fontSize: 18)),
                 );
               }).toList(),
             ),

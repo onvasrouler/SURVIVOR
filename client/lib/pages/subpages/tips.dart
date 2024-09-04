@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/subpages/widget/appbar.dart';
 
 class TipsPage extends StatefulWidget {
@@ -9,33 +10,7 @@ class TipsPage extends StatefulWidget {
   State<TipsPage> createState() => _TipsPageState();
 }
 
-class _TipsPageState extends State<TipsPage> {
-  int? _hoveredIndex;
-  double _rotationX = 0;
-  double _rotationY = 0;
-
-  void _onHover(PointerEvent event, int index, RenderBox renderBox) {
-    final size = renderBox.size;
-    final position = event.localPosition;
-
-    final middleX = size.width / 2;
-    final middleY = size.height / 2;
-
-    setState(() {
-      _hoveredIndex = index;
-      _rotationY = ((position.dx - middleX) / middleX) * 0.1;
-      _rotationX = -((position.dy - middleY) / middleY) * 0.1;
-    });
-  }
-
-  void _onExit(PointerEvent event) {
-    setState(() {
-      _hoveredIndex = null;
-      _rotationX = 0;
-      _rotationY = 0;
-    });
-  }
-
+class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
   List<String> tips = [
     'Asuper tip ot help the coach\nwith their customers',
     'Asuper tip ot help the coach\nwith their customers',
@@ -90,20 +65,20 @@ class _TipsPageState extends State<TipsPage> {
                             onEnter: (event) {
                               final renderBox =
                                   context.findRenderObject() as RenderBox;
-                              _onHover(event, index, renderBox);
+                              onHoverCard(event, index, renderBox);
                             },
                             onHover: (event) {
                               final renderBox =
                                   context.findRenderObject() as RenderBox;
-                              _onHover(event, index, renderBox);
+                              onHoverCard(event, index, renderBox);
                             },
-                            onExit: _onExit,
+                            onExit: onExit,
                             child: Transform(
-                              transform: _hoveredIndex == index
+                              transform: hoveredIndex == index
                                   ? (Matrix4.identity()
                                     ..setEntry(3, 2, 0.001)
-                                    ..rotateX(_rotationX)
-                                    ..rotateY(_rotationY))
+                                    ..rotateX(rotationX)
+                                    ..rotateY(rotationY))
                                   : Matrix4.identity(),
                               alignment: FractionalOffset.center,
                               child: AnimatedContainer(
