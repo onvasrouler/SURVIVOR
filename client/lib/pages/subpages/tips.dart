@@ -55,10 +55,7 @@ class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
                             onExit: onExit,
                             child: Transform(
                               transform: hoveredIndex == index
-                                  ? (Matrix4.identity()
-                                    ..setEntry(3, 2, 0.001)
-                                    ..rotateX(rotationX)
-                                    ..rotateY(rotationY))
+                                  ? getTransformMatrix()
                                   : Matrix4.identity(),
                               alignment: FractionalOffset.center,
                               child: AnimatedContainer(

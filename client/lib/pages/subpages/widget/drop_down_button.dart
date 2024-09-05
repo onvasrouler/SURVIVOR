@@ -36,9 +36,9 @@ class CustomerDropdownState extends State<CustomerDropdown> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             'Customer:',
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
           sw(5),
           DropdownButtonHideUnderline(

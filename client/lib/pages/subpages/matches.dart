@@ -49,10 +49,7 @@ class _MatchesPageState extends State<MatchesPage>
               onExit: onExit,
               child: Transform(
                 transform: hoveredIndex == index
-                    ? (Matrix4.identity()
-                      ..setEntry(3, 2, 0.001)
-                      ..rotateX(rotationX)
-                      ..rotateY(rotationY))
+                    ? getTransformMatrix()
                     : Matrix4.identity(),
                 alignment: FractionalOffset.center,
                 child: AnimatedContainer(
@@ -79,7 +76,7 @@ class _MatchesPageState extends State<MatchesPage>
         sh(20),
         AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          width: 275,
+          width: dw(context) / 4.2,
           child: CustomerDropdown(
             customers: customers,
             onCustomerChange: (Map<String, dynamic> currentCustomer) {

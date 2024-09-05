@@ -90,7 +90,7 @@ class _CustomersPageState extends State<CustomersPage> {
                           Text(
                             ' ${currentCustomer['address'] ?? ''}',
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Arial',
                             ),
@@ -225,7 +225,7 @@ class _CustomersPageState extends State<CustomersPage> {
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
-                    width: dw(context) / 2.3,
+                    width: dw(context) / 2.6,
                     height: 179,
                     decoration: BoxDecoration(
                       color: Colors.white,
