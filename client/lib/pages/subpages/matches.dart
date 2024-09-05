@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
-import 'package:soul_connection/pages/constants/datas.dart';
-import 'package:soul_connection/pages/models/user.module.dart';
+import 'package:soul_connection/constants/constants.dart';
+import 'package:soul_connection/constants/datas.dart';
+import 'package:soul_connection/models/user.module.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
-import 'package:soul_connection/pages/subpages/widget/appbar.dart';
-import 'package:soul_connection/pages/subpages/widget/drop_down_button.dart';
-import 'package:soul_connection/pages/subpages/widget/progress_circle.dart';
+import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
+import 'package:soul_connection/pages/subpages/widgets/drop_down_button.dart';
+import 'package:soul_connection/pages/subpages/widgets/progress_circle.dart';
 
 class MatchesPage extends StatefulWidget {
   const MatchesPage({super.key, required this.user});
@@ -21,14 +21,57 @@ class _MatchesPageState extends State<MatchesPage>
     'name': 'Louis Delanata',
     'id': 1,
     'birthday': '02/03/2006',
+    'signs': 'Leo',
     'address': '3 Rue de al Tour 34000 Montpelier, France'
   };
   Map<String, dynamic> secondCustomer = {
     'name': 'Louis Delanata',
     'id': 1,
     'birthday': '02/03/2006',
+    'signs': 'Leo',
     'address': '3 Rue de al Tour 34000 Montpelier, France'
   };
+
+  List<String> signs = [
+    'Aries',
+    'Taurus',
+    'Gemini',
+    'Cancer',
+    'Leo',
+    'Virgo',
+    'Libra',
+    'Scorpio',
+    'Sagittarius',
+    'Capricorn',
+    'Aquarius',
+    'Pisces'
+  ];
+
+  List<List<int>> compatibilite = [
+    [90, 60, 85, 50, 95, 40, 75, 30, 80, 35, 70, 45],
+    [60, 90, 55, 80, 50, 95, 45, 85, 40, 75, 35, 70],
+    [85, 55, 90, 60, 80, 50, 95, 45, 75, 40, 85, 35],
+    [50, 80, 60, 90, 55, 85, 45, 95, 40, 75, 35, 85],
+    [95, 50, 80, 55, 90, 60, 85, 45, 95, 40, 75, 35],
+    [40, 95, 50, 85, 60, 90, 55, 80, 45, 95, 40, 75],
+    [75, 45, 95, 45, 85, 55, 90, 60, 85, 55, 95, 45],
+    [30, 85, 45, 95, 45, 80, 60, 90, 55, 85, 45, 95],
+    [80, 40, 75, 40, 95, 45, 85, 55, 90, 60, 85, 55],
+    [35, 75, 40, 75, 40, 95, 55, 85, 60, 90, 55, 85],
+    [70, 35, 85, 35, 75, 40, 95, 45, 85, 55, 90, 60],
+    [45, 70, 35, 85, 35, 75, 45, 95, 55, 85, 60, 90],
+  ];
+
+  int calculerCompatibilite(String signe1, String signe2) {
+    int index1 = signs.indexOf(signe1);
+    int index2 = signs.indexOf(signe2);
+
+    if (index1 == -1 || index2 == -1) {
+      return 0;
+    }
+
+    return compatibilite[index1][index2];
+  }
 
   Widget profilePic(int index) {
     return Column(
@@ -88,9 +131,9 @@ class _MatchesPageState extends State<MatchesPage>
           ),
         ),
         sh(15),
-        const Text(
-          'Leo',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        Text(
+          index == 0 ? firstCustomer['signs'] : secondCustomer['signs'],
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -105,7 +148,7 @@ class _MatchesPageState extends State<MatchesPage>
         children: [
           appBar(context, 'Matches'),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 44),
             child: Container(
               height: dh(context) / 1.4,
               decoration: BoxDecoration(
@@ -140,6 +183,10 @@ class _MatchesPageState extends State<MatchesPage>
                             alignment: FractionalOffset.center,
                             child: CircleProgressIndicator(
                               hoveredIndex: hoveredIndex,
+                              compatibility: calculerCompatibilite(
+                                firstCustomer['signs'],
+                                secondCustomer['signs'],
+                              ),
                             ),
                           ),
                         );

@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/auth/onboard.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
-import 'package:soul_connection/pages/models/user.module.dart';
+import 'package:soul_connection/auth/onboard.dart';
+import 'package:soul_connection/constants/constants.dart';
+import 'package:soul_connection/models/user.module.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
-import 'package:soul_connection/pages/utility/utility.dart';
+import 'package:soul_connection/pages/subpages/profile.dart';
+import 'package:soul_connection/utility/utility.dart';
 
 class Drawerbar extends StatefulWidget {
   const Drawerbar({super.key, required this.user, required this.onTabChange});
@@ -55,6 +56,16 @@ class _DrawerbarState extends State<Drawerbar> with HoverMixin<Drawerbar> {
         ClipRRect(
           borderRadius: BorderRadius.circular(100),
           child: GestureDetector(
+            onLongPress: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(
+                    user: widget.user,
+                  ),
+                ),
+              );
+            },
             onTap: () {
               showDialog(
                 context: context,
@@ -137,21 +148,24 @@ class _DrawerbarState extends State<Drawerbar> with HoverMixin<Drawerbar> {
                         ? getTransformMatrix()
                         : Matrix4.identity(),
                     alignment: FractionalOffset.center,
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                      height: (((dw(context) / 10) > 120
-                              ? 120
-                              : (dw(context) / 10)) +
-                          (hoveredIndex != 9 ? 0 : 20)),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue, width: 3),
-                        borderRadius: BorderRadius.circular(100),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.memory(
-                          widget.user.profilePic!,
+                    child: Hero(
+                      tag: 'profilePic',
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                        height: (((dw(context) / 10) > 120
+                                ? 120
+                                : (dw(context) / 10)) +
+                            (hoveredIndex != 9 ? 0 : 20)),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.blue, width: 3),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.memory(
+                            widget.user.profilePic!,
+                          ),
                         ),
                       ),
                     ),

@@ -1,11 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/constants/constants.dart';
 
 class CircleProgressIndicator extends StatefulWidget {
-  const CircleProgressIndicator({super.key, this.hoveredIndex});
+  const CircleProgressIndicator({
+    super.key,
+    this.hoveredIndex,
+    required this.compatibility,
+  });
   final int? hoveredIndex;
+  final int compatibility;
 
   @override
   CircleProgressIndicatorState createState() => CircleProgressIndicatorState();
@@ -79,12 +84,34 @@ class CircleProgressIndicatorState extends State<CircleProgressIndicator>
                     ? dw(context) / 6
                     : dw(context) / 5),
                 child: CustomPaint(
-                  painter: HeartPainter(_animation.value),
+                  painter: HeartPainter(
+                    1,
+                    const Color.fromARGB(255, 207, 207, 207),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                height: (widget.hoveredIndex != 2
+                    ? dw(context) / 6
+                    : dw(context) / 5),
+                width: (widget.hoveredIndex != 2
+                    ? dw(context) / 6
+                    : dw(context) / 5),
+                child: CustomPaint(
+                  painter: HeartPainter(
+                    (_animation.value * widget.compatibility) / 100,
+                    Colors.pinkAccent
+                  ),
                 ),
               ),
             ),
             Text(
-              '${(_animation.value * 100).toStringAsFixed(0)}%',
+              '${(_animation.value * widget.compatibility).toStringAsFixed(0)}%',
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ],
@@ -96,13 +123,14 @@ class CircleProgressIndicatorState extends State<CircleProgressIndicator>
 
 class HeartPainter extends CustomPainter {
   final double progress;
+  final Color color;
 
-  HeartPainter(this.progress);
+  HeartPainter(this.progress, this.color);
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.pinkAccent
+      ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3.0;
 

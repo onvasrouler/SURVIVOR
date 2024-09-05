@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/constants/constants.dart';
 
 class UserModel {
   String? id;

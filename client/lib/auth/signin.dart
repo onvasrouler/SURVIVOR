@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/menu.dart';
-import 'package:soul_connection/pages/models/user.module.dart';
-import 'package:soul_connection/pages/provider/auth.service.dart';
+import 'package:soul_connection/models/user.module.dart';
+import 'package:soul_connection/provider/auth.service.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});

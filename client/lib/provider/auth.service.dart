@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:http/http.dart' as http;
-import 'package:soul_connection/pages/constants/constants.dart';
-import 'package:soul_connection/pages/models/user.module.dart';
+import 'package:soul_connection/constants/constants.dart';
+import 'package:soul_connection/models/user.module.dart';
 
 class AuthService {
   static Future<UserModel?> signInManagor(String email, String password) async {

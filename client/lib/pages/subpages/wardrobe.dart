@@ -1,9 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
-import 'package:soul_connection/pages/constants/datas.dart';
-import 'package:soul_connection/pages/models/user.module.dart';
-import 'package:soul_connection/pages/subpages/widget/drop_down_button.dart';
+import 'package:soul_connection/constants/constants.dart';
+import 'package:soul_connection/constants/datas.dart';
+import 'package:soul_connection/models/user.module.dart';
+import 'package:soul_connection/pages/subpages/widgets/drop_down_button.dart';
 
 class WardrobePage extends StatefulWidget {
   const WardrobePage({super.key, required this.user});

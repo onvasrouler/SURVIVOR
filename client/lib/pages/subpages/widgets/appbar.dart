@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/constants/constants.dart';
 
 Column appBar(BuildContext context, String title) {
   return Column(

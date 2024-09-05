@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/flutter_charts.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
-import 'package:soul_connection/pages/constants/datas.dart';
+import 'package:soul_connection/constants/constants.dart';
+import 'package:soul_connection/constants/datas.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
-import 'package:soul_connection/pages/subpages/widget/animated_graphic.dart';
+import 'package:soul_connection/pages/subpages/widgets/animated_graphic.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

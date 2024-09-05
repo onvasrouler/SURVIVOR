@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
-import 'package:soul_connection/pages/constants/datas.dart';
+import 'package:soul_connection/constants/constants.dart';
+import 'package:soul_connection/constants/datas.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
-import 'package:soul_connection/pages/subpages/widget/appbar.dart';
+import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
 
 class TipsPage extends StatefulWidget {
   const TipsPage({super.key});
