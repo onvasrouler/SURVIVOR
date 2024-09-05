@@ -1,4 +1,4 @@
-const { mainDB, soulConnection } = require('../mongo');
+const { mainDB } = require("../mongo");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -115,8 +115,8 @@ userSchema.methods.generateJWT = function () {
 
 userSchema.statics.emailExists = async function (email) {
     try {
-        const found = await this.findOne({ email: email })
-        console.log(found)
+        const found = await this.findOne({ email: email });
+        console.log(found);
         return !!found;
     } catch (err) {
         console.error(err);

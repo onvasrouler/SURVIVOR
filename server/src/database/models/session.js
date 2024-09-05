@@ -1,6 +1,5 @@
-const { mainDB, soulConnection } = require('../mongo');
+const { mainDB } = require("../mongo");
 const mongoose = require("mongoose");
-const Schema = mainDB.Schema;
 
 var hour = 3600000;
 var day = hour * 24;
