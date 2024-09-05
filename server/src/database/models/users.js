@@ -1,9 +1,9 @@
+const { mainDB, soulConnection } = require('../mongo');
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const userSchema = new Schema({
+const userSchema = new mongoose.Schema({
     unique_id: {
         type: String,
         unique: true,
@@ -114,7 +114,9 @@ userSchema.methods.generateJWT = function () {
 
 userSchema.statics.emailExists = async function (email) {
     try {
-        return !!(await this.findOne({ email: email }));
+        const found = await this.findOne({ email: email })
+        console.log(found)
+        return !!found;
     } catch (err) {
         console.error(err);
         return true;
@@ -130,6 +132,6 @@ userSchema.statics.usernameExists = async function (username) {
     }
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mainDB.model("User", userSchema);
 
 module.exports = User;

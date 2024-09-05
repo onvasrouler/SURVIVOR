@@ -60,7 +60,7 @@
         },
         "getEmployeeById": {
             "description": "Get employee by id",
-            "url": ":employee_id",
+            "url": "/:employee_id",
             "method": "GET",
             "response": {
                 "200": {
@@ -266,7 +266,7 @@
         },
         "getEncounterById": {
             "description": "Get encounter by id",
-            "url": ":encounter_id",
+            "url": "/:encounter_id",
             "method": "GET",
             "response": {
                 "200": {
@@ -360,7 +360,7 @@
         },
         "getEventById": {
             "description": "Get event by id",
-            "url": ":event_id",
+            "url": "/:event_id",
             "method": "GET",
             "response": {
                 "200": {

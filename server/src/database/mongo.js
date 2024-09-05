@@ -2,20 +2,27 @@ const mongoose = require("mongoose");
 
 const MongoDBURI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/mydb";
 
-mongoose.set("strictQuery", false);
-
-mongoose.connect(MongoDBURI, {
-    dbName: process.env.MONGO_DB_NAME,
-    useUnifiedTopology: true,
+const mainDB = mongoose.createConnection(MongoDBURI, {
+    dbName: "main_db"
+});
+const soulConnection = mongoose.createConnection(MongoDBURI, {
+    dbName: "soul_connection"
 });
 
-const db = mongoose.connection;
-console.log("connecting to the database on " + MongoDBURI);
-
-db.on("error", console.error.bind(console, "connection error:"));
-
-db.once("open", async () => {
-    console.log("connexion avec la base de données établie");
+mainDB.on("error", (error) => {
+    console.error("Main DB connection error:", error);
 });
 
-exports.database = db;
+mainDB.once("open", () => {
+    console.log("Main DB connected.");
+})
+
+soulConnection.on("error", (error) => {
+    console.error("Soul Connection DB connection error:", error);
+})
+
+soulConnection.once("open", () => {
+    console.log("Soul Connection DB connected.");
+})
+
+module.exports = { mainDB, soulConnection };

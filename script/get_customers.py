@@ -10,7 +10,8 @@ if __name__ == "__main__":
 
     client = MongoClient("mongodb://localhost:27017/")
     db = client.soul_connection
-    collection = db.customers
+    usercollection = db.customers
+    clothescollection = db.clothes
 
     headers = {
         "X-Group-Authorization": api_key,
@@ -24,11 +25,19 @@ if __name__ == "__main__":
     customers = response.json()
 
     for customer in customers:
-        url = "https://soul-connection.fr/api/customers/" + str(customer['id'])
-        response = requests.get(url, headers=headers)
-        customer = response.json()
-        
-        data = {'id' : customer['id'],
+        urlcustomers = "https://soul-connection.fr/api/customers/" + str(customer['id'])
+        responsecustomers = requests.get(urlcustomers, headers=headers)
+        customer = responsecustomers.json()
+
+        urlclothes = "https://soul-connection.fr/api/customers/" + str(customer['id']) + "/clothes"
+        responseclothes = requests.get(urlclothes, headers=headers)
+        clothes = responseclothes.json()
+
+        clothesIds = []
+        for clotheID in clothes:
+            clothesIds.append(clotheID['id'])
+
+        data = {'user_id' : customer['id'],
                 'email' : customer['email'],
                 'name' : customer['name'],
                 'surname' : customer['surname'],
@@ -38,28 +47,34 @@ if __name__ == "__main__":
                 'astrological_sign' : customer['astrological_sign'],
                 'phone_number' : customer['phone_number'],
                 'address' : customer['address'],
-                'clothes' : []
+                'clothes' : clothesIds
                 }
-        
-        url = "https://soul-connection.fr/api/customers/" + str(customer['id']) + "/clothes"
-        response = requests.get(url, headers=headers)
-        clothes = response.json()
-
+        print(data)
+       
         for clothe in clothes:
-            print("clothe ", clothe['id'])
-            try:
-                url = "https://soul-connection.fr/api/clothes/" + str(clothe['id']) + "/image"
-                response = requests.get(url, headers=headers)
-                image = response.content
-            except:
+            existing_clothe = clothescollection.find_one({'id': clothe['id']})
+            if existing_clothe:
+                print("Clothe " + str(clothe['id']) + " already exists")
+            else:
+                print("Clothe " + str(clothe['id']) + " does not exist")
                 image = 0
+                try:
+                    url = "https://soul-connection.fr/api/clothes/" + str(clothe['id']) + "/image"
+                    response = requests.get(url, headers=headers)
+                    image = response.content
+                except:
+                    image = 0
+                new_clothe = {
+                    'id': clothe['id'],
+                    'type': clothe['type'],
+                    'image': image  # Assuming 'image' might not always be present
+                }
+                clothescollection.insert_one(new_clothe)
 
-
-            data['clothes'].append({'id' : clothe['id'], 'type' : clothe['type'], 'image' : image})
+        
 
         datas.append(data)
-        collection.insert_one(data)
-        print (data['id'])
-
+        print(data)
+        print (data['user_id'])
+        usercollection.insert_one(data)
     print("fin")
-

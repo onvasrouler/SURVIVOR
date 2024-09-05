@@ -1,12 +1,13 @@
+const { mainDB, soulConnection } = require('../mongo');
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const Schema = mainDB.Schema;
 
 var hour = 3600000;
 var day = hour * 24;
 var month = day * 30;
 
 
-const sessionSchema = new Schema({
+const sessionSchema = new mongoose.Schema({
     unique_session_id: {
         type: String,
         unique: true,
@@ -33,6 +34,6 @@ const sessionSchema = new Schema({
     }
 });
 
-const Session = mongoose.model("session", sessionSchema);
+const Session = mainDB.model("session", sessionSchema);
 
 module.exports = Session;

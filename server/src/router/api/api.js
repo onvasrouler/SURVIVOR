@@ -1,23 +1,31 @@
-exports.user_profile_info_api = async (req, res) => {
-    if (!req.user || req.user == null) {
-        return res.status(401).send({ "status": "error", "message": "vous n'êtes pas connecté", "data": null });
-    } else {
-        const user_infos = {
-            //"name": req.user.firstName,
-            //"lastName": req.user.lastName,
-            "username": req.user.username,
-            "email": req.user.email,
-            //"adress": req.user.adress,
-            //"phonenumber": req.user.phonenumber
-        };
-        return res.status(200).send({ "status": "success", "message": "données récupérées avec succès", "data": user_infos });
-    }
-};
+const { mainDB, soulConnection } = require('../../database/mongo');
+const api_formatter = require("../../middleware/api-formatter.js");
 
-exports.navbar_info_api = async (req, res) => {
+exports.get_all = async (req, res) => {
     if (!req.user || req.user == null) {
-        return res.status(200).send({ "status": "notloggedin", "message": "vous n'êtes pas connecté", "data": null });
+        return api_formatter(req, res, 401, "noSession", "vous n'êtes pas connecté", null, null, null);
     } else {
-        return res.status(200).send({ "status": "loggedin", "message": "vous êtes connéctés", "data": { "username": req.user.username } });
+        try {
+            console.log(req.params.COLLECTIONNAME);
+            const data = await soulConnection.collection(req.params.COLLECTIONNAME).find({}).toArray();
+            return api_formatter(req, res, 200, "success", "données la db recup avec succès", data, null, null);
+        } catch (error) {
+            return api_formatter(req, res, 500, "errorOccured", "Erreur lors de la récupération des données", null, error, null);
+        }
     }
-};
+}
+
+exports.soul_connection_api = async (req, res) => {
+    if (!req.user || req.user == null) {
+        return api_formatter(req, res, 401, "noSession", "vous n'êtes pas connecté", null, null, null);
+    } else {
+        try {
+            const soulData = await soulConnection.collection(req.params.COLLECTIONNAME).findOne({ email: req.params.ID });
+            return api_formatter(req, res, 200, "success", "données la db recup avec succès", soulData, null, null);
+        } catch (error) {
+            console.error(error);
+            return api_formatter(req, res, 500, "errorOccured", "Erreur lors de la récupération des données", null, error, null);
+        }
+
+    }
+}

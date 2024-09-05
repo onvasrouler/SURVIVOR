@@ -1,8 +1,9 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-require("./src/database/mongo");
 require("dotenv").config();
+require("./src/database/mongo");
+//require("./scrapper/scrapper");
 
 const PORT = process.env.PORT || 3333;
 

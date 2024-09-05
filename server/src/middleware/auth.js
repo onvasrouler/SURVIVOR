@@ -15,6 +15,7 @@ async function checkAuthenticated(req, res, next) {
         try {
             decodedSession = await jwt.verify(GivenSession, process.env.SECRET);
         } catch (err) {
+            console.error(err);
             decodedSession = null;
             throw err;
         }
@@ -29,9 +30,8 @@ async function checkAuthenticated(req, res, next) {
                 link_session_id: FoundSession.signed_id
             }).then(async function (CorrespondingUser) {
 
-                if (!await verif_session_data(FoundSession, CorrespondingUser, ip))
+                if (await verif_session_data(FoundSession, CorrespondingUser, ip))
                     return invalid_session(req, res);
-
                 req.user = CorrespondingUser;
                 req.session = FoundSession;
                 return next();
