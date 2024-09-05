@@ -101,46 +101,52 @@ class _CoachesPageState extends State<CoachesPage> {
                                             ),
                                           ),
                                           sh(40),
-                                          ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: clients.length,
-                                            itemBuilder: (context, index) {
-                                              return Center(
-                                                child: Container(
-                                                  width: 250,
-                                                  height: 30,
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Row(
-                                                    children: [
-                                                      Container(
-                                                        width: 200,
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: Text(
-                                                          clients[index],
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style:
-                                                              const TextStyle(
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.w400,
+                                          SizedBox(
+                                            width: 250,
+                                            height: dh(context) - 190,
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: allCustomers.length,
+                                              itemBuilder: (context, index) {
+                                                return Center(
+                                                  child: Container(
+                                                    width: 250,
+                                                    height: 30,
+                                                    color: Colors.transparent,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 200,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            '${allCustomers[index].name} ${allCustomers[index].surname}',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      Checkbox(
-                                                        value: true,
-                                                        activeColor:
-                                                            Colors.blue,
-                                                        onChanged:
-                                                            (bool? value) {},
-                                                      ),
-                                                    ],
+                                                        Checkbox(
+                                                          value: true,
+                                                          activeColor:
+                                                              Colors.blue,
+                                                          onChanged:
+                                                              (bool? value) {},
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
+                                                );
+                                              },
+                                            ),
                                           ),
                                         ],
                                       ),

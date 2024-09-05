@@ -27,10 +27,10 @@ class _MenuPageState extends State<MenuPage> {
     return [
       const HomePage(),
       const CoachesPage(),
-      CustomersPage(user: widget.user),
+      const CustomersPage(),
       const StatisticsPage(),
-      WardrobePage(user: widget.user,),
-      MatchesPage(user: widget.user),
+      const WardrobePage(),
+      const MatchesPage(),
       const TipsPage(),
       const EventPage(),
     ][index];

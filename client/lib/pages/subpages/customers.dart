@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/constants/datas.dart';
-import 'package:soul_connection/models/user.module.dart';
+import 'package:soul_connection/models/customer.module.dart';
 import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
 import 'package:soul_connection/pages/subpages/widgets/drop_down_button.dart';
 
 class CustomersPage extends StatefulWidget {
-  const CustomersPage({super.key, required this.user});
-  final UserModel user;
+  const CustomersPage({super.key});
 
   @override
   State<CustomersPage> createState() => _CustomersPageState();
 }
 
 class _CustomersPageState extends State<CustomersPage> {
-  Map<String, dynamic> currentCustomer = {
-    'name': 'Louis Delanata',
-    'id': 1,
-    'birthday': '02/03/2006',
-    'address': '3 Rue de al Tour 34000 Montpelier, France'
-  };
+  Customer currentCustomer = allCustomers.first;
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +39,7 @@ class _CustomersPageState extends State<CustomersPage> {
                         duration: const Duration(milliseconds: 300),
                         width: dw(context) / 6 + 165,
                         child: CustomerDropdown(
-                          customers: customers,
-                          onCustomerChange:
-                              (Map<String, dynamic> currentCustomer) {
+                          onCustomerChange: (Customer currentCustomer) {
                             setState(() {
                               this.currentCustomer = currentCustomer;
                             });
@@ -59,7 +51,7 @@ class _CustomersPageState extends State<CustomersPage> {
                         children: [
                           const Icon(Icons.emoji_people, color: Colors.black),
                           Text(
-                            ' ${currentCustomer['name'] ?? ''}',
+                            ' ${currentCustomer.name}',
                             style: const TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
@@ -73,7 +65,7 @@ class _CustomersPageState extends State<CustomersPage> {
                         children: [
                           const Icon(Icons.cake, color: Colors.black),
                           Text(
-                            ' ${currentCustomer['birthday'] ?? ''}',
+                            ' ${currentCustomer.birthDate}',
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -88,7 +80,7 @@ class _CustomersPageState extends State<CustomersPage> {
                           const Icon(Icons.location_on_outlined,
                               color: Colors.black),
                           Text(
-                            ' ${currentCustomer['address'] ?? ''}',
+                            ' ${currentCustomer.address}',
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
@@ -106,7 +98,7 @@ class _CustomersPageState extends State<CustomersPage> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: Image.memory(
-                    widget.user.profilePic!,
+                    currentCustomer.profilePicture,
                     width: 150,
                     height: 150,
                   ),

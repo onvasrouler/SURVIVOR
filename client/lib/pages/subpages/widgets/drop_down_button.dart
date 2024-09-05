@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
+import 'package:soul_connection/models/customer.module.dart';
 
 class CustomerDropdown extends StatefulWidget {
   const CustomerDropdown({
     super.key,
-    required this.customers,
     required this.onCustomerChange,
   });
 
-  final List<Map<String, dynamic>> customers;
-  final Function(Map<String, dynamic>) onCustomerChange;
+  final Function(Customer) onCustomerChange;
 
   @override
   CustomerDropdownState createState() => CustomerDropdownState();
 }
 
 class CustomerDropdownState extends State<CustomerDropdown> {
-  String? selectedCustomer;
+  late Customer selectedCustomer;
 
   @override
   void initState() {
     super.initState();
-    selectedCustomer =
-        widget.customers.isNotEmpty ? widget.customers[0]['name'] : null;
+    selectedCustomer = allCustomers.first;
   }
 
   @override
@@ -43,7 +41,7 @@ class CustomerDropdownState extends State<CustomerDropdown> {
           sw(5),
           DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              value: selectedCustomer,
+              value: '${selectedCustomer.name} ${selectedCustomer.surname}',
               icon: const Icon(Icons.arrow_drop_down),
               iconSize: 24,
               elevation: 16,
@@ -54,22 +52,17 @@ class CustomerDropdownState extends State<CustomerDropdown> {
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),
-              onChanged: (String? newValue) {
+              onChanged: (String? value) {
                 setState(() {
-                  selectedCustomer = newValue!;
-                  widget.onCustomerChange(
-                    widget.customers.firstWhere(
-                      (Map<String, dynamic> customer) =>
-                          customer['name'] == newValue,
-                    ),
-                  );
+                  selectedCustomer = allCustomers.where((Customer customer) {
+                    return '${customer.name} ${customer.surname}' == value;
+                  }).first;
+                  widget.onCustomerChange(selectedCustomer);
                 });
               },
-              items: widget.customers
-                  .map(
-                    (Map<String, dynamic> customer) =>
-                        customer['name'] as String,
-                  )
+              items: allCustomers
+                  .map((Customer customer) =>
+                      '${customer.name} ${customer.surname}')
                   .toList()
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
@@ -78,7 +71,7 @@ class CustomerDropdownState extends State<CustomerDropdown> {
                 );
               }).toList(),
             ),
-          ),
+          )
         ],
       ),
     );

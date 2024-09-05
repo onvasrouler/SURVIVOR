@@ -84,6 +84,9 @@ class _LoginPageState extends State<SignInPage> {
                       (route) => false,
                     );
                   } else {
+                    setState(() {
+                      loader = false;
+                    });
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         backgroundColor: Colors.blue,

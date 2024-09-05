@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
-import 'package:soul_connection/constants/datas.dart';
-import 'package:soul_connection/models/user.module.dart';
+import 'package:soul_connection/models/customer.module.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
 import 'package:soul_connection/pages/subpages/widgets/drop_down_button.dart';
 import 'package:soul_connection/pages/subpages/widgets/progress_circle.dart';
 
 class MatchesPage extends StatefulWidget {
-  const MatchesPage({super.key, required this.user});
-  final UserModel user;
+  const MatchesPage({super.key});
 
   @override
   State<MatchesPage> createState() => _MatchesPageState();
@@ -17,20 +15,8 @@ class MatchesPage extends StatefulWidget {
 
 class _MatchesPageState extends State<MatchesPage>
     with HoverMixin<MatchesPage> {
-  Map<String, dynamic> firstCustomer = {
-    'name': 'Louis Delanata',
-    'id': 1,
-    'birthday': '02/03/2006',
-    'signs': 'Leo',
-    'address': '3 Rue de al Tour 34000 Montpelier, France'
-  };
-  Map<String, dynamic> secondCustomer = {
-    'name': 'Louis Delanata',
-    'id': 1,
-    'birthday': '02/03/2006',
-    'signs': 'Leo',
-    'address': '3 Rue de al Tour 34000 Montpelier, France'
-  };
+  Customer firstCustomer = allCustomers.first;
+  Customer secondCustomer = allCustomers[1];
 
   List<String> signs = [
     'Aries',
@@ -73,6 +59,8 @@ class _MatchesPageState extends State<MatchesPage>
     return compatibilite[index1][index2];
   }
 
+  GlobalKey key = GlobalKey();
+
   Widget profilePic(int index) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -108,7 +96,9 @@ class _MatchesPageState extends State<MatchesPage>
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child: Image.memory(
-                      widget.user.profilePic!,
+                      index == 0
+                          ? firstCustomer.profilePicture
+                          : secondCustomer.profilePicture,
                     ),
                   ),
                 ),
@@ -121,18 +111,20 @@ class _MatchesPageState extends State<MatchesPage>
           duration: const Duration(milliseconds: 300),
           width: dw(context) / 4.2,
           child: CustomerDropdown(
-            customers: customers,
-            onCustomerChange: (Map<String, dynamic> currentCustomer) {
+            onCustomerChange: (Customer currentCustomer) {
               setState(() {
                 if (index == 0) firstCustomer = currentCustomer;
                 if (index == 1) secondCustomer = currentCustomer;
+                key = GlobalKey();
               });
             },
           ),
         ),
         sh(15),
         Text(
-          index == 0 ? firstCustomer['signs'] : secondCustomer['signs'],
+          index == 0
+              ? firstCustomer.astrologicalSign
+              : secondCustomer.astrologicalSign,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ],
@@ -182,10 +174,11 @@ class _MatchesPageState extends State<MatchesPage>
                                 : Matrix4.identity(),
                             alignment: FractionalOffset.center,
                             child: CircleProgressIndicator(
+                              key: key,
                               hoveredIndex: hoveredIndex,
                               compatibility: calculerCompatibilite(
-                                firstCustomer['signs'],
-                                secondCustomer['signs'],
+                                firstCustomer.astrologicalSign,
+                                secondCustomer.astrologicalSign,
                               ),
                             ),
                           ),

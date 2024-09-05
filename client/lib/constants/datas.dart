@@ -111,40 +111,6 @@ List<Map<String, dynamic>> users = [
   },
 ];
 
-List<String> clients = [
-  'Louis Bagneul',
-  'Véronique Tanson',
-  'Angele Labelge',
-  'Nicolas Tarabavich'
-];
-
-List<Map<String, dynamic>> customers = [
-  {
-    'name': 'Louis Delanata',
-    'id': 1,
-    'birthday': '02/03/2006',
-    'address': '3 Rue de al Tour 34000 Montpelier, France'
-  },
-  {
-    'name': 'Romain Ruiz',
-    'id': 2,
-    'birthday': '09/06/2016',
-    'address': '78 Rue de la mélinière 44200 Nantes, France'
-  },
-  {
-    'name': 'Paul Boulanger',
-    'id': 3,
-    'birthday': '12/03/1999',
-    'address': '26 Rue des bougainvilliers 97400 Saint-Denis, France'
-  },
-  {
-    'name': 'Max Delanata',
-    'id': 3,
-    'birthday': '09/06/1996',
-    'address': '34 Rue des pivoines 97400 Saint-Denis, France'
-  },
-];
-
 List<String> table1Labels = ['Date', 'Amount', 'Comment'];
 List<String> table2Labels = ['Date', 'Rating', 'Report', 'Source'];
 
