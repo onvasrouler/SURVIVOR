@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/constants/constants.dart';
 
 class CircleProgressIndicator extends StatefulWidget {
   const CircleProgressIndicator({super.key, this.hoveredIndex});

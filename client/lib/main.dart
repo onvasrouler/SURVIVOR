@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:soul_connection/pages/auth/onboard.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/auth/onboard.dart';
+import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/menu.dart';
-import 'package:soul_connection/pages/models/user.module.dart';
+import 'package:soul_connection/models/user.module.dart';
 
 void main() async {
   localUser = await SharedPreferences.getInstance();

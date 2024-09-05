@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
-import 'package:soul_connection/pages/models/user.module.dart';
+import 'package:soul_connection/constants/constants.dart';
+import 'package:soul_connection/models/user.module.dart';
 import 'package:soul_connection/pages/subpages/coaches.dart';
 import 'package:soul_connection/pages/subpages/customers.dart';
 import 'package:soul_connection/pages/subpages/event.dart';
@@ -9,8 +9,8 @@ import 'package:soul_connection/pages/subpages/matches.dart';
 import 'package:soul_connection/pages/subpages/statistics.dart';
 import 'package:soul_connection/pages/subpages/tips.dart';
 import 'package:soul_connection/pages/subpages/wardrobe.dart';
-import 'package:soul_connection/pages/utility/utility.dart';
-import 'package:soul_connection/pages/widget/drawerbar.dart';
+import 'package:soul_connection/utility/utility.dart';
+import 'package:soul_connection/widget/drawerbar.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key, required this.user});

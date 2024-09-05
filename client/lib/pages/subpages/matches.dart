@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
-import 'package:soul_connection/pages/constants/datas.dart';
-import 'package:soul_connection/pages/models/user.module.dart';
+import 'package:soul_connection/constants/constants.dart';
+import 'package:soul_connection/constants/datas.dart';
+import 'package:soul_connection/models/user.module.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
-import 'package:soul_connection/pages/subpages/widget/appbar.dart';
-import 'package:soul_connection/pages/subpages/widget/drop_down_button.dart';
-import 'package:soul_connection/pages/subpages/widget/progress_circle.dart';
+import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
+import 'package:soul_connection/pages/subpages/widgets/drop_down_button.dart';
+import 'package:soul_connection/pages/subpages/widgets/progress_circle.dart';
 
 class MatchesPage extends StatefulWidget {
   const MatchesPage({super.key, required this.user});

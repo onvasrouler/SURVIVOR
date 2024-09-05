@@ -1,6 +1,6 @@
-import 'package:soul_connection/pages/auth/signin.dart';
+import 'package:soul_connection/auth/signin.dart';
 import 'package:flutter/material.dart';
-import 'package:soul_connection/pages/constants/constants.dart';
+import 'package:soul_connection/constants/constants.dart';
 
 class OnBoardPage extends StatefulWidget {
   const OnBoardPage({super.key});
