@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-const MongoDBURI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/mydb";
+const MongoDBURI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/";
 
 const mainDB = mongoose.createConnection(MongoDBURI, {
-    dbName: "main_db"
+    dbName: process.env.MONGO_MAIN_DB_NAME
 });
 const soulConnection = mongoose.createConnection(MongoDBURI, {
-    dbName: "soul_connection"
+    dbName: process.env.MONGO_API_DB_NAME
 });
 
 mainDB.on("error", (error) => {

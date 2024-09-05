@@ -2,6 +2,7 @@ const { mainDB, soulConnection } = require('../mongo');
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 const userSchema = new mongoose.Schema({
     unique_id: {

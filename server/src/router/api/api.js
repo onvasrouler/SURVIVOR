@@ -20,7 +20,8 @@ exports.soul_connection_api = async (req, res) => {
         return api_formatter(req, res, 401, "noSession", "vous n'êtes pas connecté", null, null, null);
     } else {
         try {
-            const soulData = await soulConnection.collection(req.params.COLLECTIONNAME).findOne({ email: req.params.ID });
+            const collectionQuery = { [`${req.params.COLLECTIONNAME}_id`]: Number(req.params.ID) };
+            const soulData = await soulConnection.collection(req.params.COLLECTIONNAME).findOne(collectionQuery);
             return api_formatter(req, res, 200, "success", "données la db recup avec succès", soulData, null, null);
         } catch (error) {
             console.error(error);
