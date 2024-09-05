@@ -52,7 +52,7 @@ if __name__ == "__main__":
         print(data)
        
         for clothe in clothes:
-            existing_clothe = clothescollection.find_one({'id': clothe['id']})
+            existing_clothe = clothescollection.find_one({'clothe_id': clothe['id']})
             if existing_clothe:
                 print("Clothe " + str(clothe['id']) + " already exists")
             else:
@@ -65,7 +65,7 @@ if __name__ == "__main__":
                 except:
                     image = 0
                 new_clothe = {
-                    'id': clothe['id'],
+                    'clothe_id': clothe['id'],
                     'type': clothe['type'],
                     'image': image  # Assuming 'image' might not always be present
                 }
