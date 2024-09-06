@@ -2,7 +2,7 @@ import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/models/encounter.module.dart';
 import 'package:soul_connection/models/payement.module.dart';
 
-class Customer {
+class CustomerModel {
   final int userId;
   final String email;
   final String name;
@@ -15,10 +15,10 @@ class Customer {
   final String address;
   final String profilePicture;
   final List<Map<String, dynamic>> clothes;
-  final List<Payement> payements;
-  final List<Encounter> encouters;
+  final List<PayementModel> payements;
+  final List<EncounterModel> encouters;
 
-  Customer({
+  CustomerModel({
     required this.userId,
     required this.email,
     required this.name,
@@ -35,8 +35,15 @@ class Customer {
     required this.encouters,
   });
 
-  factory Customer.fromJson(Map<String, dynamic> json) {
-    return Customer(
+  factory CustomerModel.fromJson(Map<String, dynamic> json) {
+    List<EncounterModel> encounters = [];
+    if (json['encounters'] != null && json['encounters'] is Iterable) {
+      encounters = (json['encounters'] as List)
+          .map((encounter) => EncounterModel.fromJson(encounter))
+          .toList();
+    }
+
+    return CustomerModel(
       userId: json['id'],
       email: json['email'],
       name: json['name'],
@@ -53,11 +60,9 @@ class Customer {
       profilePicture:
           'http://82.65.59.34:3333/soul_connection_api/customer_image/${json['id']}.png?session=$token',
       payements: (json['payments_history'] as List)
-          .map<Payement>((e) => Payement.fromJson(e))
+          .map<PayementModel>((e) => PayementModel.fromJson(e))
           .toList(),
-      encouters: (json['encounters'] as List)
-          .map<Encounter>((e) => Encounter.fromJson(e))
-          .toList(),
+      encouters: encounters,
     );
   }
 }

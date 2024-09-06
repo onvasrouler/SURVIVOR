@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/constants/datas.dart';
 import 'package:soul_connection/models/customer.module.dart';
+import 'package:soul_connection/models/encounter.module.dart';
+import 'package:soul_connection/models/payement.module.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
 import 'package:soul_connection/pages/subpages/widgets/drop_down_button.dart';
@@ -17,7 +19,22 @@ class CustomersPage extends StatefulWidget {
 
 class _CustomersPageState extends State<CustomersPage>
     with HoverMixin<CustomersPage> {
-  Customer currentCustomer = allCustomers.first;
+  CustomerModel currentCustomer = allCustomers.first;
+
+  String fillPaymentTable(PayementModel payment, int index) {
+    if (index == 0) return payment.date;
+    if (index == 1) return '${payment.amount}e';
+    if (index == 2) return '${payment.paymentMethod}e';
+    return '';
+  }
+
+  String fillEncouterTable(EncounterModel encounter, int index) {
+    if (index == 0) return encounter.date;
+    if (index == 1) return '${encounter.rating}/5';
+    if (index == 2) return encounter.comment;
+    if (index == 3) return encounter.source;
+    return '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +61,7 @@ class _CustomersPageState extends State<CustomersPage>
                         width: 350,
                         height: 30,
                         child: CustomerDropdown(
-                          onCustomerChange: (Customer currentCustomer) {
+                          onCustomerChange: (CustomerModel currentCustomer) {
                             setState(() {
                               this.currentCustomer = currentCustomer;
                             });
@@ -182,7 +199,9 @@ class _CustomersPageState extends State<CustomersPage>
                           inside: BorderSide(color: Colors.black, width: 1.5),
                         ),
                         children: [
-                          for (int row = 0; row <= contentTable1.length; row++)
+                          for (int row = 0;
+                              row <= currentCustomer.payements.length;
+                              row++)
                             if (row == 0)
                               TableRow(
                                 decoration: const BoxDecoration(
@@ -197,6 +216,10 @@ class _CustomersPageState extends State<CustomersPage>
                                       child: Text(
                                         table1Labels[col],
                                         textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
                                 ],
@@ -207,23 +230,19 @@ class _CustomersPageState extends State<CustomersPage>
                                   for (int col = 0;
                                       col < table1Labels.length;
                                       col++)
-                                    if (col == 0)
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          '$row',
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      )
-                                    else
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          contentTable1[row - 1]
-                                              [table1Labels[col].toLowerCase()],
-                                          textAlign: TextAlign.center,
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        fillPaymentTable(
+                                            currentCustomer.payements[row - 1],
+                                            col),
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
                                         ),
                                       ),
+                                    ),
                                 ],
                               ),
                         ],
@@ -264,7 +283,9 @@ class _CustomersPageState extends State<CustomersPage>
                           inside: BorderSide(color: Colors.black, width: 1.5),
                         ),
                         children: [
-                          for (int row = 0; row <= contentTable2.length; row++)
+                          for (int row = 0;
+                              row <= currentCustomer.encouters.length;
+                              row++)
                             if (row == 0)
                               TableRow(
                                 decoration: const BoxDecoration(
@@ -279,6 +300,10 @@ class _CustomersPageState extends State<CustomersPage>
                                       child: Text(
                                         table2Labels[col],
                                         textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
                                       ),
                                     ),
                                 ],
@@ -293,17 +318,29 @@ class _CustomersPageState extends State<CustomersPage>
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          '$row',
+                                          currentCustomer.encouters[row - 1].id
+                                              .toString(),
                                           textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
                                         ),
                                       )
                                     else
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          contentTable2[row - 1]
-                                              [table2Labels[col].toLowerCase()],
+                                          fillEncouterTable(
+                                            currentCustomer.encouters[row - 1],
+                                            col,
+                                          ),
                                           textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
                                         ),
                                       ),
                                 ],

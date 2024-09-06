@@ -16,7 +16,7 @@ class WardrobePage extends StatefulWidget {
 class _WardrobePageState extends State<WardrobePage>
     with HoverMixin<WardrobePage> {
   int currentIndex = 0;
-  Customer currentCustomer = allCustomers.first;
+  CustomerModel currentCustomer = allCustomers.first;
   List<String> imageTypes = ['hat/cap', 'top', 'bottom', 'shoes'];
 
   @override
@@ -161,7 +161,7 @@ class _WardrobePageState extends State<WardrobePage>
                           width: 320,
                           height: 30,
                           child: CustomerDropdown(
-                            onCustomerChange: (Customer currentCustomer) async {
+                            onCustomerChange: (CustomerModel currentCustomer) async {
                               setState(() {
                                 this.currentCustomer = currentCustomer;
                               });

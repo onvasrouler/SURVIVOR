@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
-import 'package:soul_connection/models/tips.module.dart';
-import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
 

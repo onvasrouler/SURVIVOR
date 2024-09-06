@@ -1,11 +1,11 @@
-class Payement {
+class PayementModel {
   final int payementId;
   final double amount;
   final String date;
   final String paymentMethod;
   final String comment;
 
-  Payement({
+  PayementModel({
     required this.payementId,
     required this.date,
     required this.paymentMethod,
@@ -13,8 +13,8 @@ class Payement {
     required this.comment,
   });
 
-  factory Payement.fromJson(Map<String, dynamic> json) {
-    return Payement(
+  factory PayementModel.fromJson(Map<String, dynamic> json) {
+    return PayementModel(
       payementId: json['id'],
       date: json['date'],
       paymentMethod: json['payment_method'],

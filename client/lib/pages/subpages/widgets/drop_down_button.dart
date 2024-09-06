@@ -8,14 +8,14 @@ class CustomerDropdown extends StatefulWidget {
     required this.onCustomerChange,
   });
 
-  final Function(Customer) onCustomerChange;
+  final Function(CustomerModel) onCustomerChange;
 
   @override
   CustomerDropdownState createState() => CustomerDropdownState();
 }
 
 class CustomerDropdownState extends State<CustomerDropdown> {
-  late Customer selectedCustomer;
+  late CustomerModel selectedCustomer;
 
   @override
   void initState() {
@@ -56,14 +56,14 @@ class CustomerDropdownState extends State<CustomerDropdown> {
                   onChanged: (String? value) {
                     setState(() {
                       selectedCustomer =
-                          allCustomers.where((Customer customer) {
+                          allCustomers.where((CustomerModel customer) {
                         return '${customer.name} ${customer.surname}' == value;
                       }).first;
                       widget.onCustomerChange(selectedCustomer);
                     });
                   },
                   items: allCustomers
-                      .map((Customer customer) =>
+                      .map((CustomerModel customer) =>
                           '${customer.name} ${customer.surname}')
                       .toList()
                       .map<DropdownMenuItem<String>>((String value) {
