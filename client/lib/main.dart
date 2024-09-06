@@ -7,6 +7,7 @@ import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/menu.dart';
 import 'package:soul_connection/models/user.module.dart';
 import 'package:soul_connection/provider/customers.service.dart';
+import 'package:soul_connection/provider/tips.service.dart';
 
 void main() async {
   localUser = await SharedPreferences.getInstance();
@@ -26,11 +27,21 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     fetchCustomers();
+    fetchTips();
     super.initState();
   }
 
   void fetchCustomers() async {
     isLoading = await CustomersService.fetchCustomers();
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void fetchTips() async {
+    isLoading = await TipsService.fetchTips();
     if (mounted) {
       setState(() {
         isLoading = false;
