@@ -116,7 +116,6 @@ userSchema.methods.generateJWT = function () {
 userSchema.statics.emailExists = async function (email) {
     try {
         const found = await this.findOne({ email: email });
-        console.log(found);
         return !!found;
     } catch (err) {
         console.error(err);
