@@ -6,13 +6,17 @@ on:
       - 'main'
 
 jobs:
-  check_commit_name:
-    name: Check commit name
+  generate-changelog:
     runs-on: ubuntu-latest
+
     steps:
-        - name: Check commit name
-          id: check_commit_name
-          uses: actions/checkout@v3
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
+        with:
+          fetch-depth: 0 # Required for fetch all history
+
+      - name: "Generate Changelog"
+        uses: sercanuste/gitmoji-changelog-action@v1
 
   test-flutter-build:
     runs-on: ubuntu-latest
