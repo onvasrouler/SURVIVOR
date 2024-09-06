@@ -82,24 +82,3 @@ List<Map<String, dynamic>> data = [
     'data': [20.0, 190.0, 10.0, 20.0, 25.0, 30.0],
   },
 ];
-
-List<String> tips = [
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-  'Asuper tip ot help the coach\nwith their customers',
-];

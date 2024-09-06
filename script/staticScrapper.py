@@ -226,9 +226,9 @@ def fetch_clothes(customer=None):
                 if not cloth_image:
                     print("no image found for cloth id: " + str(cloth["id"]))
                 else:
-                    query = {"cloth_id": str(cloth["id"]), "cloth_image_id": str(cloth["id"]), "customer_id": str(customer["id"]), "image": cloth_image}
-                    if not db["cloth_image"].find_one({"cloth_id": str(cloth["id"])}):
-                        db["cloth_image"].insert_one(query)
+                    query = {"clothe_id": str(cloth["id"]), "cloth_image_id": str(cloth["id"]), "customer_id": str(customer["id"]), "image": cloth_image}
+                    if not db["clothe_image"].find_one({"cloth_id": str(cloth["id"])}):
+                        db["clothe_image"].insert_one(query)
 
             except Exception as e:
                 treat_errors(e, base_url + "/api/clothes/" + str(cloth["id"]))

@@ -5,7 +5,10 @@ const sendApiData = require("./api-formatter.js");
 
 async function checkAuthenticated(req, res, next) {
     try {
-        const GivenSession = req.headers.session;
+        const givenQuery = req.query.session;
+        const givenHeader = req.headers.session;
+        const GivenSession = givenQuery || givenHeader;
+
         var decodedSession = null;
         const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
 

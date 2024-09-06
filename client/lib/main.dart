@@ -8,6 +8,7 @@ import 'package:soul_connection/pages/menu.dart';
 import 'package:soul_connection/models/user.module.dart';
 import 'package:soul_connection/provider/coachs.service.dart';
 import 'package:soul_connection/provider/customers.service.dart';
+import 'package:soul_connection/provider/tips.service.dart';
 
 void main() async {
   localUser = await SharedPreferences.getInstance();
@@ -28,6 +29,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     fetchCustomers();
     fetchEmployees();
+    fetchTips();
     super.initState();
   }
 
@@ -42,6 +44,16 @@ class _MyAppState extends State<MyApp> {
 
   void fetchEmployees() async {
     isLoading = await CoachsService.fetchEmployees();
+    isLoading = await TipsService.fetchTips();
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void fetchTips() async {
+    isLoading = await TipsService.fetchTips();
     if (mounted) {
       setState(() {
         isLoading = false;
