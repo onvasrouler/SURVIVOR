@@ -1,4 +1,4 @@
-const { mainDB, soulConnection } = require('../../database/mongo');
+const { soulConnection } = require("../../database/mongo");
 const api_formatter = require("../../middleware/api-formatter.js");
 
 exports.get_all = async (req, res) => {
@@ -13,7 +13,7 @@ exports.get_all = async (req, res) => {
             return api_formatter(req, res, 500, "errorOccured", "Erreur lors de la récupération des données", null, error, null);
         }
     }
-}
+};
 
 exports.soul_connection_api = async (req, res) => {
     if (!req.user || req.user == null) {
@@ -29,4 +29,4 @@ exports.soul_connection_api = async (req, res) => {
         }
 
     }
-}
+};

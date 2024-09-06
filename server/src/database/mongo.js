@@ -15,14 +15,14 @@ mainDB.on("error", (error) => {
 
 mainDB.once("open", () => {
     console.log("Main DB connected.");
-})
+});
 
 soulConnection.on("error", (error) => {
     console.error("Soul Connection DB connection error:", error);
-})
+});
 
 soulConnection.once("open", () => {
     console.log("Soul Connection DB connected.");
-})
+});
 
 module.exports = { mainDB, soulConnection };

@@ -18,9 +18,7 @@
     "dev": "nodemon index.js",
     "lint": "eslint .",
     "lintfix": "eslint --fix .",
-    "start": "node index.js",
-    "devScrapper": "nodemon scrapper.py",
-    "scrapper": "python scrapper.py"
+    "start": "node index.js"
   },
   "keywords": [
     "express",
