@@ -71,7 +71,9 @@ def update_progress_bar(current, total, name, id = None):
     clear_screen()
     progress_bars[name] = {"current": current, "total": total, "id": id}
     for key_bar, bar in progress_bars.items():
-        if round(int(bar["total"]) / int(bar["current"])) == 1:
+        if bar["total"] == 0:
+            bar["total"] = 1
+        if round(int(bar["current"]) / int(bar["total"])) == 1:
             continue
         if not bar["total"] or not bar["current"]:
             key_bar = "error"
