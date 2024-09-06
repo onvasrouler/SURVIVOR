@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 import json
 import threading
+import datetime
 
 load_dotenv("./.env")
 bearrer_token = ""
@@ -52,8 +53,7 @@ progress_bars = {}
 
     
 def treat_errors(e, url):
-    print(e)
-    errors.append({"url": url, "error": e})
+    errors.append({"time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "url": url, "error": e})
 
 def output_in_file(data, file_name):
     with open(file_name, "a") as file:
@@ -66,7 +66,7 @@ def print_errors_summary():
     print("Errors:")
     with open(error_file_name, "a") as error_file:
         for error in errors:
-            error_message = "an error occurred in " + error["url"] + " with the following message: " + str(error["error"])
+            error_message = error["time"] + " : an error occurred in " + error["url"] + " with the following message: " + str(error["error"])
             #print(error_message)
             error_file.write(error_message + "\n")
         
@@ -347,15 +347,3 @@ def fetch_all(employee=True, customers=True, encounters=True, tips=True, events=
         thread.join()
 
     clear_screen()
-
-try :
-    fetch_all(False, False, False, False, True)
-    print_errors_summary()
-    print("Script finished")
-except Exception as e:
-    treat_errors(e, "fetch_all")
-    pass
-except KeyboardInterrupt as e:
-    clear_screen()
-    print("Script Stopped")
-    print_errors_summary()
