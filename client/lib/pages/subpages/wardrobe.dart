@@ -58,10 +58,10 @@ class _WardrobePageState extends State<WardrobePage>
                                       curve: Curves.easeInOut,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
                                         border: Border.all(
-                                            color: Colors.grey, width: 1.0),
+                                          color: Colors.black,
+                                          width: 1.5,
+                                        ),
                                       ),
                                       width: dw(context) / 4,
                                       height: dh(context) / 1,
@@ -90,23 +90,21 @@ class _WardrobePageState extends State<WardrobePage>
                                     curve: Curves.easeInOut,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10.0),
                                       border: Border.all(
-                                          color: Colors.grey, width: 1.0),
+                                        color: Colors.black,
+                                        width: 1.5,
+                                      ),
                                     ),
                                     width: dw(context) / 4,
                                     height: dh(context) / 1,
                                     padding: const EdgeInsets.all(10.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      child: SizedBox(
-                                        width: dw(context) / 4,
-                                        height: dh(context) / 1,
-                                        child: CachedNetworkImage(
-                                          imageUrl:
-                                              'http://localhost:8080/clothes/${currentCustomer.userId}_${filterdClothes['id']}.png',
-                                          fit: BoxFit.cover,
-                                        ),
+                                    child: SizedBox(
+                                      width: dw(context) / 4,
+                                      height: dh(context) / 1,
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            'http://82.65.59.34:3333/soul_connection_api/clothe_image/${filterdClothes['id']}.png?session=$token',
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   );
@@ -160,7 +158,8 @@ class _WardrobePageState extends State<WardrobePage>
                         sh(70),
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
-                          width: 365,
+                          width: 320,
+                          height: 30,
                           child: CustomerDropdown(
                             onCustomerChange: (Customer currentCustomer) async {
                               setState(() {
@@ -185,7 +184,7 @@ class _WardrobePageState extends State<WardrobePage>
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        sh(30),
+                        sh(60),
                         Builder(
                           builder: (context) {
                             return MouseRegion(
@@ -205,26 +204,16 @@ class _WardrobePageState extends State<WardrobePage>
                                     ? getTransformMatrix()
                                     : Matrix4.identity(),
                                 alignment: FractionalOffset.center,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: AnimatedContainer(
-                                    duration: const Duration(milliseconds: 300),
-                                    width: hoveredIndex == 9 ? 130 : 120,
-                                    height: hoveredIndex == 9 ? 130 : 120,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.blue,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(3.0),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(100),
-                                        child: Image.memory(
-                                          currentCustomer.profilePicture,
-                                        ),
-                                      ),
-                                    ),
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 300),
+                                  width: hoveredIndex == 9 ? 100 : 90,
+                                  height: hoveredIndex == 9 ? 100 : 90,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.black, width: 1.5),
+                                  ),
+                                  child: CachedNetworkImage(
+                                    imageUrl: currentCustomer.profilePicture,
                                   ),
                                 ),
                               ),

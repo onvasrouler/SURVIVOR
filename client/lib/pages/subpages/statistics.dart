@@ -3,6 +3,7 @@ import 'package:flutter_charts/flutter_charts.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
+import 'package:soul_connection/theme/color.dart';
 
 class StatisticsPage extends StatefulWidget {
   const StatisticsPage({super.key});
@@ -35,7 +36,7 @@ class _StatisticsPageState extends State<StatisticsPage>
         'Second count',
       ],
       dataRowsColors: const [
-        Colors.blue,
+        AppColor.grey,
         Color.fromARGB(255, 195, 195, 195),
       ],
       chartOptions: chartOptions,
@@ -73,10 +74,7 @@ class _StatisticsPageState extends State<StatisticsPage>
         'Spring',
         'Summer',
       ],
-      dataRowsColors: const [
-        Color.fromARGB(255, 195, 195, 195),
-        Colors.blue,
-      ],
+      dataRowsColors: const [Color.fromARGB(255, 195, 195, 195), AppColor.grey],
       chartOptions: chartOptions,
     );
     var verticalBarChartContainer = VerticalBarChartTopContainer(
@@ -112,10 +110,7 @@ class _StatisticsPageState extends State<StatisticsPage>
         'Spring',
         'Summer',
       ],
-      dataRowsColors: const [
-        Color.fromARGB(255, 195, 195, 195),
-        Colors.blue,
-      ],
+      dataRowsColors: const [Color.fromARGB(255, 195, 195, 195), AppColor.grey],
       chartOptions: chartOptions,
     );
     var lineChartContainer = LineChartTopContainer(
@@ -151,10 +146,10 @@ class _StatisticsPageState extends State<StatisticsPage>
         'more than +2%',
       ],
       dataRowsColors: const [
-        Colors.blue,
-        Colors.blueAccent,
-        Colors.lightBlue,
-        Colors.blueGrey,
+        AppColor.grey,
+        AppColor.darkgrey,
+        AppColor.lightgrey,
+        AppColor.deepblue,
       ],
       chartOptions: chartOptions,
     );
@@ -184,10 +179,10 @@ class _StatisticsPageState extends State<StatisticsPage>
       ],
       xUserLabels: const ['Unit1', 'Unit2', 'Unit3', 'Unit4'],
       dataRowsColors: const [
-        Colors.blue,
-        Colors.blueAccent,
-        Colors.lightBlue,
-        Colors.blueGrey,
+        AppColor.grey,
+        AppColor.darkgrey,
+        AppColor.lightgrey,
+        AppColor.deepblue,
       ],
       dataRowsLegends: const ['Java', 'Dart', 'Python', 'Newspeak'],
       yUserLabels: const [
@@ -226,10 +221,10 @@ class _StatisticsPageState extends State<StatisticsPage>
       ],
       xUserLabels: const ['1', '2', '3', '4', '5', '6'],
       dataRowsColors: const [
-        Colors.blue,
-        Colors.blueAccent,
-        Colors.lightBlue,
-        Colors.blueGrey,
+        AppColor.grey,
+        AppColor.darkgrey,
+        AppColor.lightgrey,
+        AppColor.deepblue,
       ],
       dataRowsLegends: const [
         'Spring',
@@ -273,10 +268,10 @@ class _StatisticsPageState extends State<StatisticsPage>
         'Winter',
       ],
       dataRowsColors: const [
-        Colors.blue,
-        Colors.blueAccent,
-        Colors.lightBlue,
-        Colors.blueGrey,
+        AppColor.grey,
+        AppColor.darkgrey,
+        AppColor.lightgrey,
+        AppColor.deepblue,
       ],
       chartOptions: chartOptions,
     );
@@ -308,8 +303,8 @@ class _StatisticsPageState extends State<StatisticsPage>
         'Test Series2',
       ],
       dataRowsColors: const [
-        Colors.blue,
-        Colors.blueGrey,
+        AppColor.grey,
+        AppColor.lightgrey,
       ],
       chartOptions: chartOptions,
     );
@@ -346,8 +341,8 @@ class _StatisticsPageState extends State<StatisticsPage>
         '2',
       ],
       dataRowsColors: const [
-        Colors.blue,
-        Colors.blueGrey,
+        AppColor.grey,
+        AppColor.deepblue,
       ],
       chartOptions: chartOptions,
     );
@@ -386,10 +381,10 @@ class _StatisticsPageState extends State<StatisticsPage>
         'Winter',
       ],
       dataRowsColors: const [
-        Colors.blue,
-        Colors.blueAccent,
-        Colors.lightBlue,
-        Colors.blueGrey,
+        AppColor.grey,
+        AppColor.darkgrey,
+        AppColor.lightgrey,
+        AppColor.deepblue,
       ],
       chartOptions: chartOptions,
     );
@@ -472,11 +467,8 @@ class _StatisticsPageState extends State<StatisticsPage>
                                 curve: Curves.easeInOut,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
                                   border: Border.all(
-                                    color: Colors.grey,
-                                    width: 1.0,
-                                  ),
+                                      color: Colors.black, width: 1.5),
                                 ),
                                 padding: const EdgeInsets.all(5.0),
                                 child: graphs()[index],

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/models/customer.module.dart';
@@ -89,17 +90,16 @@ class _MatchesPageState extends State<MatchesPage>
                   height:
                       (((dw(context) / 10) > 140 ? 140 : (dw(context) / 10)) +
                           (hoveredIndex != index ? 0 : 40)),
+                  width:
+                      (((dw(context) / 10) > 140 ? 140 : (dw(context) / 10)) +
+                          (hoveredIndex != index ? 0 : 40)),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue, width: 3),
-                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(color: Colors.black, width: 1.5),
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.memory(
-                      index == 0
-                          ? firstCustomer.profilePicture
-                          : secondCustomer.profilePicture,
-                    ),
+                  child: CachedNetworkImage(
+                    imageUrl: index == 0
+                        ? firstCustomer.profilePicture
+                        : secondCustomer.profilePicture,
                   ),
                 ),
               ),
@@ -109,7 +109,8 @@ class _MatchesPageState extends State<MatchesPage>
         sh(20),
         AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          width: dw(context) / 4.2,
+          width: 320,
+          height: 30,
           child: CustomerDropdown(
             onCustomerChange: (Customer currentCustomer) {
               setState(() {

@@ -63,9 +63,8 @@ class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
                                 curve: Curves.easeInOut,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
                                   border: Border.all(
-                                      color: Colors.grey, width: 1.0),
+                                      color: Colors.black, width: 1.5),
                                 ),
                                 padding: const EdgeInsets.all(10.0),
                                 child: Center(
@@ -75,7 +74,9 @@ class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
                                       style: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 16,
+                                        fontWeight: FontWeight.w600,
                                       ),
+                                      textAlign: TextAlign.center,
                                     ),
                                   ),
                                 ),
@@ -100,9 +101,9 @@ class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      const Color(0xfff2f2f2),
+                      Colors.white,
                       for (double i = 1; i > 0; i -= 0.1)
-                        const Color(0xfff2f2f2).withOpacity(i)
+                        Colors.white.withOpacity(i)
                     ],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,

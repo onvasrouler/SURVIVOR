@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/constants/datas.dart';
@@ -5,6 +6,7 @@ import 'package:soul_connection/models/customer.module.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
 import 'package:soul_connection/pages/subpages/widgets/drop_down_button.dart';
+import 'package:soul_connection/theme/color.dart';
 
 class CustomersPage extends StatefulWidget {
   const CustomersPage({super.key});
@@ -39,7 +41,8 @@ class _CustomersPageState extends State<CustomersPage>
                     children: [
                       AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
-                        width: dw(context) / 6 + 165,
+                        width: 350,
+                        height: 30,
                         child: CustomerDropdown(
                           onCustomerChange: (Customer currentCustomer) {
                             setState(() {
@@ -53,10 +56,9 @@ class _CustomersPageState extends State<CustomersPage>
                         children: [
                           const Icon(Icons.emoji_people, color: Colors.black),
                           Text(
-                            ' ${currentCustomer.name}',
+                            '${currentCustomer.name} ${currentCustomer.surname}',
                             style: const TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 40,
                               fontFamily: 'Arial',
                             ),
                           ),
@@ -69,7 +71,7 @@ class _CustomersPageState extends State<CustomersPage>
                           Text(
                             ' ${currentCustomer.birthDate}',
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 17,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Arial',
                             ),
@@ -79,12 +81,11 @@ class _CustomersPageState extends State<CustomersPage>
                       sh(5),
                       Row(
                         children: [
-                          const Icon(Icons.location_on_outlined,
-                              color: Colors.black),
+                          const Icon(Icons.location_on, color: Colors.black),
                           Text(
                             ' ${currentCustomer.address}',
                             style: const TextStyle(
-                              fontSize: 15,
+                              fontSize: 17,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Arial',
                             ),
@@ -96,7 +97,7 @@ class _CustomersPageState extends State<CustomersPage>
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 30),
+                padding: const EdgeInsets.only(right: 80),
                 child: Builder(
                   builder: (context) {
                     return MouseRegion(
@@ -116,16 +117,16 @@ class _CustomersPageState extends State<CustomersPage>
                             ? getTransformMatrix()
                             : Matrix4.identity(),
                         alignment: FractionalOffset.center,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 300),
-                            width: hoveredIndex == 9 ? 160 : 140,
-                            height: hoveredIndex == 9 ? 160 : 140,
-                            child: Image.memory(
-                              currentCustomer.profilePicture,
-                              fit: BoxFit.cover,
-                            ),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          width: hoveredIndex == 9 ? 160 : 140,
+                          height: hoveredIndex == 9 ? 160 : 140,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 1.5),
+                          ),
+                          child: CachedNetworkImage(
+                            imageUrl: currentCustomer.profilePicture,
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
@@ -140,8 +141,8 @@ class _CustomersPageState extends State<CustomersPage>
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
           child: Container(
-            height: 1,
-            color: Colors.grey,
+            height: 1.5,
+            color: Colors.black,
             width: dw(context),
           ),
         ),
@@ -159,34 +160,33 @@ class _CustomersPageState extends State<CustomersPage>
                     padding: EdgeInsets.symmetric(vertical: 3),
                     child: Text(
                       'Payments',
-                      style: TextStyle(fontSize: 13),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'Arial',
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
-                    width: dw(context) / 3.5,
+                    width: dw(context) / 3.3,
                     height: 179,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(color: Colors.black, width: 1.5),
                     ),
                     child: SingleChildScrollView(
                       child: Table(
                         border: const TableBorder.symmetric(
-                          inside: BorderSide(color: Colors.grey),
+                          inside: BorderSide(color: Colors.black, width: 1.5),
                         ),
                         children: [
                           for (int row = 0; row <= contentTable1.length; row++)
                             if (row == 0)
                               TableRow(
                                 decoration: const BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(9),
-                                    topRight: Radius.circular(9),
-                                  ),
+                                  color: AppColor.deepblue,
                                 ),
                                 children: [
                                   for (int col = 0;
@@ -237,37 +237,38 @@ class _CustomersPageState extends State<CustomersPage>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 3),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 3,
+                    ),
                     child: Text(
                       'Meetings',
-                      style: TextStyle(fontSize: 13),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'Arial',
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
-                    width: dw(context) / 2.6,
+                    width: dw(context) / 2.4,
                     height: 179,
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.grey),
+                      border: Border.all(color: Colors.black, width: 1.5),
                     ),
                     child: SingleChildScrollView(
                       child: Table(
                         border: const TableBorder.symmetric(
-                          inside: BorderSide(color: Colors.grey),
+                          inside: BorderSide(color: Colors.black, width: 1.5),
                         ),
                         children: [
                           for (int row = 0; row <= contentTable2.length; row++)
                             if (row == 0)
                               TableRow(
                                 decoration: const BoxDecoration(
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(9),
-                                    topRight: Radius.circular(9),
-                                  ),
+                                  color: AppColor.deepblue,
                                 ),
                                 children: [
                                   for (int col = 0;
