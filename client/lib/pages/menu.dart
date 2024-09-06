@@ -27,10 +27,10 @@ class _MenuPageState extends State<MenuPage> {
     return [
       const HomePage(),
       const CoachesPage(),
-      CustomersPage(user: widget.user),
+      const CustomersPage(),
       const StatisticsPage(),
-      WardrobePage(user: widget.user,),
-      MatchesPage(user: widget.user),
+      const WardrobePage(),
+      const MatchesPage(),
       const TipsPage(),
       const EventPage(),
     ][index];
@@ -39,7 +39,7 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xfff2f2f2),
+      backgroundColor: Colors.white,
       bottomNavigationBar: dw(context) <= 700
           ? BottomNavigationBar(
               onTap: (int index) {
@@ -79,8 +79,8 @@ class _MenuPageState extends State<MenuPage> {
               ),
             Center(
               child: Container(
-                color: Colors.grey,
-                width: 1,
+                color: Colors.black,
+                width: 1.5,
                 height: dh(context) - 80,
               ),
             ),

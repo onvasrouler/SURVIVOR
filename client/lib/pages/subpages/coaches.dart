@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/constants/datas.dart';
 import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
+import 'package:soul_connection/theme/color.dart';
 
 class CoachesPage extends StatefulWidget {
   const CoachesPage({super.key});
@@ -25,24 +26,19 @@ class _CoachesPageState extends State<CoachesPage> {
           height: dh(context) / 1.4,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Colors.grey),
+            border: Border.all(color: Colors.black, width: 1.5),
           ),
           child: SingleChildScrollView(
             child: Table(
               border: const TableBorder.symmetric(
-                inside: BorderSide(color: Colors.grey),
+                inside: BorderSide(color: Colors.black, width: 1.5),
               ),
               children: [
                 for (int row = 0; row <= users.length; row++)
                   if (row == 0)
                     TableRow(
                       decoration: const BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(9),
-                          topRight: Radius.circular(9),
-                        ),
+                        color: AppColor.deepblue,
                       ),
                       children: [
                         for (int col = 0; col < tableCoaches.length; col++)
@@ -51,6 +47,10 @@ class _CoachesPageState extends State<CoachesPage> {
                             child: Text(
                               tableCoaches[col],
                               textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                       ],
@@ -65,6 +65,9 @@ class _CoachesPageState extends State<CoachesPage> {
                               child: Text(
                                 '$row',
                                 textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                ),
                               ),
                             )
                           else if (col == 3)
@@ -87,7 +90,7 @@ class _CoachesPageState extends State<CoachesPage> {
                                             'Edit list',
                                             style: TextStyle(
                                               fontSize: 30,
-                                              fontWeight: FontWeight.w400,
+                                              fontWeight: FontWeight.w600,
                                             ),
                                           ),
                                           sh(20),
@@ -95,52 +98,57 @@ class _CoachesPageState extends State<CoachesPage> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 30.0),
                                             child: Container(
-                                              height: 1,
-                                              color: Colors.grey,
+                                              height: 1.5,
+                                              color: Colors.black,
                                               width: dw(context),
                                             ),
                                           ),
-                                          sh(40),
-                                          ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: clients.length,
-                                            itemBuilder: (context, index) {
-                                              return Center(
-                                                child: Container(
-                                                  width: 250,
-                                                  height: 30,
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Row(
-                                                    children: [
-                                                      Container(
-                                                        width: 200,
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: Text(
-                                                          clients[index],
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style:
-                                                              const TextStyle(
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight.w400,
+                                          SizedBox(
+                                            width: 250,
+                                            height: dh(context) - 150,
+                                            child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: allCustomers.length,
+                                              itemBuilder: (context, index) {
+                                                return Center(
+                                                  child: Container(
+                                                    width: 250,
+                                                    height: 30,
+                                                    color: Colors.transparent,
+                                                    alignment:
+                                                        Alignment.centerLeft,
+                                                    child: Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 200,
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            '${allCustomers[index].name} ${allCustomers[index].surname}',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      Checkbox(
-                                                        value: true,
-                                                        activeColor:
-                                                            Colors.blue,
-                                                        onChanged:
-                                                            (bool? value) {},
-                                                      ),
-                                                    ],
+                                                        Checkbox(
+                                                          value: true,
+                                                          activeColor:
+                                                              AppColor.deepblue,
+                                                          onChanged:
+                                                              (bool? value) {},
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
+                                                );
+                                              },
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -154,6 +162,9 @@ class _CoachesPageState extends State<CoachesPage> {
                                   users[row - 1]
                                       [tableCoaches[col].toLowerCase()],
                                   textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                  ),
                                 ),
                               ),
                             )
@@ -163,6 +174,9 @@ class _CoachesPageState extends State<CoachesPage> {
                               child: Text(
                                 users[row - 1][tableCoaches[col].toLowerCase()],
                                 textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                ),
                               ),
                             ),
                       ],

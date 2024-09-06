@@ -6,17 +6,61 @@ import 'package:soul_connection/auth/onboard.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/menu.dart';
 import 'package:soul_connection/models/user.module.dart';
+import 'package:soul_connection/provider/customers.service.dart';
 
 void main() async {
   localUser = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    fetchCustomers();
+    super.initState();
+  }
+
+  void fetchCustomers() async {
+    isLoading = await CustomersService.fetchCustomers();
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   Widget page() {
-    if (localUser.containsKey('token')) {
+    if (isLoading) {
+      return Scaffold(
+        backgroundColor: const Color(0xfff2f2f2),
+        body: Center(
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              'Soul Connection',
+              style: TextStyle(
+                fontSize: dw(context) * 0.05,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Arial',
+              ),
+            ),
+          ),
+        ),
+      );
+    } else if (localUser.containsKey('token')) {
       String base64String = localUser.getString('profile_pic')!;
       return MenuPage(
         user: UserModel(

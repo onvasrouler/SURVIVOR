@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_charts/flutter_charts.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/constants/datas.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/subpages/widgets/animated_graphic.dart';
+import 'package:soul_connection/theme/color.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,88 +13,51 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
-  Widget chartToRun(List<double> data, String label) {
-    LabelLayoutStrategy? xContainerLabelLayoutStrategy;
-    ChartData chartData;
-    ChartOptions chartOptions = const ChartOptions();
-    chartData = ChartData(
-      dataRows: [
-        data,
-      ],
-      dataRowsColors: const [
-        Colors.blue,
-      ],
-      xUserLabels: const ['2019', '2020', '2021', '2022', '2023', '2024'],
-      dataRowsLegends: [
-        label,
-      ],
-      chartOptions: chartOptions,
-    );
-    var verticalBarChartContainer = VerticalBarChartTopContainer(
-      chartData: chartData,
-      xContainerLabelLayoutStrategy: xContainerLabelLayoutStrategy,
-    );
-
-    var verticalBarChart = VerticalBarChart(
-      painter: VerticalBarChartPainter(
-        verticalBarChartContainer: verticalBarChartContainer,
-      ),
-    );
-    return verticalBarChart;
-  }
-
   List<Widget> graphs(bool isLandscaped) {
     return [
       for (int i = 0; i < 3; i++)
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Builder(builder: (context) {
-            return MouseRegion(
-              onEnter: (event) {
-                final renderBox = context.findRenderObject() as RenderBox;
-                onHoverCard(event, i, renderBox);
-              },
-              onHover: (event) {
-                final renderBox = context.findRenderObject() as RenderBox;
-                onHoverCard(event, i, renderBox);
-              },
-              onExit: onExit,
-              child: Transform(
-                transform: hoveredIndex == i
-                    ? getTransformMatrix()
-                    : Matrix4.identity(),
-                alignment: FractionalOffset.center,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  width: isLandscaped
-                      ? dw(context) / 1.2
-                      : hoveredIndex == i
-                          ? dw(context) / 4.5
-                          : dw(context) / 5,
-                  height: hoveredIndex == i ? 160 : 140,
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey),
-                    boxShadow: hoveredIndex == i
-                        ? [
-                            const BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 10,
-                            )
-                          ]
-                        : [],
-                  ),
-                  child: AnimatedBarChart(
-                    data: data[i]['data'],
-                    label: data[i]['label'],
+          child: Builder(
+            builder: (context) {
+              return MouseRegion(
+                onEnter: (event) {
+                  final renderBox = context.findRenderObject() as RenderBox;
+                  onHoverCard(event, i, renderBox);
+                },
+                onHover: (event) {
+                  final renderBox = context.findRenderObject() as RenderBox;
+                  onHoverCard(event, i, renderBox);
+                },
+                onExit: onExit,
+                child: Transform(
+                  transform: hoveredIndex == i
+                      ? getTransformMatrix()
+                      : Matrix4.identity(),
+                  alignment: FractionalOffset.center,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    width: isLandscaped
+                        ? dw(context) / 1.2
+                        : hoveredIndex == i
+                            ? dw(context) / 4.5
+                            : dw(context) / 5,
+                    height: hoveredIndex == i ? 160 : 140,
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black, width: 1.5),
+                    ),
+                    child: AnimatedBarChart(
+                      data: data[i]['data'],
+                      label: data[i]['label'],
+                    ),
                   ),
                 ),
-              ),
-            );
-          }),
+              );
+            },
+          ),
         ),
     ];
   }
@@ -111,18 +74,17 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
           children: [
             sh(30),
             Text(
-              'Soul Connection',
+              'SOUL CONNECTION',
               style: TextStyle(
                 fontSize: dw(context) * 0.05,
-                fontWeight: FontWeight.bold,
                 fontFamily: 'Arial',
               ),
             ),
             Text(
               'Dashboard',
               style: TextStyle(
-                fontSize: dw(context) * 0.02,
-                fontWeight: FontWeight.bold,
+                fontSize: dw(context) * 0.025,
+                fontWeight: FontWeight.w300,
                 color: Colors.black,
                 fontFamily: 'Arial',
               ),
@@ -131,12 +93,12 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Container(
-                height: 1,
-                color: Colors.grey,
+                height: 1.5,
+                color: Colors.black,
                 width: dw(context),
               ),
             ),
-            sh(20),
+            sh(0),
             if (dw(context) > 700) ...[
               SizedBox(
                 height: 200,
@@ -158,8 +120,8 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 3),
                   child: Text(
-                    'Statistics',
-                    style: TextStyle(fontSize: 13),
+                    'Table name',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900),
                   ),
                 ),
                 AnimatedContainer(
@@ -171,24 +133,19 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
                   height: 289,
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey),
+                    border: Border.all(color: Colors.black, width: 1.5),
                   ),
                   child: SingleChildScrollView(
                     child: Table(
                       border: const TableBorder.symmetric(
-                        inside: BorderSide(color: Colors.grey),
+                        inside: BorderSide(color: Colors.black, width: 1.5),
                       ),
                       children: [
                         for (int row = 0; row <= products.length; row++)
                           if (row == 0)
                             TableRow(
                               decoration: const BoxDecoration(
-                                color: Colors.grey,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(9),
-                                  topRight: Radius.circular(9),
-                                ),
+                                color: AppColor.darkgrey,
                               ),
                               children: [
                                 for (int col = 0;
@@ -199,6 +156,10 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
                                     child: Text(
                                       tableLabels[col],
                                       textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                               ],

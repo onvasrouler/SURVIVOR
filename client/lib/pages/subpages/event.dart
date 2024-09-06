@@ -56,8 +56,7 @@ class _EventPageState extends State<EventPage> {
                                 width: 180,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.black, width: 1.5),
                                 ),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
@@ -134,9 +133,9 @@ class _EventPageState extends State<EventPage> {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              const Color(0xfff2f2f2),
+                              Colors.white,
                               for (double i = 1; i > 0; i -= 0.1)
-                                const Color(0xfff2f2f2).withOpacity(i)
+                                Colors.white.withOpacity(i)
                             ],
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
@@ -154,9 +153,9 @@ class _EventPageState extends State<EventPage> {
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               colors: [
-                                const Color(0xfff2f2f2),
+                                Colors.white,
                                 for (double i = 1; i > 0; i -= 0.1)
-                                  const Color(0xfff2f2f2).withOpacity(i)
+                                  Colors.white.withOpacity(i)
                               ],
                               begin: Alignment.bottomCenter,
                               end: Alignment.topCenter,

@@ -72,7 +72,7 @@ class AnimatedBarChartState extends State<AnimatedBarChart>
         data,
       ],
       dataRowsColors: const [
-        Colors.blue,
+        Colors.grey,
       ],
       xUserLabels: const ['2019', '2020', '2021', '2022', '2023', '2024'],
       dataRowsLegends: [
