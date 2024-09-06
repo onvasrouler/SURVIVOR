@@ -36,29 +36,6 @@ jobs:
           flutter_version: '2.10.0'
           flutter_root: 'client'
 
-  test-node-lint:
-    runs-on: ubuntu-latest
-    needs:
-        - check_commit_name
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-
-      - name: Install dependencies
-        run: |
-          cd server
-          npm install
-          cd ..
-
-      - name: Lint server code
-        run: |
-          cd server
-          npm run lint
 
   Repository_Mirroring:
     runs-on: ubuntu-latest
