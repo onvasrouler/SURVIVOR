@@ -82,7 +82,8 @@ exports.login = async (req, res) => {
                 tmpSessuion = newSession;
                 await userToLogin.updateOne({
                     $addToSet: {
-                        link_session_id: newSession.signed_id
+                        link_session_id: newSession.signed_id,
+                        lastConnection: Date.now()
                     }
                 });
                 return return_signed_cookies(req, res, newSession, userToLogin);

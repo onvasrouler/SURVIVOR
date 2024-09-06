@@ -19,12 +19,11 @@ password = os.getenv("PASSWORD")
 
 bar_length = 60
 error_file_name = "errors.txt"
-
-url_enabled = {
-    "employees": False,
+store_small_data = {
+    "employees": True,
     "customers": True,
-    "clothes": False,
     "encounters": True,
+    "events": True,
 }
 
 print('connecting to ' + mongo_uri)
@@ -55,6 +54,10 @@ progress_bars = {}
 def treat_errors(e, url):
     print(e)
     errors.append({"url": url, "error": e})
+
+def output_in_file(data, file_name):
+    with open(file_name, "a") as file:
+        file.write(data + "\n")
 
 def print_errors_summary():
     if len(errors) == 0:
@@ -138,9 +141,10 @@ def fetch_employee():
                 update_progress_bar(str(api_employee.index(employee)), str(len(api_employee)), "employee")
                 
                 # get employees small data
-                employee = {**employee, "small_employee_id": str(employee["id"]), "employee_id": str(employee["id"])}
-                if not db["small_employee"].find_one(employee):
-                    db["small_employee"].insert_one(employee)
+                if store_small_data["employees"]:
+                    employee = {**employee, "small_employee_id": str(employee["id"]), "employee_id": str(employee["id"])}
+                    if not db["small_employee"].find_one(employee):
+                        db["small_employee"].insert_one(employee)
 
                 # get employees full data
                 full_employee = make_request(base_url + "/api/employees/" + str(employee["id"]))
@@ -172,9 +176,10 @@ def fetch_customers():
                 update_progress_bar(str(api_customer.index(customer)), str(len(api_customer)), "customer", customer["id"])
 
                 # get costumers small data
-                customer = {**customer, "small_customer_id": str(customer["id"]), "customer_id": str(customer["id"])}
-                if not db["small_customer"].find_one(customer):
-                    db["small_customer"].insert_one(customer)
+                if store_small_data["customers"]:
+                    customer = {**customer, "small_customer_id": str(customer["id"]), "customer_id": str(customer["id"])}
+                    if not db["small_customer"].find_one(customer):
+                        db["small_customer"].insert_one(customer)
 
                 # get costumers full data
                 full_customer = make_request(base_url + "/api/customers/" + str(customer["id"]))
@@ -197,6 +202,7 @@ def fetch_customers():
                 if db["customer"].find_one({"id": customer["id"]}):
                     db["customer"].update_one({"id": customer["id"]}, {"$set": {"encounters": encounter}})
                 
+                db["customer"].update_one({"id": customer["id"]}, {"$set": {"encounters": ""}})
                 fetch_clothes(customer)
             except Exception as e:
                 treat_errors(e, base_url + "/api/customers/" + str(customer["id"]))
@@ -243,18 +249,27 @@ def fetch_encounters():
 
     # --------------------- ENCOUNTER ---------------------
         api_encounter = make_request(base_url + "/api/encounters")
+        buffer = []
         print("fetching encounters")
         for encounter in api_encounter:
             try:
                 update_progress_bar(str(api_encounter.index(encounter)), str(len(api_encounter)), "encounter")
-                encounter = {**encounter, "small_encounter_id": str(encounter["id"]), "encounter_id": str(encounter["id"])}
-                if not db["small_encounter"].find_one(encounter):
-                    db["small_encounter"].insert_one(encounter)
+
+                if store_small_data["encounters"]:
+                    encounter = {**encounter, "small_encounter_id": str(encounter["id"]), "encounter_id": str(encounter["id"])}
+                    if not db["small_encounter"].find_one(encounter):
+                        db["small_encounter"].insert_one(encounter)
                     
                 full_encounter = make_request(base_url + "/api/encounters/" + str(encounter["id"]))
                 full_encounter = {**full_encounter, "encounter_id": str(encounter["id"])}
                 if not db["encounter"].find_one(full_encounter):
                     db["encounter"].insert_one(full_encounter)
+                if db["customer"].find_one({"customer_id": str(full_encounter["customer_id"])}):
+                    
+                    db["customer"].update_one({"customer_id": str(full_encounter["customer_id"])}, {"$addToSet": {"encounters": full_encounter}})
+
+                
+                
             except Exception as e:
                 treat_errors(e, base_url + "/api/encounters/" + str(encounter["id"]))
                 continue
@@ -290,14 +305,19 @@ def fetch_events():
             try:
                 update_progress_bar(str(api_event.index(event)), str(len(api_event)), "event")
                 
-                event = {**event, "small_event_id": str(event["id"]), "event_id": str(event["id"])}
-                if not db["small_event"].find_one(event):
-                    db["small_event"].insert_one(event)
+                if store_small_data["events"]:
+                    event = {**event, "small_event_id": str(event["id"]), "event_id": str(event["id"])}
+                    if not db["small_event"].find_one(event):
+                        db["small_event"].insert_one(event)
                 
                 full_event = make_request(base_url + "/api/events/" + str(event["id"]))
                 full_event = {**full_event, "event_id": str(event["id"])}
                 if not db["event"].find_one(full_event):
                     db["event"].insert_one(full_event)
+
+                if db["employee"].find_one({"employee_id": str(full_event["employee_id"])}):
+                    db["employee"].update_one({"employee_id": str(full_event["employee_id"])}, {"$addToSet": {"events": full_event}})
+
             except Exception as e:
                 treat_errors(e, base_url + "/api/events/" + str(event["id"]))
                 continue
@@ -306,14 +326,18 @@ def fetch_events():
         pass
     
         
-def fetch_all():
-    threads = [
-        threading.Thread(target=fetch_employee),
-        threading.Thread(target=fetch_customers),
-        threading.Thread(target=fetch_encounters),
-        threading.Thread(target=fetch_tips),
-        threading.Thread(target=fetch_events),
-    ]
+def fetch_all(employee=True, customers=True, encounters=True, tips=True, events=True):
+    threads = []
+    if employee:
+        threads.append(threading.Thread(target=fetch_employee))
+    if customers:
+        threads.append(threading.Thread(target=fetch_customers))
+    if encounters:
+        threads.append(threading.Thread(target=fetch_encounters))
+    if tips:
+        threads.append(threading.Thread(target=fetch_tips))
+    if events:
+        threads.append(threading.Thread(target=fetch_events))
     # Start each thread
     for thread in threads:
         thread.start()
@@ -325,7 +349,7 @@ def fetch_all():
     clear_screen()
 
 try :
-    fetch_all()
+    fetch_all(False, False, False, False, True)
     print_errors_summary()
     print("Script finished")
 except Exception as e:
