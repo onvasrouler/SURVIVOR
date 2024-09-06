@@ -80,7 +80,11 @@ const userSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    lastConnection: {
+        type: Date,
+        default: Date.now
+    },
 });
 
 userSchema.pre("save", function (next) {

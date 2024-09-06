@@ -6,22 +6,9 @@ on:
       - 'main'
 
 jobs:
-  generate-changelog:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: "Checkout"
-        uses: "actions/checkout@v3"
-        with:
-          fetch-depth: 0 # Required for fetch all history
-
-      - name: "Generate Changelog"
-        uses: sercanuste/gitmoji-changelog-action@v1
 
   test-flutter-build:
     runs-on: ubuntu-latest
-    needs:
-        - generate-changelog
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

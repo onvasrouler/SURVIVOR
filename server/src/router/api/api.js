@@ -1,4 +1,4 @@
-const { soulConnection } = require("../../database/mongo");
+const { mainDB, soulConnection } = require("../../database/mongo");
 const api_formatter = require("../../middleware/api-formatter.js");
 
 exports.get_all = async (req, res) => {
@@ -60,3 +60,55 @@ exports.soul_connection_api = async (req, res) => {
 
     }
 };
+
+exports.internal_api_get_all = async (req, res) => {
+    if (!req.user || req.user == null) {
+        return api_formatter(req, res, 401, "noSession", "vous n'êtes pas connecté", null, null, null);
+    }
+    try {
+        const data = await mainDB.collection("users").find({}).toArray();
+        let buffer = [];
+        data.forEach((element) => {
+            buffer.push({
+                "username": element.username,
+                "email": element.email,
+                "role": element.role,
+                "creationIp": element.creationIp,
+                "lastConnection": element.lastConnection,
+                "unique_id": element.unique_id
+            });
+        });
+        return api_formatter(req, res, 200, "success", "successfully received data", buffer, null, null);
+    } catch (error) {
+        return api_formatter(req, res, 500, "errorOccured", "Error occured when trying to get data", null, error, null);
+    }
+}
+
+exports.internal_api_get_one = async (req, res) => {
+    if (!req.user || req.user == null) {
+        return api_formatter(req, res, 401, "noSession", "vous n'êtes pas connecté", null, null, null);
+    }
+    try {
+        const data = await mainDB.collection("users").findOne({
+            $or: [
+                { unique_id: req.params.ID },
+                { username: req.params.ID },
+                { email: req.params.ID }
+            ]
+        });
+        if (!data) {
+            return api_formatter(req, res, 404, "notFound", "data not found", null, null, null);
+        }
+        let buffer = {
+            "username": data.username,
+            "email": data.email,
+            "role": data.role,
+            "creationIp": data.creationIp,
+            "lastConnection": data.lastConnection,
+            "unique_id": data.unique_id
+        };
+        return api_formatter(req, res, 200, "success", "successfully received data", buffer, null, null);
+    } catch (error) {
+        return api_formatter(req, res, 500, "errorOccured", "Error occured when trying to get data", null, error, null);
+    }
+}
