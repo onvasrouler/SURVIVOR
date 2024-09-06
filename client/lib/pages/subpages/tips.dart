@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
-import 'package:soul_connection/constants/datas.dart';
+import 'package:soul_connection/models/tips.module.dart';
+import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
 
@@ -37,7 +38,7 @@ class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
                       childAspectRatio: 2.0,
                     ),
                     scrollDirection: Axis.vertical,
-                    itemCount: tips.length,
+                    itemCount: allTips.length,
                     itemBuilder: (context, index) {
                       return Builder(
                         builder: (context) {
@@ -68,17 +69,29 @@ class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
                                 ),
                                 padding: const EdgeInsets.all(10.0),
                                 child: Center(
-                                  child: FittedBox(
-                                    child: Text(
-                                      tips[index],
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
+                                  child: Column (
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        allTips[index].title,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
+                                      Text(
+                                        allTips[index].tips,
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  )
                                 ),
                               ),
                             ),
