@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/models/customer.module.dart';
+import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/subpages/widgets/drop_down_button.dart';
 
 class WardrobePage extends StatefulWidget {
@@ -12,10 +13,11 @@ class WardrobePage extends StatefulWidget {
   State<WardrobePage> createState() => _WardrobePageState();
 }
 
-class _WardrobePageState extends State<WardrobePage> {
+class _WardrobePageState extends State<WardrobePage>
+    with HoverMixin<WardrobePage> {
   int currentIndex = 0;
   Customer currentCustomer = allCustomers.first;
-  List<String> imageTypes = ['hat/cap', 'bottom', 'top', 'shoes'];
+  List<String> imageTypes = ['hat/cap', 'top', 'bottom', 'shoes'];
 
   @override
   Widget build(BuildContext context) {
@@ -28,73 +30,121 @@ class _WardrobePageState extends State<WardrobePage> {
           Stack(
             alignment: Alignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  for (int i = 0; i < imageTypes.length; i++)
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: SizedBox(
-                        height: dh(context) / 2,
-                        width: dw(context) / 7,
-                        child: CarouselSlider.builder(
-                          itemCount: currentCustomer.clothes
-                              .where((c) => c['type'] == imageTypes[i])
-                              .length,
-                          itemBuilder: (context, index, realIndex) {
-                            final currentClothes = currentCustomer.clothes
-                                .where((c) => c['type'] == imageTypes[i])
-                                .toList();
-                            if (currentClothes.isEmpty) {
-                              return const SizedBox();
-                            }
-                            final filterdClothes = currentClothes[index];
-                            return AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10.0),
-                                border:
-                                    Border.all(color: Colors.grey, width: 1.0),
-                              ),
-                              width: dw(context) / 5,
-                              height: dh(context) / 1,
-                              padding: const EdgeInsets.all(10.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: CachedNetworkImage(
-                                  imageUrl:
-                                      'http://localhost:8080/clothes/${currentCustomer.userId}_${filterdClothes['id']}.png',
-                                  fit: BoxFit.contain,
+              Padding(
+                padding: const EdgeInsets.only(top: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (int i = 0; i < imageTypes.length; i++)
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: dh(context) / 1.3,
+                              width: dw(context) / 6,
+                              child: CarouselSlider.builder(
+                                itemCount: currentCustomer.clothes
+                                    .where((c) => c['type'] == imageTypes[i])
+                                    .length,
+                                itemBuilder: (context, index, realIndex) {
+                                  final currentClothes = currentCustomer.clothes
+                                      .where((c) => c['type'] == imageTypes[i])
+                                      .toList();
+                                  if (currentClothes.isEmpty) {
+                                    return AnimatedContainer(
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                      curve: Curves.easeInOut,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        border: Border.all(
+                                            color: Colors.grey, width: 1.0),
+                                      ),
+                                      width: dw(context) / 4,
+                                      height: dh(context) / 1,
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        child: Container(
+                                          width: dw(context) / 4,
+                                          height: dh(context) / 1,
+                                          alignment: Alignment.center,
+                                          child: const Text(
+                                            'No clothes found in this category',
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.grey),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  final filterdClothes = currentClothes[index];
+                                  return AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      border: Border.all(
+                                          color: Colors.grey, width: 1.0),
+                                    ),
+                                    width: dw(context) / 4,
+                                    height: dh(context) / 1,
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: SizedBox(
+                                        width: dw(context) / 4,
+                                        height: dh(context) / 1,
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              'http://localhost:8080/clothes/${currentCustomer.userId}_${filterdClothes['id']}.png',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                options: CarouselOptions(
+                                  autoPlayInterval: const Duration(seconds: 14),
+                                  viewportFraction: 0.3,
+                                  initialPage: 0,
+                                  autoPlay: false,
+                                  aspectRatio: 16 / 9,
+                                  enlargeFactor: 0.6,
+                                  enlargeCenterPage: true,
+                                  enableInfiniteScroll: true,
+                                  scrollDirection: Axis.vertical,
+                                  onPageChanged: (int index,
+                                      CarouselPageChangedReason reason) {
+                                    if (mounted) {
+                                      setState(() {
+                                        currentIndex = index;
+                                      });
+                                    }
+                                  },
                                 ),
                               ),
-                            );
-                          },
-                          options: CarouselOptions(
-                            autoPlayInterval: const Duration(seconds: 4),
-                            viewportFraction: 0.5,
-                            initialPage: 0,
-                            autoPlay: true,
-                            aspectRatio: 16 / 9,
-                            enlargeFactor: 1,
-                            enlargeCenterPage: true,
-                            enableInfiniteScroll: true,
-                            scrollDirection: Axis.vertical,
-                            onPageChanged:
-                                (int index, CarouselPageChangedReason reason) {
-                              if (mounted) {
-                                setState(() {
-                                  currentIndex = index;
-                                });
-                              }
-                            },
-                          ),
+                            ),
+                            if (dw(context) >= 700)
+                              Text(
+                                imageTypes[i],
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                          ],
                         ),
                       ),
-                    ),
-                  sw(100),
-                ],
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 30),
@@ -119,43 +169,73 @@ class _WardrobePageState extends State<WardrobePage> {
                             },
                           ),
                         ),
-                        sh(50),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                            width: 120,
-                            height: 120,
-                            decoration: const BoxDecoration(
-                              color: Colors.blue,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(3.0),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: Image.memory(
-                                  currentCustomer.profilePicture,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        sh(20),
-                        Container(
-                          width: 120,
-                          alignment: Alignment.center,
-                          child: Text(
-                            currentCustomer.gender,
-                            style: const TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.only(right: 40),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: SizedBox(
+                    height: dh(context),
+                    width: dw(context),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        sh(30),
+                        Builder(
+                          builder: (context) {
+                            return MouseRegion(
+                              onEnter: (event) {
+                                final renderBox =
+                                    context.findRenderObject() as RenderBox;
+                                onHoverCard(event, 9, renderBox);
+                              },
+                              onHover: (event) {
+                                final renderBox =
+                                    context.findRenderObject() as RenderBox;
+                                onHoverCard(event, 9, renderBox);
+                              },
+                              onExit: onExit,
+                              child: Transform(
+                                transform: hoveredIndex == 9
+                                    ? getTransformMatrix()
+                                    : Matrix4.identity(),
+                                alignment: FractionalOffset.center,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    width: hoveredIndex == 9 ? 130 : 120,
+                                    height: hoveredIndex == 9 ? 130 : 120,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.blue,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(3.0),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: Image.memory(
+                                          currentCustomer.profilePicture,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ],

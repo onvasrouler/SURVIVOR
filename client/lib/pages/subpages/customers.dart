@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/constants/datas.dart';
 import 'package:soul_connection/models/customer.module.dart';
+import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
 import 'package:soul_connection/pages/subpages/widgets/drop_down_button.dart';
 
@@ -12,7 +13,8 @@ class CustomersPage extends StatefulWidget {
   State<CustomersPage> createState() => _CustomersPageState();
 }
 
-class _CustomersPageState extends State<CustomersPage> {
+class _CustomersPageState extends State<CustomersPage>
+    with HoverMixin<CustomersPage> {
   Customer currentCustomer = allCustomers.first;
 
   @override
@@ -95,13 +97,40 @@ class _CustomersPageState extends State<CustomersPage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 30),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.memory(
-                    currentCustomer.profilePicture,
-                    width: 150,
-                    height: 150,
-                  ),
+                child: Builder(
+                  builder: (context) {
+                    return MouseRegion(
+                      onEnter: (event) {
+                        final renderBox =
+                            context.findRenderObject() as RenderBox;
+                        onHoverCard(event, 9, renderBox);
+                      },
+                      onHover: (event) {
+                        final renderBox =
+                            context.findRenderObject() as RenderBox;
+                        onHoverCard(event, 9, renderBox);
+                      },
+                      onExit: onExit,
+                      child: Transform(
+                        transform: hoveredIndex == 9
+                            ? getTransformMatrix()
+                            : Matrix4.identity(),
+                        alignment: FractionalOffset.center,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            width: hoveredIndex == 9 ? 160 : 140,
+                            height: hoveredIndex == 9 ? 160 : 140,
+                            child: Image.memory(
+                              currentCustomer.profilePicture,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ],
