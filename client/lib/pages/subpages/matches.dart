@@ -16,8 +16,8 @@ class MatchesPage extends StatefulWidget {
 
 class _MatchesPageState extends State<MatchesPage>
     with HoverMixin<MatchesPage> {
-  Customer firstCustomer = allCustomers.first;
-  Customer secondCustomer = allCustomers[1];
+  CustomerModel firstCustomer = allCustomers.first;
+  CustomerModel secondCustomer = allCustomers[1];
 
   List<String> signs = [
     'Aries',
@@ -112,7 +112,7 @@ class _MatchesPageState extends State<MatchesPage>
           width: 320,
           height: 30,
           child: CustomerDropdown(
-            onCustomerChange: (Customer currentCustomer) {
+            onCustomerChange: (CustomerModel currentCustomer) {
               setState(() {
                 if (index == 0) firstCustomer = currentCustomer;
                 if (index == 1) secondCustomer = currentCustomer;

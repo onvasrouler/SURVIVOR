@@ -5,16 +5,16 @@ import 'package:soul_connection/models/customer.module.dart';
 
 class CustomersService {
   static Future<bool> fetchCustomers() async {
-    final response = await http.get(
+    final customers = await http.get(
       Uri.parse('http://82.65.59.34:3333/soul_connection_api/customer'),
       headers: {
         'session': token,
       },
     );
-
-    if (response.statusCode == 200) {
-      List<dynamic> body = jsonDecode(response.body)['data'];
-      allCustomers = body.map((json) => Customer.fromJson(json)).toList();
+    if (customers.statusCode == 200) {
+      List<dynamic> bodyCustomers = jsonDecode(customers.body)['data'];
+      allCustomers =
+          bodyCustomers.map((json) => CustomerModel.fromJson(json)).toList();
       return true;
     } else {
       return false;

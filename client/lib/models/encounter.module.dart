@@ -1,22 +1,28 @@
-class Encounter {
+class EncounterModel {
   final int id;
   final int customerId;
   final int rating;
   final String date;
+  final String comment;
+  final String source;
 
-  Encounter({
+  EncounterModel({
     required this.id,
     required this.rating,
     required this.customerId,
     required this.date,
+    required this.comment,
+    required this.source,
   });
 
-  factory Encounter.fromJson(Map<String, dynamic> json) {
-    return Encounter(
+  factory EncounterModel.fromJson(Map<String, dynamic> json) {
+    return EncounterModel(
       id: json['id'],
       customerId: json['customer_id'],
       date: json['date'],
       rating: json['rating'],
+      comment: json['comment'],
+      source: json['source'],
     );
   }
 }

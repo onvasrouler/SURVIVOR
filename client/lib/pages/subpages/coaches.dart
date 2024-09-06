@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/constants/datas.dart';
+import 'package:soul_connection/models/employees.module.dart';
 import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
 import 'package:soul_connection/theme/color.dart';
 
@@ -12,6 +13,14 @@ class CoachesPage extends StatefulWidget {
 }
 
 class _CoachesPageState extends State<CoachesPage> {
+  String fillTable(EmployeeModel employee, int index) {
+    if (index == 1) return '${employee.name} ${employee.surname}';
+    if (index == 2) return employee.birthDate;
+    if (index == 3) return 'Edit list ...';
+    if (index == 4) return employee.lastSession;
+    return '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -34,7 +43,7 @@ class _CoachesPageState extends State<CoachesPage> {
                 inside: BorderSide(color: Colors.black, width: 1.5),
               ),
               children: [
-                for (int row = 0; row <= users.length; row++)
+                for (int row = 0; row <= allCoaches.length; row++)
                   if (row == 0)
                     TableRow(
                       decoration: const BoxDecoration(
@@ -159,8 +168,7 @@ class _CoachesPageState extends State<CoachesPage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  users[row - 1]
-                                      [tableCoaches[col].toLowerCase()],
+                                  fillTable(allCoaches[row - 1], col),
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w800,
@@ -172,7 +180,7 @@ class _CoachesPageState extends State<CoachesPage> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                users[row - 1][tableCoaches[col].toLowerCase()],
+                                fillTable(allCoaches[row - 1], col),
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w800,
