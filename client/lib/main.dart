@@ -6,6 +6,7 @@ import 'package:soul_connection/auth/onboard.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/menu.dart';
 import 'package:soul_connection/models/user.module.dart';
+import 'package:soul_connection/provider/coachs.service.dart';
 import 'package:soul_connection/provider/customers.service.dart';
 
 void main() async {
@@ -26,11 +27,21 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     fetchCustomers();
+    fetchEmployees();
     super.initState();
   }
 
   void fetchCustomers() async {
     isLoading = await CustomersService.fetchCustomers();
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void fetchEmployees() async {
+    isLoading = await CoachsService.fetchEmployees();
     if (mounted) {
       setState(() {
         isLoading = false;
