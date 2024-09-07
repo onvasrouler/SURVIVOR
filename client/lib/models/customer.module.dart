@@ -58,7 +58,7 @@ class CustomerModel {
           .map<Map<String, dynamic>>((e) => e)
           .toList(),
       profilePicture:
-          'http://82.65.59.34:3333/soul_connection_api/customer_image/${json['id']}.png?session=$token',
+          'http://82.65.59.34:3333/soul_connection_api/customer_image/${json['id']}.png?session=${localUser.getString('token')!}',
       payements: (json['payments_history'] as List)
           .map<PayementModel>((e) => PayementModel.fromJson(e))
           .toList(),

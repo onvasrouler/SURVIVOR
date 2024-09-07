@@ -18,7 +18,7 @@ class PayementModel {
       payementId: json['id'],
       date: json['date'],
       paymentMethod: json['payment_method'],
-      amount: json['amount'],
+      amount: json['amount'].toDouble(),
       comment: json['comment'],
     );
   }

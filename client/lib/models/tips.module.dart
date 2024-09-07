@@ -1,14 +1,14 @@
-class Tips {
+class TipsModel {
   final String title;
   final String tips;
 
-  Tips({
+  TipsModel({
     required this.title,
     required this.tips,
   });
 
-  factory Tips.fromJson(Map<String, dynamic> json) {
-    return Tips(
+  factory TipsModel.fromJson(Map<String, dynamic> json) {
+    return TipsModel(
       title: json['title'],
       tips: json['tip'],
     );
