@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soul_connection/auth/onboard.dart';
@@ -26,50 +27,34 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    if (localUser.containsKey('token')) {
-      fetchCustomers();
-      fetchEmployees();
-      fetchTips();
-      fetchEvents();
-    } else {
-      isLoading = false;
-    }
     super.initState();
-  }
-
-  void fetchCustomers() async {
-    isLoading = await CustomersService.fetchCustomers();
-    if (mounted) {
+    if (localUser.containsKey('token')) {
+      fetchData();
+    } else {
       setState(() {
         isLoading = false;
       });
     }
   }
 
-  void fetchEmployees() async {
-    isLoading = await CoachsService.fetchEmployees();
-    if (mounted) {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  void fetchTips() async {
-    isLoading = await TipsService.fetchTips();
-    if (mounted) {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  void fetchEvents() async {
-    isLoading = await EventService.fetchEvent();
-    if (mounted) {
-      setState(() {
-        isLoading = false;
-      });
+  Future<void> fetchData() async {
+    try {
+      await Future.wait([
+        CustomersService.fetchCustomers(),
+        CoachsService.fetchEmployees(),
+        TipsService.fetchTips(),
+        EventService.fetchEvent(),
+      ]);
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 

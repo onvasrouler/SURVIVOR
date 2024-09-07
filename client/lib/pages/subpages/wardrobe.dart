@@ -109,7 +109,7 @@ class _WardrobePageState extends State<WardrobePage>
                                         height: dh(context) / 1,
                                         child: CachedNetworkImage(
                                           imageUrl:
-                                              'http://82.65.59.34:3333/soul_connection_api/clothe_image/${filterdClothes['id']}.png?session=${localUser.getString('token')!}',
+                                              'http://$apiUrl/soul_connection_api/clothe_image/${filterdClothes['id']}.png?session=${localUser.getString('token')!}',
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -220,7 +220,7 @@ class _WardrobePageState extends State<WardrobePage>
                                     padding: const EdgeInsets.all(10.0),
                                     child: CachedNetworkImage(
                                       imageUrl:
-                                          'http://82.65.59.34:3333/soul_connection_api/clothe_image/${filterdClothes['id']}.png?session=${localUser.getString('token')!}',
+                                          'http://$apiUrl/soul_connection_api/clothe_image/${filterdClothes['id']}.png?session=${localUser.getString('token')!}',
                                       fit: BoxFit.cover,
                                     ),
                                   );

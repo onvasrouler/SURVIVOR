@@ -15,6 +15,8 @@ List<TipsModel> allTips = [];
 
 List<EventModel> allEvents = [];
 
+String apiUrl = '82.65.59.34:3333';
+
 double dh(BuildContext context) {
   return MediaQuery.of(context).size.height;
 }
@@ -30,4 +32,3 @@ Widget sh(double height) {
 Widget sw(double width) {
   return Container(width: width);
 }
-

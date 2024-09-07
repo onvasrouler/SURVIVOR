@@ -398,7 +398,7 @@ class _CustomersPageState extends State<CustomersPage>
                                                       const EdgeInsets.all(8.0),
                                                   child: Text(
                                                     currentCustomer
-                                                        .encouters[row - 1].id
+                                                        .encouters[row - 1].date
                                                         .toString(),
                                                     textAlign: TextAlign.center,
                                                     style: const TextStyle(
@@ -597,7 +597,7 @@ class _CustomersPageState extends State<CustomersPage>
                                                       const EdgeInsets.all(8.0),
                                                   child: Text(
                                                     currentCustomer
-                                                        .encouters[row - 1].id
+                                                        .encouters[row - 1].date
                                                         .toString(),
                                                     textAlign: TextAlign.center,
                                                     style: const TextStyle(
