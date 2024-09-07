@@ -26,6 +26,12 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   int tabIndex = 0;
 
+  @override
+  void initState() {
+    super.initState();
+    _initFlutterChannel();
+  }
+
   Widget tabPage(int index) {
     return [
       const HomePage(),
@@ -37,6 +43,31 @@ class _MenuPageState extends State<MenuPage> {
       const TipsPage(),
       const EventPage(),
     ][index];
+  }
+
+  int _counter = 0;
+
+  Future<void> _incrementCounter() async {
+    setState(() {
+      _counter++;
+    });
+    await channel.invokeMethod(
+      "flutterToWatch",
+      {"method": "sendCounterToNative", "data": _counter},
+    );
+  }
+
+  Future<void> _initFlutterChannel() async {
+    channel.setMethodCallHandler((call) async {
+      switch (call.method) {
+        case "sendCounterToFlutter":
+          _counter = call.arguments["data"]["counter"];
+          _incrementCounter();
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   @override

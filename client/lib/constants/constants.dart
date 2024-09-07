@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soul_connection/models/customer.module.dart';
 import 'package:soul_connection/models/employees.module.dart';
@@ -32,3 +33,5 @@ Widget sh(double height) {
 Widget sw(double width) {
   return Container(width: width);
 }
+
+const channel = MethodChannel('com.soul.connection');
