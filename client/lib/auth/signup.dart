@@ -8,14 +8,14 @@ import 'package:soul_connection/provider/customers.service.dart';
 import 'package:soul_connection/provider/events.service.dart';
 import 'package:soul_connection/provider/tips.service.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<SignInPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<SignInPage> {
+class _LoginPageState extends State<SignUpPage> {
   late TextEditingController _email;
   late TextEditingController _password;
   late TextEditingController _username;
@@ -40,7 +40,6 @@ class _LoginPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -53,6 +52,7 @@ class _LoginPageState extends State<SignInPage> {
           ),
         ),
       ),
+      backgroundColor: Colors.white,
       body: Container(
         width: dw(context),
         height: dh(context),
@@ -60,12 +60,16 @@ class _LoginPageState extends State<SignInPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            TextField(
+              controller: _username,
+              decoration: const InputDecoration(hintText: 'Username'),
+            ),
             Container(
               height: 30,
             ),
             TextField(
               controller: _email,
-              decoration: const InputDecoration(hintText: 'Email or username'),
+              decoration: const InputDecoration(hintText: 'Email'),
             ),
             Container(
               height: 50,
@@ -83,8 +87,11 @@ class _LoginPageState extends State<SignInPage> {
                   setState(() {
                     loader = true;
                   });
-                  String? user =
-                      await AuthService.signIn(_email.text, _password.text);
+                  String? user = await AuthService.signUp(
+                    _email.text,
+                    _password.text,
+                    _username.text,
+                  );
                   if (user == null) {
                     await CustomersService.fetchCustomers();
                     await CoachsService.fetchEmployees();
@@ -126,7 +133,7 @@ class _LoginPageState extends State<SignInPage> {
                 child: loader
                     ? const CupertinoActivityIndicator()
                     : const Text(
-                        "Sign in",
+                        "Sign up",
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 30,

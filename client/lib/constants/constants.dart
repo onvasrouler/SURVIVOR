@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soul_connection/models/customer.module.dart';
 import 'package:soul_connection/models/employees.module.dart';
+import 'package:soul_connection/models/event.module.dart';
 import 'package:soul_connection/models/tips.module.dart';
 
 late SharedPreferences localUser;
@@ -10,7 +11,9 @@ List<CustomerModel> allCustomers = [];
 
 List<EmployeeModel> allCoaches = [];
 
-List<Tips> allTips = [];
+List<TipsModel> allTips = [];
+
+List<EventModel> allEvents = [];
 
 double dh(BuildContext context) {
   return MediaQuery.of(context).size.height;
@@ -28,5 +31,3 @@ Widget sw(double width) {
   return Container(width: width);
 }
 
-String token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2lkIjoiYjM1MDRjZWItNzAyYS00YzY5LWI0ZmYtYjk5NTZkZDU0YzRmIiwiaWF0IjoxNzI1NTI5ODcxfQ.mwBOL5362P9VU8dT7fflEcIVOOtPVJKJ5CowEEXH_JI';

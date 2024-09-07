@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:soul_connection/constants/constants.dart';
-import 'package:soul_connection/models/tips.module.dart';
+import 'package:soul_connection/models/event.module.dart';
 
-class TipsService {
-  static Future<bool> fetchTips() async {
+class EventService {
+  static Future<bool> fetchEvent() async {
     final response = await http.get(
-      Uri.parse('http://82.65.59.34:3333/soul_connection_api/tip'),
+      Uri.parse('http://82.65.59.34:3333/soul_connection_api/event'),
       headers: {
         'session': localUser.getString('token')!,
       },
@@ -14,7 +14,7 @@ class TipsService {
 
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(response.body)['data'];
-      allTips = body.map((json) => TipsModel.fromJson(json)).toList();
+      allEvents = body.map((json) => EventModel.fromJson(json)).toList();
       return true;
     } else {
       return false;

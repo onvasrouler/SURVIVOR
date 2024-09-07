@@ -8,7 +8,7 @@ class CoachsService {
     final employees = await http.get(
       Uri.parse('http://82.65.59.34:3333/soul_connection_api/employee'),
       headers: {
-        'session': token,
+        'session': localUser.getString('token')!,
       },
     );
     if (employees.statusCode == 200) {

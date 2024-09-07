@@ -8,7 +8,7 @@ class CustomersService {
     final customers = await http.get(
       Uri.parse('http://82.65.59.34:3333/soul_connection_api/customer'),
       headers: {
-        'session': token,
+        'session': localUser.getString('token')!,
       },
     );
     if (customers.statusCode == 200) {
