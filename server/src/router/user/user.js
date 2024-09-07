@@ -83,6 +83,8 @@ exports.login = async (req, res) => {
                 await userToLogin.updateOne({
                     $addToSet: {
                         link_session_id: newSession.signed_id,
+                    },
+                    $set: {
                         lastConnection: Date.now()
                     }
                 });
