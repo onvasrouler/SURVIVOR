@@ -34,4 +34,18 @@ class EmployeeModel {
       lastSession: json['lastConnection'] ?? 'Never',
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'email': email,
+      'name': name,
+      'surname': surname,
+      'birth_date': birthDate,
+      'gender': gender,
+      'work': work,
+      'employee_id': employeeId,
+      'lastConnection': lastSession,
+    };
+  }
 }

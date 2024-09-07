@@ -22,4 +22,14 @@ class PayementModel {
       comment: json['comment'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': payementId,
+      'date': date,
+      'payment_method': paymentMethod,
+      'amount': amount,
+      'comment': comment,
+    };
+  }
 }

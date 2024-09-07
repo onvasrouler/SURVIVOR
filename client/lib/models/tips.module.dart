@@ -13,4 +13,11 @@ class TipsModel {
       tips: json['tip'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'tip': tips,
+    };
+  }
 }

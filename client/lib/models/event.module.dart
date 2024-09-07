@@ -34,4 +34,18 @@ class EventModel {
       maxParticipants: json['max_participants'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'date': date,
+      'duration': duration,
+      'location_x': locationX,
+      'location_y': locationY,
+      'type': type,
+      'location_name': locationName,
+      'max_participants': maxParticipants,
+    };
+  }
 }

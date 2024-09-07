@@ -25,4 +25,15 @@ class EncounterModel {
       source: json['source'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'customer_id': customerId,
+      'date': date,
+      'rating': rating,
+      'comment': comment,
+      'source': source,
+    };
+  }
 }

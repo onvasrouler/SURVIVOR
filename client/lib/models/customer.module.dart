@@ -65,4 +65,27 @@ class CustomerModel {
       encouters: encounters,
     );
   }
+  Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> clothesJson = clothes.map((e) => e).toList();
+    List<Map<String, dynamic>> payementsJson =
+        payements.map((e) => e.toJson()).toList();
+    List<Map<String, dynamic>> encountersJson =
+        encouters.map((e) => e.toJson()).toList();
+
+    return {
+      'id': userId,
+      'email': email,
+      'name': name,
+      'surname': surname,
+      'birth_date': birthDate,
+      'gender': gender,
+      'description': description,
+      'astrological_sign': astrologicalSign,
+      'phone_number': phoneNumber,
+      'address': address,
+      'clothes': clothesJson,
+      'payments_history': payementsJson,
+      'encounters': encountersJson,
+    };
+  }
 }
