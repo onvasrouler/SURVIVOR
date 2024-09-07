@@ -184,6 +184,7 @@ def fetch_customers():
                 # get costumers full data
                 full_customer = make_request(base_url + "/api/customers/" + str(customer["id"]))
                 full_customer = {**full_customer, "customer_id": str(customer["id"])}
+
                 if not db["customer"].find_one(full_customer):
                     db["customer"].insert_one(full_customer)
                 
@@ -198,11 +199,10 @@ def fetch_customers():
                 if db["customer"].find_one({"id": customer["id"]}):
                     db["customer"].update_one({"id": customer["id"]}, {"$set": {"payments_history": payments_history}})
                 
-                encounter = make_request(base_url + "/api/encounters/customer/" + str(customer["id"]))
-                if db["customer"].find_one({"id": customer["id"]}):
-                    db["customer"].update_one({"id": customer["id"]}, {"$set": {"encounters": encounter}})
+                # encounter = make_request(base_url + "/api/encounters/customer/" + str(customer["id"]))
+                # if db["customer"].find_one({"id": customer["id"]}):
+                #     db["customer"].update_one({"id": customer["id"]}, {"$set": {"encounters": encounter}})
                 
-                db["customer"].update_one({"id": customer["id"]}, {"$set": {"encounters": ""}})
                 fetch_clothes(customer)
             except Exception as e:
                 treat_errors(e, base_url + "/api/customers/" + str(customer["id"]))
@@ -265,7 +265,6 @@ def fetch_encounters():
                 if not db["encounter"].find_one(full_encounter):
                     db["encounter"].insert_one(full_encounter)
                 if db["customer"].find_one({"customer_id": str(full_encounter["customer_id"])}):
-                    
                     db["customer"].update_one({"customer_id": str(full_encounter["customer_id"])}, {"$addToSet": {"encounters": full_encounter}})
 
                 
