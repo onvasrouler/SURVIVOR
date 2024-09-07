@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/models/customer.module.dart';
@@ -87,11 +88,13 @@ class _MatchesPageState extends State<MatchesPage>
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   curve: Curves.easeInOut,
-                  height:
-                      (((dw(context) / 10) > 140 ? 140 : (dw(context) / 10)) +
+                  height: !kIsWeb
+                      ? 80
+                      : (((dw(context) / 10) > 140 ? 140 : (dw(context) / 10)) +
                           (hoveredIndex != index ? 0 : 40)),
-                  width:
-                      (((dw(context) / 10) > 140 ? 140 : (dw(context) / 10)) +
+                  width: !kIsWeb
+                      ? 80
+                      : (((dw(context) / 10) > 140 ? 140 : (dw(context) / 10)) +
                           (hoveredIndex != index ? 0 : 40)),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black, width: 1.5),
@@ -109,7 +112,7 @@ class _MatchesPageState extends State<MatchesPage>
         sh(20),
         AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          width: 320,
+          width: kIsWeb ? 320 : 335,
           height: 30,
           child: CustomerDropdown(
             onCustomerChange: (CustomerModel currentCustomer) {
@@ -140,59 +143,78 @@ class _MatchesPageState extends State<MatchesPage>
       child: Column(
         children: [
           appBar(context, 'Matches'),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 44),
-            child: Container(
-              height: dh(context) / 1.4,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: CustomPaint(
-                painter: GridPainter(),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    sw(20),
-                    profilePic(0),
-                    Builder(
-                      builder: (context) {
-                        return MouseRegion(
-                          onEnter: (event) {
-                            final renderBox =
-                                context.findRenderObject() as RenderBox;
-                            onHoverCard(event, 2, renderBox);
-                          },
-                          onHover: (event) {
-                            final renderBox =
-                                context.findRenderObject() as RenderBox;
-                            onHoverCard(event, 2, renderBox);
-                          },
-                          onExit: onExit,
-                          child: Transform(
-                            transform: hoveredIndex == 2
-                                ? getTransformMatrix()
-                                : Matrix4.identity(),
-                            alignment: FractionalOffset.center,
-                            child: CircleProgressIndicator(
-                              key: key,
-                              hoveredIndex: hoveredIndex,
-                              compatibility: calculerCompatibilite(
-                                firstCustomer.astrologicalSign,
-                                secondCustomer.astrologicalSign,
+          if (!kIsWeb)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                profilePic(0),
+                CircleProgressIndicator(
+                  key: key,
+                  hoveredIndex: hoveredIndex,
+                  compatibility: calculerCompatibilite(
+                    firstCustomer.astrologicalSign,
+                    secondCustomer.astrologicalSign,
+                  ),
+                ),
+                profilePic(1),
+                sw(20),
+              ],
+            )
+          else
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 44),
+              child: Container(
+                height: dh(context) / 1.4,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: CustomPaint(
+                  painter: GridPainter(),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      sw(20),
+                      profilePic(0),
+                      Builder(
+                        builder: (context) {
+                          return MouseRegion(
+                            onEnter: (event) {
+                              final renderBox =
+                                  context.findRenderObject() as RenderBox;
+                              onHoverCard(event, 2, renderBox);
+                            },
+                            onHover: (event) {
+                              final renderBox =
+                                  context.findRenderObject() as RenderBox;
+                              onHoverCard(event, 2, renderBox);
+                            },
+                            onExit: onExit,
+                            child: Transform(
+                              transform: hoveredIndex == 2
+                                  ? getTransformMatrix()
+                                  : Matrix4.identity(),
+                              alignment: FractionalOffset.center,
+                              child: CircleProgressIndicator(
+                                key: key,
+                                hoveredIndex: hoveredIndex,
+                                compatibility: calculerCompatibilite(
+                                  firstCustomer.astrologicalSign,
+                                  secondCustomer.astrologicalSign,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                    profilePic(1),
-                    sw(20),
-                  ],
+                          );
+                        },
+                      ),
+                      profilePic(1),
+                      sw(20),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
         ],
       ),
     );

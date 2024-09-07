@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_charts/flutter_charts.dart';
 import 'package:soul_connection/constants/constants.dart';
@@ -418,6 +419,37 @@ class _StatisticsPageState extends State<StatisticsPage>
 
   @override
   Widget build(BuildContext context) {
+    if (!kIsWeb) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 30,
+        ),
+        child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          itemCount: graphs().length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 1.5,
+                  ),
+                ),
+                height: 200,
+                padding: const EdgeInsets.all(5.0),
+                child: graphs()[index],
+              ),
+            );
+          },
+        ),
+      );
+    }
     return SizedBox(
       height: dh(context),
       width: dw(context),
@@ -494,9 +526,9 @@ class _StatisticsPageState extends State<StatisticsPage>
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      const Color(0xfff2f2f2),
+                      Colors.white,
                       for (double i = 1; i > 0; i -= 0.1)
-                        const Color(0xfff2f2f2).withOpacity(i)
+                        Colors.white.withOpacity(i)
                     ],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,

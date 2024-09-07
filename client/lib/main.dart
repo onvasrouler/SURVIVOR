@@ -1,16 +1,15 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soul_connection/auth/onboard.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/menu.dart';
-import 'package:soul_connection/models/user.module.dart';
 import 'package:soul_connection/provider/coachs.service.dart';
 import 'package:soul_connection/provider/customers.service.dart';
+import 'package:soul_connection/provider/events.service.dart';
 import 'package:soul_connection/provider/tips.service.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   localUser = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
@@ -27,9 +26,14 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    fetchCustomers();
-    fetchEmployees();
-    fetchTips();
+    if (localUser.containsKey('token')) {
+      fetchCustomers();
+      fetchEmployees();
+      fetchTips();
+      fetchEvents();
+    } else {
+      isLoading = false;
+    }
     super.initState();
   }
 
@@ -44,7 +48,6 @@ class _MyAppState extends State<MyApp> {
 
   void fetchEmployees() async {
     isLoading = await CoachsService.fetchEmployees();
-    isLoading = await TipsService.fetchTips();
     if (mounted) {
       setState(() {
         isLoading = false;
@@ -54,6 +57,15 @@ class _MyAppState extends State<MyApp> {
 
   void fetchTips() async {
     isLoading = await TipsService.fetchTips();
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  void fetchEvents() async {
+    isLoading = await EventService.fetchEvent();
     if (mounted) {
       setState(() {
         isLoading = false;
@@ -84,20 +96,7 @@ class _MyAppState extends State<MyApp> {
         ),
       );
     } else if (localUser.containsKey('token')) {
-      String base64String = localUser.getString('profile_pic')!;
-      return MenuPage(
-        user: UserModel(
-          birthDate: localUser.getString('birthdate') ?? '',
-          email: localUser.getString('email') ?? '',
-          id: localUser.getString('user_id') ?? '',
-          surname: localUser.getString('surname') ?? '',
-          name: localUser.getString('name') ?? '',
-          gender: localUser.getString('gender') ?? '',
-          work: localUser.getString('work') ?? '',
-          token: localUser.getString('token') ?? '',
-          profilePic: base64Decode(base64String),
-        ),
-      );
+      return const MenuPage();
     } else {
       return const OnBoardPage();
     }

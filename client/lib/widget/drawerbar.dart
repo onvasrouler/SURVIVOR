@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
-import 'package:soul_connection/models/user.module.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
 import 'package:soul_connection/theme/color.dart';
 import 'package:soul_connection/utility/utility.dart';
 
 class Drawerbar extends StatefulWidget {
-  const Drawerbar({super.key, required this.user, required this.onTabChange});
-  final UserModel user;
+  const Drawerbar({super.key, required this.onTabChange});
   final Function(int) onTabChange;
 
   @override

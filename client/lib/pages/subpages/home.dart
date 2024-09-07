@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/constants/datas.dart';
@@ -73,22 +74,24 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             sh(30),
-            Text(
-              'SOUL CONNECTION',
-              style: TextStyle(
-                fontSize: dw(context) * 0.05,
-                fontFamily: 'Arial',
+            if (kIsWeb)
+              Text(
+                'SOUL CONNECTION',
+                style: TextStyle(
+                  fontSize: dw(context) * 0.05,
+                  fontFamily: 'Arial',
+                ),
               ),
-            ),
-            Text(
-              'Dashboard',
-              style: TextStyle(
-                fontSize: dw(context) * 0.025,
-                fontWeight: FontWeight.w300,
-                color: Colors.black,
-                fontFamily: 'Arial',
+            if (kIsWeb)
+              Text(
+                'Dashboard',
+                style: TextStyle(
+                  fontSize: dw(context) * 0.025,
+                  fontWeight: FontWeight.w300,
+                  color: Colors.black,
+                  fontFamily: 'Arial',
+                ),
               ),
-            ),
             sh(10),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -130,7 +133,7 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
                   width: dw(context) < 700
                       ? dw(context) / 1.2
                       : dw(context) / 1.55,
-                  height: 289,
+                  height: kIsWeb ? 289 : null,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(color: Colors.black, width: 1.5),

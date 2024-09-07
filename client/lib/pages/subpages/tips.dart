@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
@@ -13,6 +14,50 @@ class TipsPage extends StatefulWidget {
 class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
   @override
   Widget build(BuildContext context) {
+    if (!kIsWeb) {
+      return ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        itemCount: allTips.length,
+        itemBuilder: (context, index) {
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.black, width: 1.5),
+            ),
+            padding: const EdgeInsets.all(10.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    allTips[index].title,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 19,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  Text(
+                    allTips[index].tips,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
     return SizedBox(
       height: dh(context),
       width: dw(context),
@@ -67,30 +112,29 @@ class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
                                 ),
                                 padding: const EdgeInsets.all(10.0),
                                 child: Center(
-                                  child: Column (
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        allTips[index].title,
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 19,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        textAlign: TextAlign.center,
+                                    child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      allTips[index].title,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 19,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                      Text(
-                                        allTips[index].tips,
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        textAlign: TextAlign.center,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Text(
+                                      allTips[index].tips,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                    ],
-                                  )
-                                ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                )),
                               ),
                             ),
                           );

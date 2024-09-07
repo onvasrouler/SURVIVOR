@@ -17,14 +17,14 @@ class Utility {
 
   static Icon tabIcon(int index) {
     return [
-      const Icon(Icons.home, color: Colors.blue),
-      const Icon(Icons.people, color: Colors.blue),
-      const Icon(Icons.person, color: Colors.blue),
-      const Icon(Icons.bar_chart, color: Colors.blue),
-      const Icon(Icons.shopping_bag, color: Colors.blue),
-      const Icon(CupertinoIcons.arrow_2_circlepath, color: Colors.blue),
-      const Icon(Icons.lightbulb, color: Colors.blue),
-      const Icon(Icons.event, color: Colors.blue),
+      const Icon(Icons.home, color: Colors.black),
+      const Icon(Icons.people, color: Colors.black),
+      const Icon(Icons.person, color: Colors.black),
+      const Icon(Icons.bar_chart, color: Colors.black),
+      const Icon(Icons.shopping_bag, color: Colors.black),
+      const Icon(CupertinoIcons.arrow_2_circlepath, color: Colors.black),
+      const Icon(Icons.lightbulb, color: Colors.black),
+      const Icon(Icons.event, color: Colors.black),
     ][index];
   }
 }

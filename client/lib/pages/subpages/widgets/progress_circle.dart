@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 
@@ -45,6 +46,9 @@ class CircleProgressIndicatorState extends State<CircleProgressIndicator>
 
   @override
   Widget build(BuildContext context) {
+    double size = kIsWeb
+        ? (widget.hoveredIndex != 2 ? dw(context) / 6 : dw(context) / 5)
+        : 150;
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
@@ -54,12 +58,8 @@ class CircleProgressIndicatorState extends State<CircleProgressIndicator>
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
-              height: (widget.hoveredIndex != 2
-                  ? dw(context) / 6
-                  : dw(context) / 5),
-              width: (widget.hoveredIndex != 2
-                  ? dw(context) / 6
-                  : dw(context) / 5),
+              height: size,
+              width: size,
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(200)),
@@ -77,12 +77,8 @@ class CircleProgressIndicatorState extends State<CircleProgressIndicator>
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeInOut,
-                height: (widget.hoveredIndex != 2
-                    ? dw(context) / 6
-                    : dw(context) / 5),
-                width: (widget.hoveredIndex != 2
-                    ? dw(context) / 6
-                    : dw(context) / 5),
+                height: size,
+                width: size,
                 child: CustomPaint(
                   painter: HeartPainter(
                     1,
@@ -96,17 +92,12 @@ class CircleProgressIndicatorState extends State<CircleProgressIndicator>
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeInOut,
-                height: (widget.hoveredIndex != 2
-                    ? dw(context) / 6
-                    : dw(context) / 5),
-                width: (widget.hoveredIndex != 2
-                    ? dw(context) / 6
-                    : dw(context) / 5),
+                height: size,
+                width: size,
                 child: CustomPaint(
                   painter: HeartPainter(
-                    (_animation.value * widget.compatibility) / 100,
-                    Colors.pinkAccent
-                  ),
+                      (_animation.value * widget.compatibility) / 100,
+                      Colors.pinkAccent),
                 ),
               ),
             ),
