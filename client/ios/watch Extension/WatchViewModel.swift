@@ -2,25 +2,21 @@
 //  WatchViewModel.swift
 //  watch Extension
 //
-//  Created by Amorn Apichattanakul on 17/4/21.
+//  Created by Antoine Gonthier on 08/09/24.
 //
 
-import Foundation
+import SwiftUI
 import WatchConnectivity
+
+struct Tip: Identifiable {
+    let id = UUID()
+    let title: String
+    let content: String
+}
 
 class WatchViewModel: NSObject, ObservableObject {
     var session: WCSession
-    @Published var counter = 0
-    
-    // Add more cases if you have more receive method
-    enum WatchReceiveMethod: String {
-        case sendCounterToNative
-    }
-    
-    // Add more cases if you have more sending method
-    enum WatchSendMethod: String {
-        case sendCounterToFlutter
-    }
+    @Published var tips: [Tip] = []
     
     init(session: WCSession = .default) {
         self.session = session
@@ -29,10 +25,23 @@ class WatchViewModel: NSObject, ObservableObject {
         session.activate()
     }
     
-    func sendDataMessage(for method: WatchSendMethod, data: [String: Any] = [:]) {
-        sendMessage(for: method.rawValue, data: data)
+    enum WatchReceiveMethod: String {
+        case sendDataToNative
     }
-    
+
+    func updateTips(tipsData: [[String: Any]]) {
+        var newTips: [Tip] = []
+        for tipData in tipsData {
+            if let title = tipData["title"] as? String, let content = tipData["tip"] as? String {
+                let tip = Tip(title: title, content: content)
+                newTips.append(tip)
+            }
+        }
+
+        DispatchQueue.main.async {
+            self.tips = newTips
+        }
+    }
 }
 
 extension WatchViewModel: WCSessionDelegate {
@@ -49,8 +58,10 @@ extension WatchViewModel: WCSessionDelegate {
             }
             
             switch enumMethod {
-            case .sendCounterToNative:
-                self.counter = (message["data"] as? Int) ?? 0
+            case .sendDataToNative:
+                if let tipdata = message["tips"] as? [[String: Any]] {
+                    self.updateTips(tipsData: tipdata)
+                }
             }
         }
     }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +10,8 @@ import 'package:soul_connection/provider/coachs.service.dart';
 import 'package:soul_connection/provider/customers.service.dart';
 import 'package:soul_connection/provider/events.service.dart';
 import 'package:soul_connection/provider/tips.service.dart';
+import 'package:soul_connection/watch-wrapper/watch_os.dart';
+import 'package:soul_connection/watch-wrapper/wear_os.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +54,8 @@ class _MyAppState extends State<MyApp> {
         print(e);
       }
     } finally {
+      if (!kIsWeb && !Platform.isAndroid) WatchOSWrapper.sendDataToAppleWatch();
+      if (!kIsWeb && !Platform.isAndroid) WearOSWrapper.sendDataToWearOs();
       if (mounted) {
         setState(() {
           isLoading = false;

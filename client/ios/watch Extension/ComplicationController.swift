@@ -2,7 +2,7 @@
 //  ComplicationController.swift
 //  watch Extension
 //
-//  Created by Amorn Apichattanakul on 17/4/21.
+//  Created by Antoine Gonthier on 08/09/24.
 //
 
 import ClockKit

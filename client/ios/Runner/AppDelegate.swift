@@ -32,14 +32,27 @@ import WatchConnectivity
                 result: @escaping FlutterResult) -> Void in
                 switch call.method {
                 case "flutterToWatch":
-                    guard let watchSession = self?.session, watchSession.isPaired, watchSession.isReachable, let methodData = call.arguments as? [String: Any], let method = methodData["method"], let data = methodData["data"] as? Any else {
+                    guard let watchSession = self?.session,
+                          watchSession.isPaired,
+                          watchSession.isReachable,
+                          let methodData = call.arguments as? [String: Any],
+                          let method = methodData["method"] as? String,
+                          let datas = methodData["datas"] as? [String: Any] else {
                         result(false)
                         return
                     }
-
-                    let watchData: [String: Any] = ["method": method, "data": data]
-                    watchSession.sendMessage(watchData, replyHandler: nil, errorHandler: nil)
-                    result(true)
+                      if let tips = datas["tips"] as? [[String: Any]] {
+                        let watchData: [String: Any] = [
+                            "method": method,
+                            "tips": tips,
+                        ]
+                        watchSession.sendMessage(watchData, replyHandler: nil, errorHandler: { error in
+                            print("Error sending message to Watch: \(error.localizedDescription)")
+                        })
+                        result(true)
+                    } else {
+                        result(false)
+                    }
                 default:
                     result(FlutterMethodNotImplemented)
                 }
@@ -53,7 +66,13 @@ extension AppDelegate: WCSessionDelegate {
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
 
     }
-
+    override func applicationDidFinishLaunching(_ application: UIApplication) {
+        if WCSession.isSupported() {
+            let session = WCSession.default
+            session.delegate = self
+            session.activate()
+        }
+    }
     func sessionDidBecomeInactive(_ session: WCSession) {
 
     }
@@ -63,6 +82,7 @@ extension AppDelegate: WCSessionDelegate {
     }
 
     func session(_ session: WCSession, didReceiveMessage message: [String : Any]) {
+        NSLog("Received message on iOS: \(message)")
         DispatchQueue.main.async {
             if let method = message["method"] as? String, let controller = self.window?.rootViewController as? FlutterViewController {
                 let channel = FlutterMethodChannel(

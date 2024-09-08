@@ -37,9 +37,22 @@ class CustomerModel {
 
   factory CustomerModel.fromJson(Map<String, dynamic> json) {
     List<EncounterModel> encounters = [];
+    List<PayementModel> payments = [];
+    List<Map<String, dynamic>> clothes = [];
     if (json['encounters'] != null && json['encounters'] is Iterable) {
       encounters = (json['encounters'] as List)
           .map((encounter) => EncounterModel.fromJson(encounter))
+          .toList();
+    }
+    if (json['payments_history'] != null &&
+        json['payments_history'] is Iterable) {
+      payments = (json['payments_history'] as List)
+          .map((payments) => PayementModel.fromJson(payments))
+          .toList();
+    }
+    if (json['clothes'] != null && json['clothes'] is Iterable) {
+      clothes = (json['clothes'] as List)
+          .map<Map<String, dynamic>>((e) => e)
           .toList();
     }
 
@@ -54,14 +67,10 @@ class CustomerModel {
       astrologicalSign: json['astrological_sign'],
       phoneNumber: json['phone_number'],
       address: json['address'],
-      clothes: (json['clothes'] as List)
-          .map<Map<String, dynamic>>((e) => e)
-          .toList(),
+      clothes: clothes,
       profilePicture:
           'http://$apiUrl/soul_connection_api/customer_image/${json['id']}.png?session=${localUser.getString('token')!}',
-      payements: (json['payments_history'] as List)
-          .map<PayementModel>((e) => PayementModel.fromJson(e))
-          .toList(),
+      payements: payments,
       encouters: encounters,
     );
   }
