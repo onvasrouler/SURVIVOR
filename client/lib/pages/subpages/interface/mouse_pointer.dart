@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:soul_connection/constants/constants.dart';
 
 mixin HoverMixin<T extends StatefulWidget> on State<T> {
   int? hoveredIndex;
@@ -6,17 +7,19 @@ mixin HoverMixin<T extends StatefulWidget> on State<T> {
   double rotationY = 0;
 
   void onHoverCard(PointerEvent event, int index, RenderBox renderBox) {
-    final size = renderBox.size;
-    final position = event.localPosition;
+    if (!isWearOs(context)) {
+      final size = renderBox.size;
+      final position = event.localPosition;
 
-    final middleX = size.width / 2;
-    final middleY = size.height / 2;
+      final middleX = size.width / 2;
+      final middleY = size.height / 2;
 
-    setState(() {
-      hoveredIndex = index;
-      rotationY = ((position.dx - middleX) / middleX) * 0.1;
-      rotationX = -((position.dy - middleY) / middleY) * 0.1;
-    });
+      setState(() {
+        hoveredIndex = index;
+        rotationY = ((position.dx - middleX) / middleX) * 0.1;
+        rotationX = -((position.dy - middleY) / middleY) * 0.1;
+      });
+    }
   }
 
   void onExit(PointerEvent event) {

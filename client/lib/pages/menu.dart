@@ -74,7 +74,7 @@ class _MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: kIsWeb
+      appBar: kIsWeb || isWearOs(context)
           ? null
           : AppBar(
               backgroundColor: Colors.transparent,
@@ -158,7 +158,7 @@ class _MenuPageState extends State<MenuPage> {
                 ),
               ),
             ),
-      bottomNavigationBar: dw(context) <= 700
+      bottomNavigationBar: dw(context) <= 700 && !isWearOs(context)
           ? BottomNavigationBar(
               onTap: (int index) {
                 setState(() {

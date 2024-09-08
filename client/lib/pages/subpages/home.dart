@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/constants/datas.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
+import 'package:soul_connection/pages/subpages/tips.dart';
 import 'package:soul_connection/pages/subpages/widgets/animated_graphic.dart';
 import 'package:soul_connection/theme/color.dart';
 
@@ -73,12 +74,13 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            sh(30),
-            if (kIsWeb)
+            if (!isWearOs(context)) sh(30) else sh(10),
+            if (kIsWeb || isWearOs(context))
               Text(
                 'SOUL CONNECTION',
                 style: TextStyle(
                   fontSize: dw(context) * 0.05,
+                  fontWeight: isWearOs(context) ? FontWeight.bold : null,
                   fontFamily: 'Arial',
                 ),
               ),
@@ -92,15 +94,16 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
                   fontFamily: 'Arial',
                 ),
               ),
-            sh(10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Container(
-                height: 1.5,
-                color: Colors.black,
-                width: dw(context),
+            if (!isWearOs(context)) sh(10),
+            if (!isWearOs(context))
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: Container(
+                  height: 1.5,
+                  color: Colors.black,
+                  width: dw(context),
+                ),
               ),
-            ),
             sh(0),
             if (dw(context) > 700) ...[
               SizedBox(
@@ -159,9 +162,10 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
                                     child: Text(
                                       tableLabels[col],
                                       textAlign: TextAlign.center,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
+                                        fontSize: isWearOs(context) ? 7 : null,
                                       ),
                                     ),
                                   ),
@@ -179,6 +183,10 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
                                       child: Text(
                                         '$row',
                                         textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize:
+                                              isWearOs(context) ? 7 : null,
+                                        ),
                                       ),
                                     )
                                   else
@@ -188,6 +196,10 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
                                         products[row - 1]
                                             [tableLabels[col].toLowerCase()],
                                         textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize:
+                                              isWearOs(context) ? 7 : null,
+                                        ),
                                       ),
                                     ),
                               ],
@@ -198,6 +210,7 @@ class _HomePageState extends State<HomePage> with HoverMixin<HomePage> {
                 )
               ],
             ),
+            if (isWearOs(context)) const TipsPage(),
           ],
         ),
       ),

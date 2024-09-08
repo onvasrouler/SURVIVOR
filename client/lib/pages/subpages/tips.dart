@@ -16,6 +16,8 @@ class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
   Widget build(BuildContext context) {
     if (!kIsWeb) {
       return ListView.builder(
+        physics:
+            isWearOs(context) ? const NeverScrollableScrollPhysics() : null,
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         itemCount: allTips.length,
@@ -23,7 +25,11 @@ class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
           return AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+            margin: EdgeInsets.only(
+                top: isWearOs(context) ? 10 : 0,
+                bottom: 20,
+                left: isWearOs(context) ? 16 : 20,
+                right: isWearOs(context) ? 16 : 20),
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: Colors.black, width: 1.5),
@@ -35,18 +41,18 @@ class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
                 children: [
                   Text(
                     allTips[index].title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.black,
-                      fontSize: 19,
+                      fontSize: isWearOs(context) ? 13 : 19,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.center,
                   ),
                   Text(
                     allTips[index].tips,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.black,
-                      fontSize: 15,
+                      fontSize: isWearOs(context) ? 9 : 15,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.center,
