@@ -13,6 +13,67 @@ class OnBoardPage extends StatefulWidget {
 class _OnBoardPageState extends State<OnBoardPage> {
   @override
   Widget build(BuildContext context) {
+    if (isWearOs(context)) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => const SignInPage(),
+                  ),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black, width: 1.5),
+                ),
+                alignment: Alignment.center,
+                child: const Text(
+                  "Sign In",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+            sh(30),
+            GestureDetector(
+              onTap: () {
+                Navigator.push<void>(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => const SignUpPage(),
+                  ),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black, width: 1.5),
+                ),
+                alignment: Alignment.center,
+                child: const Text(
+                  "Sign Up",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: SizedBox(

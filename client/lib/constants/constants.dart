@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,3 +37,7 @@ Widget sw(double width) {
 }
 
 const channel = MethodChannel('com.soul.connection');
+
+bool isWearOs(BuildContext context) {
+  return Platform.isAndroid && dw(context) < 300 && dh(context) < 300;
+}

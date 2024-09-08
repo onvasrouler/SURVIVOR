@@ -39,6 +39,95 @@ class _LoginPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (isWearOs(context)) {
+      return Scaffold(
+        backgroundColor: Colors.white,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                sh(30),
+                TextField(
+                  controller: _username,
+                  decoration: const InputDecoration(hintText: 'Username'),
+                ),
+                TextField(
+                  controller: _email,
+                  decoration: const InputDecoration(hintText: 'Email'),
+                ),
+                TextField(
+                  controller: _password,
+                  decoration: const InputDecoration(hintText: 'Password'),
+                ),
+                sh(20),
+                GestureDetector(
+                  onTap: () async {
+                    if (!loader) {
+                      setState(() {
+                        loader = true;
+                      });
+                      String? user = await AuthService.signUp(
+                        _email.text,
+                        _password.text,
+                        _username.text,
+                      );
+                      if (user == null) {
+                        await CustomersService.fetchCustomers();
+                        await CoachsService.fetchEmployees();
+                        await TipsService.fetchTips();
+                        await EventService.fetchEvent();
+                        Navigator.pushAndRemoveUntil<void>(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) => const MenuPage(),
+                          ),
+                          (route) => false,
+                        );
+                      } else {
+                        setState(() {
+                          loader = false;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.blue,
+                            duration: const Duration(seconds: 5),
+                            content: Center(
+                              child: Text(
+                                user,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.black, width: 1.5),
+                    ),
+                    alignment: Alignment.center,
+                    child: loader
+                        ? const CupertinoActivityIndicator()
+                        : const Text(
+                            "Sign up",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                  ),
+                ),
+                sh(30),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
