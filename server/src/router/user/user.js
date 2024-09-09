@@ -87,16 +87,26 @@ exports.login = async (req, res) => {
                     $set: {
                         lastConnection: Date.now()
                     }
+                }).catch(async function (err) {
+                    return login_error(req, res, err, tmpSessuion);
                 });
                 return return_signed_cookies(req, res, newSession, userToLogin);
+            }).catch(async function (err) {
+                return login_error(req, res, err, tmpSessuion);
             });
+        }).catch(async function (err) {
+            return login_error(req, res, err, tmpSessuion);
         });
     } catch (err) {
-        console.error(err);
-        await reset_user_session(tmpSessuion, null);
-        return error_occured(req, res, err);
+        return login_error(req, res, err, tmpSessuion);
     }
 };
+
+async function login_error(req, res, errorMsg, tmpSessuion) {
+    console.error(errorMsg);
+    await reset_user_session(tmpSessuion, null);
+    return error_occured(req, res, errorMsg);
+}
 
 exports.profile = async (req, res) => {
     return res.status(200).send({ "status": "success", "username": req.user.username });
@@ -186,11 +196,13 @@ async function reset_user_session(Session, User = null) {
         }).catch(function (err) {
             console.error(err);
         });
-    return await SessionModel.deleteOne(
-        { unique_session_id: Session ? Session.unique_session_id : null }
-    ).catch(function (err) {
-        console.error(err);
-    });
+    if (Session)
+        return await SessionModel.deleteOne(
+            { unique_session_id: Session ? Session.unique_session_id : null }
+        ).catch(function (err) {
+            console.error(err);
+        });
+    return null;
 }
 
 async function delete_every_user_session(User) {
