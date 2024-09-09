@@ -112,3 +112,18 @@ exports.internal_api_get_one = async (req, res) => {
         return api_formatter(req, res, 500, "errorOccured", "Error occured when trying to get data", null, error, null);
     }
 }
+
+exports.internal_api_get_me = async (req, res) => {
+    if (!req.user || req.user == null) {
+        return api_formatter(req, res, 401, "noSession", "vous n'êtes pas connecté", null, null, null);
+    }
+    let data = {
+        "username": req.user.username,
+        "email": req.user.email,
+        "role": req.user.role,
+        "creationIp": req.user.creationIp,
+        "lastConnection": req.user.lastConnection,
+        "unique_id": req.user.unique_id
+    };
+    return api_formatter(req, res, 200, "success", "successfully received data", data, null, null);
+}
