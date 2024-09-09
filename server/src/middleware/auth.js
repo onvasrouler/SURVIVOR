@@ -38,7 +38,11 @@ async function checkAuthenticated(req, res, next) {
                 req.user = CorrespondingUser;
                 req.session = FoundSession;
                 return next();
+            }).catch((err) => {
+                return invalid_session(req, res);
             });
+        }).catch((err) => {
+            return invalid_session(req, res);
         });
     } catch (err) {
         console.error(err);
