@@ -145,18 +145,24 @@ def fetch_employee():
                     employee = {**employee, "small_employee_id": str(employee["id"]), "employee_id": str(employee["id"])}
                     if not db["small_employee"].find_one(employee):
                         db["small_employee"].insert_one(employee)
+                    else:
+                        db["small_employee"].update_one({"id": employee["id"]}, {"$set": employee})
 
                 # get employees full data
                 full_employee = make_request(base_url + "/api/employees/" + str(employee["id"]))
                 full_employee = {**full_employee, "employee_id": str(employee["id"])}
                 if not db["employee"].find_one(full_employee):
                     db["employee"].insert_one(full_employee)
+                else:
+                    db["employee"].update_one({"id": employee["id"]}, {"$set": full_employee})
                 
                 # get employees image
                 employee_image = make_request(base_url + "/api/employees/" + str(employee["id"]) + "/image", True)
                 query = {"employee_id": str(employee["id"]), "employee_image_id": str(employee["id"]), "image": employee_image}
                 if not db["employee_image"].find_one(query):
                     db["employee_image"].insert_one(query)
+                else:
+                    db["employee_image"].update_one({"employee_id": str(employee["id"])}, {"$set": query})
 
             except Exception as e:
                 treat_errors(e, base_url + "/api/employees/" + str(employee["id"]))
@@ -180,6 +186,8 @@ def fetch_customers():
                     customer = {**customer, "small_customer_id": str(customer["id"]), "customer_id": str(customer["id"])}
                     if not db["small_customer"].find_one(customer):
                         db["small_customer"].insert_one(customer)
+                    else:
+                        db["small_customer"].update_one({"id": customer["id"]}, {"$set": customer})
 
                 # get costumers full data
                 full_customer = make_request(base_url + "/api/customers/" + str(customer["id"]))
@@ -187,12 +195,16 @@ def fetch_customers():
 
                 if not db["customer"].find_one(full_customer):
                     db["customer"].insert_one(full_customer)
+                else:
+                    db["customer"].update_one({"id": customer["id"]}, {"$set": full_customer})
                 
                 # get costumers image
                 customer_image = make_request(base_url + "/api/customers/" + str(customer["id"]) + "/image", True)
                 query = {"customer_id": str(customer["id"]), "customer_image_id": str(customer["id"]),"image": customer_image}
                 if not db["customer_image"].find_one(query):
                     db["customer_image"].insert_one(query)
+                else:
+                    db["customer_image"].update_one({"customer_id": str(customer["id"])}, {"$set": query})
 
                 # get costumers payment history
                 payments_history = make_request(base_url + "/api/customers/" + str(customer["id"]) + "/payments_history")
@@ -259,6 +271,8 @@ def fetch_encounters():
                     encounter = {**encounter, "small_encounter_id": str(encounter["id"]), "encounter_id": str(encounter["id"])}
                     if not db["small_encounter"].find_one(encounter):
                         db["small_encounter"].insert_one(encounter)
+                    else:
+                        db["small_encounter"].update_one({"id": encounter["id"]}, {"$set": encounter})
                     
                 full_encounter = make_request(base_url + "/api/encounters/" + str(encounter["id"]))
                 full_encounter = {**full_encounter, "encounter_id": str(encounter["id"])}
@@ -288,6 +302,8 @@ def fetch_tips():
                 tip = {**tip, "tip_id": str(tip["id"])}
                 if not db["tip"].find_one(tip):
                     db["tip"].insert_one(tip)
+                else:
+                    db["tip"].update_one({"tip_id": tip["id"]}, {"$set": tip})
             except Exception as e:
                 treat_errors(e, base_url + "/api/tips/" + str(tip["id"]))
                 continue
@@ -308,11 +324,15 @@ def fetch_events():
                     event = {**event, "small_event_id": str(event["id"]), "event_id": str(event["id"])}
                     if not db["small_event"].find_one(event):
                         db["small_event"].insert_one(event)
+                    else:
+                        db["small_event"].update_one({"id": event["id"]}, {"$set": event})
                 
                 full_event = make_request(base_url + "/api/events/" + str(event["id"]))
                 full_event = {**full_event, "event_id": str(event["id"])}
                 if not db["event"].find_one(full_event):
                     db["event"].insert_one(full_event)
+                else:
+                    db["event"].update_one({"event_id": full_event["id"]}, {"$set": full_event})
 
                 if db["employee"].find_one({"employee_id": str(full_event["employee_id"])}):
                     db["employee"].update_one({"employee_id": str(full_event["employee_id"])}, {"$addToSet": {"events": full_event}})
