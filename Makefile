@@ -33,4 +33,11 @@ scrapper-prod:
 
 scrapper-lint:
 	cd server && pylint scrapper.py
+
+server-lint-fix:
+	cd server && npm run lintfix
+
+serveur-test:
+	cd server && npm run test
+
 .PHONY: build clean run server
