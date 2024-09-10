@@ -7,5 +7,7 @@ module.exports = function (app) {
     app.get("/api/users", get_user_from_session, api_interactions.internal_api_get_all);
     app.get("/api/users/:ID", get_user_from_session, api_interactions.internal_api_get_one);
     app.get("/api/me", get_user_from_session, api_interactions.internal_api_get_me);
+    app.post("/api/assign", get_user_from_session, api_interactions.internal_api_assign);
+    app.post("/api/unassign", get_user_from_session, api_interactions.internal_api_unassign);
 
 };
