@@ -17,19 +17,29 @@ jwt_token = os.getenv("JWT_TOKEN")
 mongo_uri = os.getenv("MONGO_URI")
 email = os.getenv("MAIL")
 password = os.getenv("PASSWORD")
+mode = os.getenv("MODE")
+prod_db = os.getenv("PROD_DB")
+dev_db = os.getenv("DEV_DB")
+mongo_user = os.getenv("MONGO_USER")
+mongo_password = os.getenv("MONGO_PASSWORD")
 
 bar_length = 60
 error_file_name = "errors.txt"
+error_dev_file_name = "errors_dev.txt"
 store_small_data = {
-    "employees": True,
-    "customers": True,
-    "encounters": True,
-    "events": True,
+    "employees": False,
+    "customers": False,
+    "encounters": False,
+    "events": False,
 }
 
 print('connecting to ' + mongo_uri)
 client = MongoClient(mongo_uri)
-db = client[os.getenv("DB_NAME")]
+db = None
+if mode == "prod":
+    db = client[prod_db]
+else:
+    db = client[dev_db]
 
 login_url = base_url + "/api/employees/login"
 login_data = {
@@ -53,7 +63,10 @@ progress_bars = {}
 
     
 def treat_errors(e, url):
-    errors.append({"time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "url": url, "error": e})
+    converted = {"time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "url": url, "error": str(e)}
+    errors.append(converted)
+    if not mode == "prod":
+        output_in_file(json.dumps(converted), error_dev_file_name)
 
 def output_in_file(data, file_name):
     with open(file_name, "a") as file:
@@ -142,24 +155,24 @@ def fetch_employee():
                 
                 # get employees small data
                 if store_small_data["employees"]:
-                    employee = {**employee, "small_employee_id": str(employee["id"]), "employee_id": str(employee["id"])}
-                    if not db["small_employee"].find_one(employee):
+                    employee = {**employee, "small_employee_id": str(employee["id"]), "employee_id": str(employee["id"]), "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                    if not db["small_employee"].find_one({"employee_id": str(employee["id"])}):
                         db["small_employee"].insert_one(employee)
                     else:
-                        db["small_employee"].update_one({"id": employee["id"]}, {"$set": employee})
+                        db["small_employee"].update_one({"employee_id": str(employee["id"])}, {"$set": employee})
 
                 # get employees full data
                 full_employee = make_request(base_url + "/api/employees/" + str(employee["id"]))
-                full_employee = {**full_employee, "employee_id": str(employee["id"])}
-                if not db["employee"].find_one(full_employee):
+                full_employee = {**full_employee, "employee_id": str(employee["id"]), "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                if not db["employee"].find_one({"employee_id": str(employee["id"])}):
                     db["employee"].insert_one(full_employee)
                 else:
-                    db["employee"].update_one({"id": employee["id"]}, {"$set": full_employee})
+                    db["employee"].update_one({"employee_id": str(employee["id"])}, {"$set": full_employee})
                 
                 # get employees image
                 employee_image = make_request(base_url + "/api/employees/" + str(employee["id"]) + "/image", True)
-                query = {"employee_id": str(employee["id"]), "employee_image_id": str(employee["id"]), "image": employee_image}
-                if not db["employee_image"].find_one(query):
+                query = {"employee_id": str(employee["id"]), "employee_image_id": str(employee["id"]), "image": employee_image, "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                if not db["employee_image"].find_one({"employee_id": str(employee["id"])}):
                     db["employee_image"].insert_one(query)
                 else:
                     db["employee_image"].update_one({"employee_id": str(employee["id"])}, {"$set": query})
@@ -183,37 +196,37 @@ def fetch_customers():
 
                 # get costumers small data
                 if store_small_data["customers"]:
-                    customer = {**customer, "small_customer_id": str(customer["id"]), "customer_id": str(customer["id"])}
-                    if not db["small_customer"].find_one(customer):
+                    customer = {**customer, "small_customer_id": str(customer["id"]), "customer_id": str(customer["id"]), "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                    if not db["small_customer"].find_one({"customer_id": str(customer["id"])}):
                         db["small_customer"].insert_one(customer)
                     else:
-                        db["small_customer"].update_one({"id": customer["id"]}, {"$set": customer})
+                        db["small_customer"].update_one({"customer_id": str(customer["id"])}, {"$set": customer})
 
                 # get costumers full data
                 full_customer = make_request(base_url + "/api/customers/" + str(customer["id"]))
-                full_customer = {**full_customer, "customer_id": str(customer["id"])}
+                full_customer = {**full_customer, "customer_id": str(customer["id"]), "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 
-                if not db["customer"].find_one(full_customer):
+                if not db["customer"].find_one({"customer_id": str(customer["id"])}):
                     db["customer"].insert_one(full_customer)
                 else:
-                    db["customer"].update_one({"id": customer["id"]}, {"$set": full_customer})
-                
-                # get costumers image
+                    db["customer"].update_one({"customer_id": str(customer["id"])}, {"$set": full_customer})
+
+                 # get costumers image
                 customer_image = make_request(base_url + "/api/customers/" + str(customer["id"]) + "/image", True)
-                query = {"customer_id": str(customer["id"]), "customer_image_id": str(customer["id"]),"image": customer_image}
-                if not db["customer_image"].find_one(query):
+                query = {"customer_id": str(customer["id"]), "customer_image_id": str(customer["id"]), "image": customer_image, "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                if not db["customer_image"].find_one({"customer_id": str(customer["id"])}):
                     db["customer_image"].insert_one(query)
                 else:
                     db["customer_image"].update_one({"customer_id": str(customer["id"])}, {"$set": query})
 
                 # get costumers payment history
                 payments_history = make_request(base_url + "/api/customers/" + str(customer["id"]) + "/payments_history")
-                if db["customer"].find_one({"id": customer["id"]}):
-                    db["customer"].update_one({"id": customer["id"]}, {"$set": {"payments_history": payments_history}})
-                
+                if db["customer"].find_one({"customer_id": str(customer["id"])}):
+                    db["customer"].update_one({"customer_id": str(customer["id"])}, {"$set": {"payments_history": payments_history}})
+            
                 # encounter = make_request(base_url + "/api/encounters/customer/" + str(customer["id"]))
                 # if db["customer"].find_one({"id": customer["id"]}):
-                #     db["customer"].update_one({"id": customer["id"]}, {"$set": {"encounters": encounter}})
+                #     db["customer"].update_one({"id": customer["id"]}, {"$addToSet": {"encounters": encounter}})
                 
                 fetch_clothes(customer)
             except Exception as e:
@@ -232,24 +245,26 @@ def fetch_clothes(customer=None):
     try:
         # get costumer clothes
         clothes = make_request(base_url + "/api/customers/" + str(customer["id"]) + "/clothes")
-        if db["customer"].find_one({"id": customer["id"]}):
-            db["customer"].update_one({"id": customer["id"]}, {"$set": {"clothes": clothes}})
+        if db["customer"].find_one({"customer_id": str(customer["id"])}):
+            db["customer"].update_one({"customer_id": str(customer["id"])}, {"$set": {"clothes": clothes}})
         # --------------------- CLOTH ---------------------
-        for cloth in clothes:
+        for clothe in clothes:
             try:
-                update_progress_bar(str(clothes.index(cloth)), str(len(clothes)), "cloth")
+                update_progress_bar(str(clothes.index(clothe)), str(len(clothes)), "clothe")
                 
                 #cloth image
-                cloth_image = make_request(base_url + "/api/clothes/" + str(cloth["id"]) + "/image", True)
-                if not cloth_image:
-                    print("no image found for cloth id: " + str(cloth["id"]))
+                clothe_image = make_request(base_url + "/api/clothes/" + str(clothe["id"]) + "/image", True)
+                if not clothe_image:
+                    print("no image found for clothe id: " + str(clothe["id"]))
                 else:
-                    query = {"clothe_id": str(cloth["id"]), "cloth_image_id": str(cloth["id"]), "customer_id": str(customer["id"]), "image": cloth_image}
-                    if not db["clothe_image"].find_one({"cloth_id": str(cloth["id"])}):
+                    query = {"clothe_id": str(clothe["id"]), "clothe_image_id": str(clothe["id"]), "customer_id": str(customer["id"]), "image": clothe_image, "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                    if not db["clothe_image"].find_one({"clothe_id": str(clothe["id"])}):
                         db["clothe_image"].insert_one(query)
+                    else:
+                        db["clothe_image"].update_one({"clothe_id": str(clothe["id"])}, {"$set": query})
 
             except Exception as e:
-                treat_errors(e, base_url + "/api/clothes/" + str(cloth["id"]))
+                treat_errors(e, base_url + "/api/clothes/" + str(clothe["id"]))
                 continue
     except Exception as e:
         treat_errors(e, base_url + "/api/customers/" + str(customer["id"]) + "/clothes")
@@ -268,18 +283,21 @@ def fetch_encounters():
                 update_progress_bar(str(api_encounter.index(encounter)), str(len(api_encounter)), "encounter")
 
                 if store_small_data["encounters"]:
-                    encounter = {**encounter, "small_encounter_id": str(encounter["id"]), "encounter_id": str(encounter["id"])}
-                    if not db["small_encounter"].find_one(encounter):
+                    encounter = {**encounter, "small_encounter_id": str(encounter["id"]), "encounter_id": str(encounter["id"]), "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                    if not db["small_encounter"].find_one({"encounter_id": str(encounter["id"])}):
                         db["small_encounter"].insert_one(encounter)
                     else:
-                        db["small_encounter"].update_one({"id": encounter["id"]}, {"$set": encounter})
+                        db["small_encounter"].update_one({"encounter_id": str(encounter["id"])}, {"$set": encounter})
                     
-                full_encounter = make_request(base_url + "/api/encounters/" + str(encounter["id"]))
-                full_encounter = {**full_encounter, "encounter_id": str(encounter["id"])}
-                if not db["encounter"].find_one(full_encounter):
+                simple_full_encounter = make_request(base_url + "/api/encounters/" + str(encounter["id"]))
+                full_encounter = {**simple_full_encounter, "encounter_id": str(encounter["id"]), "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                if not db["encounter"].find_one({"encounter_id": str(encounter["id"])}):
                     db["encounter"].insert_one(full_encounter)
+                else:
+                    db["encounter"].update_one({"encounter_id": str(encounter["id"])}, {"$set": full_encounter})
+    
                 if db["customer"].find_one({"customer_id": str(full_encounter["customer_id"])}):
-                    db["customer"].update_one({"customer_id": str(full_encounter["customer_id"])}, {"$addToSet": {"encounters": full_encounter}})
+                    db["customer"].update_one({"customer_id": str(full_encounter["customer_id"])}, {"$addToSet": {"encounters": simple_full_encounter}})
 
                 
                 
@@ -299,11 +317,11 @@ def fetch_tips():
             try:
                 update_progress_bar(str(api_tip.index(tip)), str(len(api_tip)), "tip")
 
-                tip = {**tip, "tip_id": str(tip["id"])}
-                if not db["tip"].find_one(tip):
+                tip = {**tip, "tip_id": str(tip["id"]), "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                if not db["tip"].find_one({"tip_id": str(tip["id"])}):
                     db["tip"].insert_one(tip)
                 else:
-                    db["tip"].update_one({"tip_id": tip["id"]}, {"$set": tip})
+                    db["tip"].update_one({"tip_id": str(tip["id"])}, {"$set": tip})
             except Exception as e:
                 treat_errors(e, base_url + "/api/tips/" + str(tip["id"]))
                 continue
@@ -321,18 +339,18 @@ def fetch_events():
                 update_progress_bar(str(api_event.index(event)), str(len(api_event)), "event")
                 
                 if store_small_data["events"]:
-                    event = {**event, "small_event_id": str(event["id"]), "event_id": str(event["id"])}
-                    if not db["small_event"].find_one(event):
+                    event = {**event, "small_event_id": str(event["id"]), "event_id": str(event["id"]), "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                    if not db["small_event"].find_one({"event_id": str(event["id"])}):
                         db["small_event"].insert_one(event)
                     else:
-                        db["small_event"].update_one({"id": event["id"]}, {"$set": event})
+                        db["small_event"].update_one({"event_id": event["id"]}, {"$set": event})
                 
                 full_event = make_request(base_url + "/api/events/" + str(event["id"]))
-                full_event = {**full_event, "event_id": str(event["id"])}
-                if not db["event"].find_one(full_event):
+                full_event = {**full_event, "event_id": str(event["id"]), "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                if not db["event"].find_one({"event_id": str(event["id"])}):
                     db["event"].insert_one(full_event)
                 else:
-                    db["event"].update_one({"event_id": full_event["id"]}, {"$set": full_event})
+                    db["event"].update_one({"event_id": event["id"]}, {"$set": full_event})
 
                 if db["employee"].find_one({"employee_id": str(full_event["employee_id"])}):
                     db["employee"].update_one({"employee_id": str(full_event["employee_id"])}, {"$addToSet": {"events": full_event}})
