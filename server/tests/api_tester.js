@@ -343,8 +343,8 @@ test(`GET /api/me`, async (t) => {
     const responseBody = await response.json();
     assert.strictEqual(response.status, 200, 'Expected status code to be 200');
     assert.strictEqual(responseBody.messageStatus, "success", 'Expected success to be success');
-    assert.strictEqual(responseBody.data.username, process.env.TEST_USERNAME, 'Expected username to be correct');
-    assert.strictEqual(responseBody.data.email, process.env.TEST_EMAIL, 'Expected email to be correct');
+    assert.strictEqual(responseBody.data.user.username, process.env.TEST_USERNAME, 'Expected username to be correct');
+    assert.strictEqual(responseBody.data.user.email, process.env.TEST_EMAIL, 'Expected email to be correct');
 });
 
 test('DELETE /profile', async (t) => {
