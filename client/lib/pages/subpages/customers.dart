@@ -20,7 +20,24 @@ class CustomersPage extends StatefulWidget {
 
 class _CustomersPageState extends State<CustomersPage>
     with HoverMixin<CustomersPage> {
-  CustomerModel currentCustomer = allCustomers.first;
+  CustomerModel currentCustomer = filteredCustomers.isNotEmpty
+      ? filteredCustomers.first
+      : CustomerModel(
+          userId: 1,
+          email: '',
+          name: '',
+          surname: '',
+          birthDate: '',
+          gender: '',
+          description: '',
+          astrologicalSign: '',
+          phoneNumber: '',
+          address: '',
+          clothes: [],
+          profilePicture: '',
+          payements: [],
+          encouters: [],
+        );
 
   String fillPaymentTable(PayementModel payment, int index) {
     if (index == 0) return payment.date;
@@ -77,6 +94,11 @@ class _CustomersPageState extends State<CustomersPage>
 
   @override
   Widget build(BuildContext context) {
+    if (filteredCustomers.isEmpty) {
+      return const Center(
+        child: Text('No customers found'),
+      );
+    }
     return SizedBox(
       width: dw(context),
       height: dh(context),
@@ -240,92 +262,96 @@ class _CustomersPageState extends State<CustomersPage>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 3),
-                              child: Text(
-                                'Payments',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontFamily: 'Arial',
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                              width: dw(context) / 3.3,
-                              height: 179,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border:
-                                    Border.all(color: Colors.black, width: 1.5),
-                              ),
-                              child: SingleChildScrollView(
-                                child: Table(
-                                  border: const TableBorder.symmetric(
-                                    inside: BorderSide(
-                                        color: Colors.black, width: 1.5),
+                        if (user!.work != 'Coach')
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 3),
+                                child: Text(
+                                  'Payments',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: 'Arial',
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  children: [
-                                    for (int row = 0;
-                                        row <= currentCustomer.payements.length;
-                                        row++)
-                                      if (row == 0)
-                                        TableRow(
-                                          decoration: const BoxDecoration(
-                                            color: AppColor.deepblue,
-                                          ),
-                                          children: [
-                                            for (int col = 0;
-                                                col < table1Labels.length;
-                                                col++)
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  table1Labels[col],
-                                                  textAlign: TextAlign.center,
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                          ],
-                                        )
-                                      else
-                                        TableRow(
-                                          children: [
-                                            for (int col = 0;
-                                                col < table1Labels.length;
-                                                col++)
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  fillPaymentTable(
-                                                      currentCustomer
-                                                          .payements[row - 1],
-                                                      col),
-                                                  textAlign: TextAlign.center,
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                          ],
-                                        ),
-                                  ],
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
+                              AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                                width: dw(context) / 3.3,
+                                height: 179,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(
+                                      color: Colors.black, width: 1.5),
+                                ),
+                                child: SingleChildScrollView(
+                                  child: Table(
+                                    border: const TableBorder.symmetric(
+                                      inside: BorderSide(
+                                          color: Colors.black, width: 1.5),
+                                    ),
+                                    children: [
+                                      for (int row = 0;
+                                          row <=
+                                              currentCustomer.payements.length;
+                                          row++)
+                                        if (row == 0)
+                                          TableRow(
+                                            decoration: const BoxDecoration(
+                                              color: AppColor.deepblue,
+                                            ),
+                                            children: [
+                                              for (int col = 0;
+                                                  col < table1Labels.length;
+                                                  col++)
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    table1Labels[col],
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
+                                          )
+                                        else
+                                          TableRow(
+                                            children: [
+                                              for (int col = 0;
+                                                  col < table1Labels.length;
+                                                  col++)
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    fillPaymentTable(
+                                                        currentCustomer
+                                                            .payements[row - 1],
+                                                        col),
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         sw(30),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

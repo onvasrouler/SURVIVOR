@@ -20,7 +20,7 @@ class CustomerDropdownState extends State<CustomerDropdown> {
   @override
   void initState() {
     super.initState();
-    selectedCustomer = allCustomers.first;
+    selectedCustomer = filteredCustomers.first;
   }
 
   @override
@@ -56,13 +56,13 @@ class CustomerDropdownState extends State<CustomerDropdown> {
                   onChanged: (String? value) {
                     setState(() {
                       selectedCustomer =
-                          allCustomers.where((CustomerModel customer) {
+                          filteredCustomers.where((CustomerModel customer) {
                         return '${customer.name} ${customer.surname}' == value;
                       }).first;
                       widget.onCustomerChange(selectedCustomer);
                     });
                   },
-                  items: allCustomers
+                  items: filteredCustomers
                       .map((CustomerModel customer) =>
                           '${customer.name} ${customer.surname}')
                       .toList()

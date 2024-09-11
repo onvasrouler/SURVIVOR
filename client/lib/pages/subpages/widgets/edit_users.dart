@@ -5,8 +5,13 @@ import 'package:soul_connection/provider/assign.customers.service.dart';
 import 'package:soul_connection/theme/color.dart';
 
 class EditCustomers extends StatefulWidget {
-  const EditCustomers({super.key, required this.employee});
+  const EditCustomers({
+    super.key,
+    required this.employee,
+    required this.permission,
+  });
   final EmployeeModel employee;
+  final bool permission;
 
   @override
   State<EditCustomers> createState() => _EditCustomersState();
@@ -52,7 +57,7 @@ class _EditCustomersState extends State<EditCustomers> {
             ),
             SizedBox(
               width: 250,
-              height: dh(context) - 230,
+              height: dh(context) - (user!.work != 'Coach' ? 230 : 150),
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: allCustomers.length,
@@ -82,6 +87,15 @@ class _EditCustomersState extends State<EditCustomers> {
                                 .contains(allCustomers[index].userId),
                             activeColor: AppColor.deepblue,
                             onChanged: (bool? value) {
+                              if (!widget.permission) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'You do not have permission to edit customers'),
+                                  ),
+                                );
+                                return;
+                              }
                               setState(() {
                                 if (value == true) {
                                   selectedCustomers
@@ -101,72 +115,75 @@ class _EditCustomersState extends State<EditCustomers> {
               ),
             ),
             sh(20),
-            GestureDetector(
-              onTap: () async {
-                List<int> toAssign = [];
-                List<int> toUnassign = [];
+            if (user!.work != 'Coach')
+              GestureDetector(
+                onTap: () async {
+                  List<int> toAssign = [];
+                  List<int> toUnassign = [];
 
-                for (int customerId in selectedCustomers) {
-                  if (!initialAssignedCustomers.contains(customerId)) {
-                    toAssign.add(customerId);
+                  for (int customerId in selectedCustomers) {
+                    if (!initialAssignedCustomers.contains(customerId)) {
+                      toAssign.add(customerId);
+                    }
                   }
-                }
 
-                for (int customerId in initialAssignedCustomers) {
-                  if (!selectedCustomers.contains(customerId)) {
-                    toUnassign.add(customerId);
+                  for (int customerId in initialAssignedCustomers) {
+                    if (!selectedCustomers.contains(customerId)) {
+                      toUnassign.add(customerId);
+                    }
                   }
-                }
 
-                if (toAssign.isNotEmpty) {
-                  final assignResult = await AssignCustomers.assignEmployee(
-                      toAssign, widget.employee.id);
-                  if (assignResult == 'Successfully assigned') {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Customers assigned successfully!')),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(assignResult)),
-                    );
+                  if (toAssign.isNotEmpty) {
+                    final assignResult = await AssignCustomers.assignEmployee(
+                        toAssign, widget.employee.id);
+                    if (assignResult == 'Successfully assigned') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Customers assigned successfully!')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(assignResult)),
+                      );
+                    }
                   }
-                }
 
-                if (toUnassign.isNotEmpty) {
-                  final unassignResult = await AssignCustomers.unAssignEmployee(
-                      toUnassign, widget.employee.id);
-                  if (unassignResult == 'Successfully assigned') {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                          content: Text('Customers unassigned successfully!')),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(unassignResult)),
-                    );
+                  if (toUnassign.isNotEmpty) {
+                    final unassignResult =
+                        await AssignCustomers.unAssignEmployee(
+                            toUnassign, widget.employee.id);
+                    if (unassignResult == 'Successfully assigned') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content:
+                                Text('Customers unassigned successfully!')),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(unassignResult)),
+                      );
+                    }
                   }
-                }
-                Navigator.pop(context);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColor.black, width: 1.5),
-                ),
-                width: 150,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(5),
-                child: const Text(
-                  'Save',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColor.black, width: 1.5),
+                  ),
+                  width: 150,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(5),
+                  child: const Text(
+                    'Save',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
-            ),
             sh(20)
           ],
         ),

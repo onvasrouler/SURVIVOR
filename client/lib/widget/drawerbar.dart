@@ -47,7 +47,7 @@ class _DrawerbarState extends State<Drawerbar> with HoverMixin<Drawerbar> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         sh(60),
-        for (int i = 0; i < 8; i++) ...[
+        for (int i = 0; i < Utility.tabName().length; i++) ...[
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: GestureDetector(
@@ -58,7 +58,7 @@ class _DrawerbarState extends State<Drawerbar> with HoverMixin<Drawerbar> {
                 });
               },
               child: tabButton(
-                Utility.tabName(i),
+                Utility.tabName()[i],
                 i,
               ),
             ),

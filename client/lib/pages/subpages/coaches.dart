@@ -1,9 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:soul_connection/auth/signup.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/constants/datas.dart';
 import 'package:soul_connection/models/employees.module.dart';
 import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
+import 'package:soul_connection/pages/subpages/widgets/edit_users.dart';
 import 'package:soul_connection/theme/color.dart';
 
 class CoachesPage extends StatefulWidget {
@@ -17,7 +19,9 @@ class _CoachesPageState extends State<CoachesPage> {
   String fillTable(EmployeeModel employee, int index) {
     if (index == 1) return '${employee.name} ${employee.surname}';
     if (index == 2) return employee.birthDate;
-    if (index == 3) return 'Edit list ...';
+    if (index == 3) {
+      return user!.work != 'Coach' ? 'Edit list ...' : 'View list ...';
+    }
     if (index == 4) return employee.lastSession;
     return '';
   }
@@ -29,6 +33,26 @@ class _CoachesPageState extends State<CoachesPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         appBar(context, 'Coaches'),
+        GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (context) => ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: const SignUpPage(),
+              ),
+            ).then((_) {
+              setState(() {});
+            });
+          },
+          child: const Icon(
+            Icons.add,
+            size: 40,
+            color: Colors.red,
+          ),
+        ),
         SizedBox(
           width: kIsWeb ? null : dw(context),
           height: dh(context) - 207,
@@ -91,88 +115,9 @@ class _CoachesPageState extends State<CoachesPage> {
                                       context: context,
                                       isScrollControlled: true,
                                       backgroundColor: Colors.transparent,
-                                      builder: (context) => ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Container(
-                                          width: dw(context),
-                                          height: dh(context),
-                                          color: Colors.white,
-                                          child: Column(
-                                            children: [
-                                              sh(80),
-                                              const Text(
-                                                'Edit list',
-                                                style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              sh(20),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 30.0),
-                                                child: Container(
-                                                  height: 1.5,
-                                                  color: Colors.black,
-                                                  width: dw(context),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: 250,
-                                                height: dh(context) - 150,
-                                                child: ListView.builder(
-                                                  shrinkWrap: true,
-                                                  itemCount:
-                                                      allCustomers.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return Center(
-                                                      child: Container(
-                                                        width: 250,
-                                                        height: 30,
-                                                        color:
-                                                            Colors.transparent,
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: Row(
-                                                          children: [
-                                                            Container(
-                                                              width: 200,
-                                                              alignment: Alignment
-                                                                  .centerLeft,
-                                                              child: Text(
-                                                                '${allCustomers[index].name} ${allCustomers[index].surname}',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style:
-                                                                    const TextStyle(
-                                                                  fontSize: 20,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Checkbox(
-                                                              value: true,
-                                                              activeColor:
-                                                                  AppColor
-                                                                      .deepblue,
-                                                              onChanged: (bool?
-                                                                  value) {},
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                      builder: (context) => EditCustomers(
+                                        employee: allCoaches[row - 1],
+                                        permission: user!.work != 'Coach',
                                       ),
                                     );
                                   },

@@ -1,18 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:soul_connection/constants/constants.dart';
 
 class Utility {
-  static String tabName(int index) {
+  static List<String> tabName() {
     return [
       'Home',
       'Coaches',
       'Customers',
-      'Statistics',
+      if (user!.work != 'Coach') 'Statistics',
       'Wardrobe',
       'Matches',
       'Tips',
       'Events'
-    ][index];
+    ];
   }
 
   static Icon tabIcon(int index) {

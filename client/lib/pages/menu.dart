@@ -31,7 +31,7 @@ class _MenuPageState extends State<MenuPage> {
       const HomePage(),
       const CoachesPage(),
       const CustomersPage(),
-      const StatisticsPage(),
+      if (user!.work != 'Coach') const StatisticsPage(),
       const WardrobePage(),
       const MatchesPage(),
       const TipsPage(),
@@ -138,11 +138,11 @@ class _MenuPageState extends State<MenuPage> {
               selectedItemColor: Colors.black,
               currentIndex: tabIndex,
               items: [
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < Utility.tabName().length; i++)
                   BottomNavigationBarItem(
                     backgroundColor: Colors.white,
                     icon: Utility.tabIcon(i),
-                    label: Utility.tabName(i),
+                    label: Utility.tabName()[i],
                   ),
               ],
             )

@@ -17,11 +17,33 @@ class WardrobePage extends StatefulWidget {
 class _WardrobePageState extends State<WardrobePage>
     with HoverMixin<WardrobePage> {
   int currentIndex = 0;
-  CustomerModel currentCustomer = allCustomers.first;
   List<String> imageTypes = ['hat/cap', 'top', 'bottom', 'shoes'];
+  CustomerModel currentCustomer = filteredCustomers.isNotEmpty
+      ? filteredCustomers.first
+      : CustomerModel(
+          userId: 1,
+          email: '',
+          name: '',
+          surname: '',
+          birthDate: '',
+          gender: '',
+          description: '',
+          astrologicalSign: '',
+          phoneNumber: '',
+          address: '',
+          clothes: [],
+          profilePicture: '',
+          payements: [],
+          encouters: [],
+        );
 
   @override
   Widget build(BuildContext context) {
+    if (filteredCustomers.isEmpty) {
+      return const Center(
+        child: Text('No customers found'),
+      );
+    }
     return SizedBox(
       height: dh(context),
       width: dw(context),

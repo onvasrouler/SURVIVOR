@@ -6,7 +6,7 @@ class AssignCustomers {
     List<int> customersId,
     int coachId,
   ) async {
-    final url = Uri.parse('http://82.65.59.34:3333/api/assign');
+    final url = Uri.parse('http://$apiUrl/api/assign');
 
     final Map<String, String> headers = {
       'session': localUser.getString('token')!,
@@ -36,7 +36,7 @@ class AssignCustomers {
     List<int> customersId,
     int coachId,
   ) async {
-    final url = Uri.parse('http://82.65.59.34:3333/api/unassign');
+    final url = Uri.parse('http://$apiUrl/api/unassign');
 
     final Map<String, String> headers = {
       'session': localUser.getString('token')!,
