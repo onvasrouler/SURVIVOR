@@ -1,62 +1,44 @@
-class EmployeeModel {
-  int id;
+class UserModel {
   String email;
   String name;
   String surname;
-  String birthDate;
   String gender;
   String work;
   String lastSession;
   String employeeId;
-  List<int> assignedCustomer;
 
-  EmployeeModel({
-    required this.id,
+  UserModel({
     required this.email,
     required this.name,
     required this.surname,
-    required this.birthDate,
     required this.gender,
     required this.work,
     required this.lastSession,
     required this.employeeId,
-    required this.assignedCustomer,
   });
 
-  factory EmployeeModel.fromJson(Map<String, dynamic> json) {
-    List<int> assignedCustomer = [];
-    if (json.containsKey('assigned_customers') &&
-        json['assigned_customers'] != null) {
-      assignedCustomer = List<String>.from(json['assigned_customers'])
-          .map((e) => int.parse(e))
-          .toList();
-    }
-    return EmployeeModel(
-      id: json['id'],
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
       email: json['email'],
       name: json['name'],
       surname: json['surname'],
-      birthDate: json['birth_date'],
       gender: json['gender'],
       work: json['work'],
       employeeId: json['employee_id'],
       lastSession: json['lastConnection'] ?? 'Never',
-      assignedCustomer: assignedCustomer,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'email': email,
       'name': name,
       'surname': surname,
-      'birth_date': birthDate,
       'gender': gender,
       'work': work,
-      'employee_id': employeeId,
+      'User_id': employeeId,
       'lastConnection': lastSession,
-      'assigned_customers': assignedCustomer,
     };
   }
 }
+

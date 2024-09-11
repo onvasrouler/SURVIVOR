@@ -1,4 +1,3 @@
-import 'package:soul_connection/auth/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/auth/signin.dart';
 import 'package:soul_connection/constants/constants.dart';
@@ -36,32 +35,6 @@ class _OnBoardPageState extends State<OnBoardPage> {
                 alignment: Alignment.center,
                 child: const Text(
                   "Sign In",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
-            sh(30),
-            GestureDetector(
-              onTap: () {
-                Navigator.push<void>(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const SignUpPage(),
-                  ),
-                );
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.black, width: 1.5),
-                ),
-                alignment: Alignment.center,
-                child: const Text(
-                  "Sign Up",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -120,34 +93,6 @@ class _OnBoardPageState extends State<OnBoardPage> {
                 alignment: Alignment.center,
                 child: const Text(
                   "Sign In",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ),
-            sh(30),
-            GestureDetector(
-              onTap: () {
-                Navigator.push<void>(
-                  context,
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) => const SignUpPage(),
-                  ),
-                );
-              },
-              child: Container(
-                height: 70,
-                width: 250,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.black, width: 1.5),
-                ),
-                alignment: Alignment.center,
-                child: const Text(
-                  "Sign Up",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 30,

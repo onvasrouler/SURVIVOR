@@ -3,12 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soul_connection/models/customer.module.dart';
 import 'package:soul_connection/models/employees.module.dart';
+import 'package:soul_connection/models/user.module.dart';
 import 'package:soul_connection/models/event.module.dart';
 import 'package:soul_connection/models/tips.module.dart';
 
 late SharedPreferences localUser;
 
 List<CustomerModel> allCustomers = [];
+
+UserModel? user;
 
 List<EmployeeModel> allCoaches = [];
 
