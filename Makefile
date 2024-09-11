@@ -37,7 +37,7 @@ scrapper-lint:
 server-lint-fix:
 	cd server && npm run lintfix
 
-serveur-test:
+server-test:
 	cd server && npm run test
 
 .PHONY: build clean run server
