@@ -51,3 +51,12 @@ npm run lint
 # auto fix lint errors
 npm run lintfix
 ```
+
+to run with pm2 :
+```bash
+# for development environment
+pm2 reload ecosystem.config.js --only soul-connection-api-dev --env development
+
+# for prod environment
+pm2 start ecosystem.config.js --only soul-connection-api-prod --env production
+```
