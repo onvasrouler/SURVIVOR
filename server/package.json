@@ -15,7 +15,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node tests/api_tester.js",
-    "dev": "nodemon index.js",
+    "dev": "PORT=3003 nodemon index.js",
     "lint": "eslint .",
     "lintfix": "eslint --fix .",
     "start": "node index.js"
