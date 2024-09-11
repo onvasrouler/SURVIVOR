@@ -13,7 +13,7 @@ class UserService {
     );
     if (response.statusCode == 200) {
       dynamic bodyUser = jsonDecode(response.body)['data'];
-      user = UserModel.fromJson(bodyUser);
+      user = UserModel.fromJson(bodyUser['soul_employee']);
       return true;
     } else {
       return false;

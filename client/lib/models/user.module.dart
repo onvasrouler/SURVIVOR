@@ -1,39 +1,44 @@
 class UserModel {
-  String username;
   String email;
-  String role;
-  String creationIp;
-  String lastConnection;
-  String uniqueId;
+  String name;
+  String surname;
+  String gender;
+  String work;
+  String lastSession;
+  String employeeId;
 
   UserModel({
-    required this.username,
     required this.email,
-    required this.role,
-    required this.creationIp,
-    required this.lastConnection,
-    required this.uniqueId,
+    required this.name,
+    required this.surname,
+    required this.gender,
+    required this.work,
+    required this.lastSession,
+    required this.employeeId,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      username: json['username'],
       email: json['email'],
-      role: json['role'],
-      creationIp: json['creationIp'],
-      lastConnection: json['lastConnection'],
-      uniqueId: json['unique_id'],
+      name: json['name'],
+      surname: json['surname'],
+      gender: json['gender'],
+      work: json['work'],
+      employeeId: json['employee_id'],
+      lastSession: json['lastConnection'] ?? 'Never',
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'username': username,
       'email': email,
-      'role': role,
-      'creationIp': creationIp,
-      'lastConnection': lastConnection,
-      'uniqueId': uniqueId,
+      'name': name,
+      'surname': surname,
+      'gender': gender,
+      'work': work,
+      'User_id': employeeId,
+      'lastConnection': lastSession,
     };
   }
 }
+
