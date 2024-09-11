@@ -10,6 +10,7 @@ import 'package:soul_connection/provider/coachs.service.dart';
 import 'package:soul_connection/provider/customers.service.dart';
 import 'package:soul_connection/provider/events.service.dart';
 import 'package:soul_connection/provider/tips.service.dart';
+import 'package:soul_connection/provider/user.service.dart';
 import 'package:soul_connection/watch-wrapper/watch_os.dart';
 import 'package:soul_connection/watch-wrapper/wear_os.dart';
 
@@ -44,6 +45,7 @@ class _MyAppState extends State<MyApp> {
   Future<void> fetchData() async {
     try {
       await Future.wait([
+        UserService.fetchUsers(),
         CustomersService.fetchCustomers(),
         CoachsService.fetchEmployees(),
         TipsService.fetchTips(),
