@@ -7,6 +7,7 @@ exports.get_all = async (req, res) => {
     if (!req.user || req.user == null)
         return api_formatter(req, res, 401, "noSession", "vous n'êtes pas connecté", null, null, null);
     try {
+
         const data = await soulConnection.collection(req.params.COLLECTIONNAME).find({}).toArray();
         if (data[0]["date"]) {
             data.forEach((element) => {
@@ -19,6 +20,40 @@ exports.get_all = async (req, res) => {
         return api_formatter(req, res, 500, "errorOccured", "Erreur lors de la récupération des données", null, error, null);
     }
 };
+
+exports.soul_connection_get_all_coach = async (req, res) => {
+    if (!req.user || req.user == null)
+        return api_formatter(req, res, 401, "noSession", "vous n'êtes pas connecté", null, null, null);
+    try {
+        const data = await soulConnection.collection("employee").find({ work: "Coach" }).toArray();
+        buffer = [];
+        index = 0;
+        console.log(data);  
+        data.forEach((element) => {
+            element["coach_id"] = index;
+            buffer.push(element);
+            index++;
+        });
+        console.log(buffer);
+        return api_formatter(req, res, 200, "success", "successfully received data", buffer, null, null);
+    } catch (error) {
+        return api_formatter(req, res, 500, "errorOccured", "Error occured when trying to get data", null, error, null);
+    }
+};
+
+exports.soul_connection_get_one_coach = async (req, res) => {
+    if (!req.user || req.user == null)
+        return api_formatter(req, res, 401, "noSession", "vous n'êtes pas connecté", null, null, null);
+    try {
+        const allCoach = await soulConnection.collection("employee").find({ work: "Coach" }).toArray();
+        if (!allCoach || allCoach[req.params.ID] == null) {
+            return api_formatter(req, res, 404, "notFound", "data not found", null, null, null);
+        }
+        return api_formatter(req, res, 200, "success", "successfully received data", allCoach[req.params.ID], null, null);
+    } catch (error) {
+        return api_formatter(req, res, 500, "errorOccured", "Error occured when trying to get data", null, error, null);
+    }
+}
 
 exports.soul_connection_api = async (req, res) => {
     if (!req.user || req.user == null)
