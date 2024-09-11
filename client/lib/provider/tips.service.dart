@@ -6,7 +6,7 @@ import 'package:soul_connection/models/tips.module.dart';
 class TipsService {
   static Future<bool> fetchTips() async {
     final response = await http.get(
-      Uri.parse('http://82.65.59.34:3333/soul_connection_api/tip'),
+      Uri.parse('http://$apiUrl/soul_connection_api/tip'),
       headers: {
         'session': localUser.getString('token')!,
       },

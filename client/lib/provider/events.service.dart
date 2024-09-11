@@ -6,7 +6,7 @@ import 'package:soul_connection/models/event.module.dart';
 class EventService {
   static Future<bool> fetchEvent() async {
     final response = await http.get(
-      Uri.parse('http://82.65.59.34:3333/soul_connection_api/event'),
+      Uri.parse('http://$apiUrl/soul_connection_api/event'),
       headers: {
         'session': localUser.getString('token')!,
       },
