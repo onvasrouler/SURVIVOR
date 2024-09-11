@@ -24,14 +24,14 @@ class AuthService {
       'birth_date': birthday,
       'gender': gender,
       'work': work,
-      'profilePicture': base64Encode(image),
     };
 
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
       'X-Group-Authorization': 'bf0d22904b98ad48a9cbf9251758ce74',
       "Access-Control-Allow-Origin": "*",
-      'Accept': '*/*'
+      'Accept': '*/*',
+      'session': localUser.getString('token')!,
     };
 
     final response = await http.post(
