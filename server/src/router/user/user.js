@@ -1,7 +1,9 @@
 const UserModel = require("../../database/models/users");
 const SessionModel = require("../../database/models/session");
 const api_formatter = require("../../middleware/api-formatter.js");
-
+const { soulConnection } = require("../../database/mongo");
+const { formatDate } = require("../../utils/date.js");
+const { userData } = require("../../utils/user-data.js");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
@@ -26,7 +28,7 @@ exports.register = async (req, res) => {
             email: register_data.email,
             username: register_data.username,
             password: register_data.password,
-            creationIp: register_data.ip,
+            creationIp: register_data.ip
         }).save().then(async function (userRegistered) {
             tmpUserRegister = userRegistered;
             await new SessionModel({
@@ -84,9 +86,7 @@ exports.login = async (req, res) => {
                     $addToSet: {
                         link_session_id: newSession.signed_id,
                     },
-                    $set: {
-                        lastConnection: Date.now()
-                    }
+                    lastConnection: Date.now()
                 }).catch(async function (err) {
                     return login_error(req, res, err, tmpSessuion);
                 });
@@ -147,6 +147,64 @@ exports.deleteaccount = async (req, res) => {
     }
 };
 
+exports.register_employee = async (req, res) => {
+    try {
+        const register_employee_data = {
+            "email": req.body.email,
+            "name": req.body.name,
+            "surname": req.body.surname,
+            "birth_date": req.body.birth_date,
+            "gender": req.body.gender,
+            "work": req.body.work,
+            updated_at: Date.now(),
+        };
+        const role = register_employee_data.work == "Coach" ? "coach" : "employee";
+        const register_data = {
+            "email": register_employee_data.email,
+            "password": req.body.password,
+            "username": register_employee_data.surname,
+            "role": role,
+            "ip": req.headers["x-forwarded-for"] || req.connection.remoteAddress,
+        };
+        if (await check_json_data(register_data)) return api_formatter(req, res, 400, "missing_informations", "some of the information for the user were not provided", null, null, null);
+        if (await check_json_data(register_employee_data)) return api_formatter(req, res, 400, "missing_informations", "some of the information for the employee were not provided", null, null, null);
+        if (await UserModel.emailExists(register_data.email)) return api_formatter(req, res, 400, "email_already_exist", "an account with the provided email already exist", null, null, null);
+        if (await UserModel.usernameExists(register_data.username)) return api_formatter(req, res, 400, "username_already_exist", "an account with the provided username already exist", null, null, null);
+
+        const soul_connection_employee = await soulConnection.collection("employee").findOne({ email: register_employee_data.email })
+        if (!soul_connection_employee) {
+            const newId = await generate_employee_id();
+            register_employee_data.employee_id = `${newId}`;
+            register_employee_data.id = Number(newId);
+            register_data.employee_id = `${newId}`;
+            await soulConnection.collection("employee").insertOne(register_employee_data).then(async function (employeeRegistered) {
+                return await create_or_delete_employee(register_data, req, res);
+            }).catch(async function (err) {
+                console.error(err);
+                return error_occured(req, res, err);
+            });
+        } else {
+            return await create_or_delete_employee(register_data, req, res);
+        }
+    } catch (err) {
+        console.error(err);
+        return api_formatter(req, res, 500, "errorOccured", "An error occured while trying to register", null, err, null);
+    }
+};
+
+async function create_or_delete_employee(register_data, req, res) {
+    new UserModel(register_data).save().then(async function (userRegistered) {
+        return api_formatter(req, res, 200, "success", "successfully registered", await userData(userRegistered), null, null, null);
+    }).catch(async function (err) {
+        await soulConnection.collection("employee").deleteOne({ email: register_data.email });
+        return error_occured(req, res, err);
+    })
+}
+
+async function generate_employee_id() {
+    NbEmployee = await soulConnection.collection("employee").countDocuments();
+    return NbEmployee + 2;
+}
 
 async function return_signed_cookies(req, res, Session, User) {
     try {
@@ -156,7 +214,7 @@ async function return_signed_cookies(req, res, Session, User) {
             200,
             "success",
             "successfully registered",
-            null,
+            await userData(User),
             null,
             jwt.sign({ session_id: Session.unique_session_id }, process.env.SECRET),
             User.username
