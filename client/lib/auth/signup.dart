@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
+import 'package:soul_connection/models/employees.module.dart';
 import 'package:soul_connection/provider/auth.service.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -71,7 +72,7 @@ class _LoginPageState extends State<SignUpPage> {
                 sh(30),
                 TextField(
                   controller: _username,
-                  decoration: const InputDecoration(hintText: 'Username'),
+                  decoration: const InputDecoration(hintText: 'Name'),
                 ),
                 TextField(
                   controller: _email,
@@ -95,9 +96,7 @@ class _LoginPageState extends State<SignUpPage> {
                 sh(20),
                 GestureDetector(
                   onTap: () async {
-                    if (!loader) {
-                      //TODO
-                    }
+                    if (!loader) {}
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -147,7 +146,7 @@ class _LoginPageState extends State<SignUpPage> {
           children: [
             TextField(
               controller: _username,
-              decoration: const InputDecoration(hintText: 'Username'),
+              decoration: const InputDecoration(hintText: 'Name'),
             ),
             Container(
               height: 30,
@@ -197,14 +196,43 @@ class _LoginPageState extends State<SignUpPage> {
             ),
             GestureDetector(
               onTap: () async {
-                AuthService.signUp(
+                final resonse = await AuthService.signUp(
                   _email.text,
                   _password.text,
                   _username.text,
                   _gender.text,
                   _birthday.text,
                   _surname.text,
+                  'Coach',
                 );
+                if (resonse['status'] == 200) {
+                  allCoaches.add(
+                    EmployeeModel(
+                      name: _username.text,
+                      surname: _surname.text,
+                      birthDate: _birthday.text,
+                      lastSession: 'Never',
+                      id: int.parse(resonse['data']),
+                      email: _email.text,
+                      gender: _gender.text,
+                      work: 'Coach',
+                      employeeId: resonse['data'],
+                      assignedCustomer: [],
+                    ),
+                  );
+                }
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.blue,
+                    duration: const Duration(seconds: 5),
+                    content: Center(
+                      child: Text(
+                        resonse['data'],
+                      ),
+                    ),
+                  ),
+                );
+                Navigator.pop(context);
               },
               child: Container(
                 height: 70,
