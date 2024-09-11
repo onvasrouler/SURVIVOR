@@ -16,6 +16,15 @@ clean:
 run:
 	cd client && flutter run -d chrome --web-browser-flag --disable-web-security
 
+server-install:
+	cd server && npm install
+
+server-pm2-dev:
+	pm2 reload ecosystem.config.js --only soul-connection-api-dev --env development
+
+server-pm2-prod:
+	pm2 reload ecosystem.config.js --only soul-connection-api-prod --env production
+
 server:
 	cd server && npm run dev
 
