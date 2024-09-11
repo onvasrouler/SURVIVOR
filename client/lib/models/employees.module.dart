@@ -8,6 +8,7 @@ class EmployeeModel {
   String work;
   String lastSession;
   String employeeId;
+  List<int> assignedCustomer;
 
   EmployeeModel({
     required this.id,
@@ -19,9 +20,17 @@ class EmployeeModel {
     required this.work,
     required this.lastSession,
     required this.employeeId,
+    required this.assignedCustomer,
   });
 
   factory EmployeeModel.fromJson(Map<String, dynamic> json) {
+    List<int> assignedCustomer = [];
+    if (json.containsKey('assigned_customers') &&
+        json['assigned_customers'] != null) {
+      assignedCustomer = List<String>.from(json['assigned_customers'])
+          .map((e) => int.parse(e))
+          .toList();
+    }
     return EmployeeModel(
       id: json['id'],
       email: json['email'],
@@ -32,6 +41,7 @@ class EmployeeModel {
       work: json['work'],
       employeeId: json['employee_id'],
       lastSession: json['lastConnection'] ?? 'Never',
+      assignedCustomer: assignedCustomer,
     );
   }
 
@@ -46,6 +56,7 @@ class EmployeeModel {
       'work': work,
       'employee_id': employeeId,
       'lastConnection': lastSession,
+      'assigned_customers': assignedCustomer,
     };
   }
 }
