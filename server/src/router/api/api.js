@@ -1,5 +1,7 @@
 const { mainDB, soulConnection } = require("../../database/mongo");
 const api_formatter = require("../../middleware/api-formatter.js");
+const { formatDate } = require("../../utils/date.js");
+const { userData } = require("../../utils/user-data.js");
 
 exports.get_all = async (req, res) => {
     if (!req.user || req.user == null)
@@ -64,13 +66,13 @@ exports.internal_api_get_all = async (req, res) => {
     try {
         const data = await mainDB.collection("users").find({}).toArray();
         let buffer = [];
-        data.forEach((element) => {
+        await data.forEach(async (element) => {
             buffer.push({
                 "username": element.username,
                 "email": element.email,
                 "role": element.role,
                 "creationIp": element.creationIp,
-                "lastConnection": element.lastConnection,
+                "lastConnection": await formatDate(element.lastConnection),
                 "unique_id": element.unique_id
             });
         });
@@ -100,7 +102,7 @@ exports.internal_api_get_one = async (req, res) => {
             "email": data.email,
             "role": data.role,
             "creationIp": data.creationIp,
-            "lastConnection": data.lastConnection,
+            "lastConnection": await formatDate(data.lastConnection),
             "unique_id": data.unique_id
         };
         return api_formatter(req, res, 200, "success", "successfully received data", buffer, null, null);
@@ -112,16 +114,7 @@ exports.internal_api_get_one = async (req, res) => {
 exports.internal_api_get_me = async (req, res) => {
     if (!req.user || req.user == null)
         return api_formatter(req, res, 401, "noSession", "vous n'êtes pas connecté", null, null, null);
-
-    let data = {
-        "username": req.user.username,
-        "email": req.user.email,
-        "role": req.user.role,
-        "creationIp": req.user.creationIp,
-        "lastConnection": req.user.lastConnection,
-        "unique_id": req.user.unique_id
-    };
-    return api_formatter(req, res, 200, "success", "successfully received data", data, null, null);
+    return api_formatter(req, res, 200, "success", "successfully received data", await userData(req.user), null, null);
 }
 
 exports.internal_api_assign = async (req, res) => {
@@ -144,18 +137,18 @@ exports.internal_api_assign = async (req, res) => {
             return api_formatter(req, res, 400, "badRequest", "the given employee is not a coach", null, null, null);
 
         if (typeof assign_data.customerId == "object") {
-            let status = {"success": 0, "notFound": 0, "badRequest": 0};
+            let status = {"success": [], "notFound": [], "badRequest": []};
             for (let i = 0; i < assign_data.customerId.length; i++) {
                 const customer = await soulConnection.collection("customer").findOne({ customer_id: `${assign_data.customerId[i]}`});
                 if (!customer) {
-                    status["notFound"]++;
+                    status["notFound"].push(assign_data.customerId[i]);
                     continue;
                 }
                 const assignation = await assign_coach_customers(coach, customer);
                 if (assignation === true)
-                    status["success"]++;
+                    status["success"].push(assign_data.customerId[i]);
                 else {
-                    status["badRequest"]++;
+                    status["badRequest"].push({ "customer_id": assign_data.customerId[i], "error": assignation });
                     console.error(assignation);
                 }
             }
@@ -182,14 +175,15 @@ async function assign_coach_customers(coach, customer) {
         const coachAssigned = customer.assigned_coach
         const customerAssigned = coach.assigned_customers
 
-        if (!coachAssigned)
-            soulConnection.collection("customer").updateOne({ customer_id: customer.customer_id }, { $addToSet: { "assigned_coach": coach.employee_id } });
+        if (!coachAssigned || !coachAssigned.includes(coach.employee_id))
+            await soulConnection.collection("customer").updateOne({ customer_id: customer.customer_id }, { $addToSet: { "assigned_coach": coach.employee_id } });
 
-        if (!customerAssigned)
-            soulConnection.collection("employee").updateOne({ employee_id: coach.employee_id }, { $addToSet: { "assigned_customers": customer.customer_id } });
-
+        if (!customerAssigned || !customerAssigned.includes(customer.customer_id)) {
+            await soulConnection.collection("employee").updateOne({ employee_id: coach.employee_id }, { $addToSet: { "assigned_customers": customer.customer_id } });
+        }
         return true;
     } catch (error) {
+        console.error(error);
         return error;
     }
 }
@@ -214,18 +208,18 @@ exports.internal_api_unassign = async (req, res) => {
             return api_formatter(req, res, 400, "badRequest", "the given employee is not a coach", null, null, null);
 
         if (typeof unassign_data.customerId == "object") {
-            let status = {"success": 0, "notFound": 0, "badRequest": 0};
+            let status = {"success": [], "notFound": [], "badRequest": []};
             for (let i = 0; i < unassign_data.customerId.length; i++) {
                 const customer = await soulConnection.collection("customer").findOne({ customer_id: `${unassign_data.customerId[i]}`});
                 if (!customer) {
-                    status["notFound"]++;
+                    status["notFound"].push(unassign_data.customerId[i]);
                     continue;
                 }
                 const unassignation = await unassign_coach_customers(coach, customer);
                 if (unassignation === true)
-                    status["success"]++;
+                    status["success"].push(unassign_data.customerId[i]);
                 else {
-                    status["badRequest"]++;
+                    status["badRequest"].push({ "customer_id": unassign_data.customerId[i], "error": unassignation });
                     console.error(unassignation);
                 }
             }
@@ -260,6 +254,7 @@ async function unassign_coach_customers(coach, customer) {
 
         return true;
     } catch (error) {
+        console.error(error);
         return error;
     }
 }
