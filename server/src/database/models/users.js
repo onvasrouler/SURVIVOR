@@ -1,4 +1,4 @@
-const { mainDB } = require("../mongo");
+const { mainDB, soulConnection } = require("../mongo");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ["normal", "admin"],
+        enum: ["normal", "admin", "employee", "coach"],
         default: "normal",
     },
     username: {
@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema({
         unique: [true, "an account already exist on this username!"],
         maxlength: [100, "username can't be more than 100 characters"],
         required: [true, "username is required"],
+    },
+    employee_id: {
+        type: String,
+        default: ""
     },
     //    phonenumber: {
     //        type: String,
@@ -93,15 +97,23 @@ userSchema.pre("save", function (next) {
     user.unique_id = crypto.randomUUID();
     user.LastModificationIp = user.creationIp;
 
-    if (!user.isModified("password")) return next();
+    const soul_connection_employee = soulConnection.collection("employee").findOne({ email: user.email })
+    .then(function (soul_connection_employee) {
+            user.employee_id = soul_connection_employee.employee_id;
+            user.role = soul_connection_employee.work;
+    })
 
-    bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.genSalt(10, async function (err, salt) {
         if (err) return next(err);
-        bcrypt.hash(user.password, salt, function (err, hash) {
-            if (err) return next(err);
-            user.password = hash;
-            next();
-        });
+        bcrypt.hash(user.password, salt)
+            .then(function (hash) {
+                user.password = hash;
+                return next();
+            })
+            .catch(function (err) {
+                console.error(err);
+                return next(err);
+            });
     });
 });
 
