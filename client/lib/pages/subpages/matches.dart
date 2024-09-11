@@ -17,8 +17,42 @@ class MatchesPage extends StatefulWidget {
 
 class _MatchesPageState extends State<MatchesPage>
     with HoverMixin<MatchesPage> {
-  CustomerModel firstCustomer = allCustomers.first;
-  CustomerModel secondCustomer = allCustomers[1];
+  CustomerModel firstCustomer = filteredCustomers.isNotEmpty
+      ? filteredCustomers.first
+      : CustomerModel(
+          userId: 1,
+          email: '',
+          name: '',
+          surname: '',
+          birthDate: '',
+          gender: '',
+          description: '',
+          astrologicalSign: '',
+          phoneNumber: '',
+          address: '',
+          clothes: [],
+          profilePicture: '',
+          payements: [],
+          encouters: [],
+        );
+  CustomerModel secondCustomer = filteredCustomers.length > 1
+      ? filteredCustomers[1]
+      : CustomerModel(
+          userId: 1,
+          email: '',
+          name: '',
+          surname: '',
+          birthDate: '',
+          gender: '',
+          description: '',
+          astrologicalSign: '',
+          phoneNumber: '',
+          address: '',
+          clothes: [],
+          profilePicture: '',
+          payements: [],
+          encouters: [],
+        );
 
   List<String> signs = [
     'Aries',
@@ -137,6 +171,11 @@ class _MatchesPageState extends State<MatchesPage>
 
   @override
   Widget build(BuildContext context) {
+    if (filteredCustomers.length <= 1) {
+      return const Center(
+        child: Text('No customers found'),
+      );
+    }
     return SizedBox(
       height: dh(context),
       width: dw(context),

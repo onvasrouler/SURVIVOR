@@ -7,6 +7,7 @@ import 'package:soul_connection/provider/coachs.service.dart';
 import 'package:soul_connection/provider/customers.service.dart';
 import 'package:soul_connection/provider/events.service.dart';
 import 'package:soul_connection/provider/tips.service.dart';
+import 'package:soul_connection/provider/user.service.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -164,10 +165,14 @@ class _LoginPageState extends State<SignInPage> {
                   String? user =
                       await AuthService.signIn(_email.text, _password.text);
                   if (user == null) {
-                    await CustomersService.fetchCustomers();
-                    await CoachsService.fetchEmployees();
-                    await TipsService.fetchTips();
-                    await EventService.fetchEvent();
+                    await Future.wait([
+                      UserService.fetchUsers().then((value) {
+                        CustomersService.fetchCustomers();
+                        CoachsService.fetchEmployees();
+                      }),
+                      TipsService.fetchTips(),
+                      EventService.fetchEvent(),
+                    ]);
                     Navigator.pushAndRemoveUntil<void>(
                       context,
                       MaterialPageRoute<void>(

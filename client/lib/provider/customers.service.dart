@@ -6,7 +6,7 @@ import 'package:soul_connection/models/customer.module.dart';
 class CustomersService {
   static Future<bool> fetchCustomers() async {
     final customers = await http.get(
-      Uri.parse('http://82.65.59.34:3333/soul_connection_api/customer'),
+      Uri.parse('http://$apiUrl/soul_connection_api/customer'),
       headers: {
         'session': localUser.getString('token')!,
       },
@@ -15,6 +15,11 @@ class CustomersService {
       List<dynamic> bodyCustomers = jsonDecode(customers.body)['data'];
       allCustomers =
           bodyCustomers.map((json) => CustomerModel.fromJson(json)).toList();
+
+      filteredCustomers = bodyCustomers
+          .map((json) => CustomerModel.fromJson(json))
+          .where((e) => user!.assignedCustomer.contains(e.userId))
+          .toList();
       return true;
     } else {
       return false;

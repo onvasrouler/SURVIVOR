@@ -45,9 +45,10 @@ class _MyAppState extends State<MyApp> {
   Future<void> fetchData() async {
     try {
       await Future.wait([
-        UserService.fetchUsers(),
-        CustomersService.fetchCustomers(),
-        CoachsService.fetchEmployees(),
+        UserService.fetchUsers().then((value) {
+          CustomersService.fetchCustomers();
+          CoachsService.fetchEmployees();
+        }),
         TipsService.fetchTips(),
         EventService.fetchEvent(),
       ]);
