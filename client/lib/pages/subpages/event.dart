@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
+import 'package:soul_connection/pages/subpages/widgets/dynamic_map.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 
 class EventPage extends StatefulWidget {
   const EventPage({super.key});
@@ -31,9 +33,9 @@ class _EventPageState extends State<EventPage> {
                 child: SizedBox(
                   width: dw(context) / 2.7,
                   height: dh(context) / 1.5,
-                  child: Image.network(
-                    'https://www.google.com/maps/about/images/mymaps/mymaps-desktop-16x9.png',
-                    fit: BoxFit.cover,
+                  child: CustomMapboxMap(
+                    startPosition: LatLng(47.21, -1.55), // Start position
+                    markersData: allEvents, // List of markers
                   ),
                 ),
               ),
