@@ -18,13 +18,11 @@ class SignInPage extends StatefulWidget {
 class _LoginPageState extends State<SignInPage> {
   late TextEditingController _email;
   late TextEditingController _password;
-  late TextEditingController _username;
   bool loader = false;
 
   @override
   void initState() {
     _email = TextEditingController();
-    _username = TextEditingController();
     _password = TextEditingController();
     super.initState();
   }
@@ -32,7 +30,6 @@ class _LoginPageState extends State<SignInPage> {
   @override
   void dispose() {
     _email.dispose();
-    _username.dispose();
     _password.dispose();
     super.dispose();
   }
@@ -53,6 +50,7 @@ class _LoginPageState extends State<SignInPage> {
                     const InputDecoration(hintText: 'Email or username'),
               ),
               TextField(
+                obscureText: true,
                 controller: _password,
                 decoration: const InputDecoration(hintText: 'Password'),
               ),
@@ -150,6 +148,7 @@ class _LoginPageState extends State<SignInPage> {
               height: 50,
             ),
             TextField(
+              obscureText: true,
               controller: _password,
               decoration: const InputDecoration(hintText: 'Password'),
             ),
