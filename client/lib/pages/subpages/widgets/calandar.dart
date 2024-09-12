@@ -3,6 +3,7 @@ import 'package:soul_connection/models/event.module.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:intl/intl.dart';
+import 'dart:math';
 
 class CalandarPage extends StatefulWidget {
   const CalandarPage({super.key, required this.callbackEvent});
@@ -12,6 +13,16 @@ class CalandarPage extends StatefulWidget {
   State<CalandarPage> createState() => _CalandarPageState();
 }
 
+Color getRandomColor() {
+  final random = Random();
+  return Color.fromARGB(
+    255,
+    random.nextInt(256),
+    random.nextInt(256),
+    random.nextInt(256),
+  );
+}
+
 Map<DateTime, List<Event>> loadDynamicEvents() {
   Map<DateTime, List<Event>> events = {};
   for (var eventData in allEvents) {
@@ -19,7 +30,7 @@ Map<DateTime, List<Event>> loadDynamicEvents() {
 
     Event singleEvent = Event(
       eventData.name,
-      Colors.blue,
+      getRandomColor(),
       eventData.id.toString(),
     );
     events[eventDate] = [singleEvent];
