@@ -103,6 +103,16 @@ class _CoachesPageState extends State<CoachesPage> {
                     sw(15),
                     GestureDetector(
                       onTap: () {
+                        if (user!.work == 'Coach') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              backgroundColor: Color(0xff748bff),
+                              content: Text(
+                                  'You do not have permission to add customers'),
+                            ),
+                          );
+                          return;
+                        }
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,

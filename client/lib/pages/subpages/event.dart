@@ -116,6 +116,8 @@ class EventPage extends StatefulWidget {
 class _EventPageState extends State<EventPage> {
   double x = double.parse(allEvents.first.locationX);
   double y = double.parse(allEvents.first.locationY);
+
+  GlobalKey key = GlobalKey();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -135,7 +137,15 @@ class _EventPageState extends State<EventPage> {
                 border: Border.all(color: const Color(0xffeaeef6), width: 2),
               ),
               padding: const EdgeInsets.all(18),
-              child: const CalendarExample(),
+              child: CalandarPage(
+                callbackEvent: (p0) {
+                  setState(() {
+                    x = double.parse(p0.locationX);
+                    y = double.parse(p0.locationY);
+                  });
+                  key = GlobalKey();
+                },
+              ),
             ),
             sh(20),
             Container(
@@ -148,6 +158,7 @@ class _EventPageState extends State<EventPage> {
               ),
               padding: const EdgeInsets.all(18),
               child: CustomMap(
+                key: key,
                 startPosition: LatLng(x, y),
                 markersData: [
                   LatLng(x, y),

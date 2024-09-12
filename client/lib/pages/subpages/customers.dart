@@ -146,7 +146,18 @@ class _CustomersPageState extends State<CustomersPage>
                     if (currentCustomer == null) sw(15),
                     if (currentCustomer == null)
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          if (user!.work == 'Coach') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Color(0xff748bff),
+                                content: Text(
+                                    'You do not have permission to add customers'),
+                              ),
+                            );
+                            return;
+                          }
+                        },
                         child: Container(
                           height: 35,
                           width: 35,

@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:soul_connection/models/event.module.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:intl/intl.dart';
 
-class CalendarExample extends StatefulWidget {
-  const CalendarExample({super.key});
+class CalandarPage extends StatefulWidget {
+  const CalandarPage({super.key, required this.callbackEvent});
+  final Function(EventModel) callbackEvent;
 
   @override
-  State<CalendarExample> createState() => _CalendarExampleState();
+  State<CalandarPage> createState() => _CalandarPageState();
 }
 
 Map<DateTime, List<Event>> loadDynamicEvents() {
-  Map<DateTime, List<Event>> _events = {};
+  Map<DateTime, List<Event>> events = {};
   for (var eventData in allEvents) {
     DateTime eventDate = DateFormat('dd-MM-yyyy').parse(eventData.date);
 
-    Event singleEvent = Event(eventData.name, Colors.blue);
-    _events[eventDate] = [singleEvent];
+    Event singleEvent = Event(
+      eventData.name,
+      Colors.blue,
+      eventData.id.toString(),
+    );
+    events[eventDate] = [singleEvent];
+    events[eventDate] = [singleEvent];
   }
-  return _events;
+  return events;
 }
 
-class _CalendarExampleState extends State<CalendarExample> {
+class _CalandarPageState extends State<CalandarPage> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
@@ -32,6 +39,8 @@ class _CalendarExampleState extends State<CalendarExample> {
     DateTime key = DateTime(day.year, day.month, day.day);
     return _events[key] ?? [];
   }
+
+  EventModel? currentEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +71,7 @@ class _CalendarExampleState extends State<CalendarExample> {
           onPageChanged: (focusedDay) {
             _focusedDay = focusedDay;
           },
-          daysOfWeekHeight: 30, // Adjust height for weekday names
+          daysOfWeekHeight: 30,
           daysOfWeekStyle: const DaysOfWeekStyle(
             decoration: BoxDecoration(
               color: Colors.transparent,
@@ -106,51 +115,9 @@ class _CalendarExampleState extends State<CalendarExample> {
               border: Border.all(color: Colors.grey.shade300, width: 0.5),
             ),
           ),
-          headerStyle: const HeaderStyle(
-            formatButtonVisible: false,
-            titleCentered: true,
-            leftChevronIcon: Icon(
-              Icons.chevron_left,
-              size: 28,
-            ),
-            rightChevronIcon: Icon(
-              Icons.chevron_right,
-              size: 28,
-            ),
-            titleTextStyle: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
           calendarBuilders: CalendarBuilders(
             defaultBuilder: (context, day, focusedDay) {
               return _buildDay(day);
-            },
-            todayBuilder: (context, day, focusedDay) {
-              return Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  day.day.toString(),
-                  style: const TextStyle(color: Colors.white),
-                ),
-              );
-            },
-            selectedBuilder: (context, day, focusedDay) {
-              return Container(
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.blueAccent,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  day.day.toString(),
-                  style: const TextStyle(color: Colors.white),
-                ),
-              );
             },
           ),
         ),
@@ -181,29 +148,38 @@ class _CalendarExampleState extends State<CalendarExample> {
   }
 
   Widget _buildEventMarker(Event event) {
-    return Container(
-      margin: const EdgeInsets.only(top: 2),
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
-      decoration: BoxDecoration(
-        color: event.color.withOpacity(0.7),
-        borderRadius: BorderRadius.circular(4),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.circle, size: 8, color: Colors.white),
-          const SizedBox(width: 4),
-          Flexible(
-            child: Text(
-              event.title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 10,
-                overflow: TextOverflow.ellipsis,
+    return GestureDetector(
+      onTap: () {
+        for (var element in allEvents) {
+          if (element.id.toString() == event.id) {
+            widget.callbackEvent(allEvents[allEvents.indexOf(element)]);
+          }
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 2),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+        decoration: BoxDecoration(
+          color: event.color.withOpacity(0.7),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.circle, size: 8, color: Colors.white),
+            const SizedBox(width: 4),
+            Flexible(
+              child: Text(
+                event.title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                maxLines: 1,
               ),
-              maxLines: 1,
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -211,7 +187,8 @@ class _CalendarExampleState extends State<CalendarExample> {
 
 class Event {
   final String title;
+  final String id;
   final Color color;
 
-  Event(this.title, this.color);
+  Event(this.title, this.color, this.id);
 }
