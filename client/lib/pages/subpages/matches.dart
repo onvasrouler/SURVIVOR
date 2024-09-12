@@ -16,8 +16,8 @@ class MatchesPage extends StatefulWidget {
 
 class _MatchesPageState extends State<MatchesPage>
     with HoverMixin<MatchesPage> {
-  CustomerModel firstCustomer = allCustomers.isNotEmpty
-      ? allCustomers.first
+  CustomerModel firstCustomer = filteredCustomers.isNotEmpty
+      ? filteredCustomers.first
       : CustomerModel(
           userId: 1,
           email: '',
@@ -34,8 +34,8 @@ class _MatchesPageState extends State<MatchesPage>
           payements: [],
           encouters: [],
         );
-  CustomerModel secondCustomer = allCustomers.length > 1
-      ? allCustomers[1]
+  CustomerModel secondCustomer = filteredCustomers.length > 1
+      ? filteredCustomers[1]
       : CustomerModel(
           userId: 1,
           email: '',
@@ -170,7 +170,7 @@ class _MatchesPageState extends State<MatchesPage>
 
   @override
   Widget build(BuildContext context) {
-    if (allCustomers.length <= 1) {
+    if (filteredCustomers.length <= 1) {
       return const Center(
         child: Text('No customers found'),
       );

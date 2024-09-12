@@ -20,14 +20,16 @@ class CustomerDropdownState extends State<CustomerDropdown> {
   @override
   void initState() {
     super.initState();
-    selectedCustomer = allCustomers.first;
+    selectedCustomer = filteredCustomers.first;
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black, width: 1.5),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: const Color(0xffeaeef6), width: 2),
       ),
       child: Stack(
         fit: StackFit.expand,
@@ -56,13 +58,13 @@ class CustomerDropdownState extends State<CustomerDropdown> {
                   onChanged: (String? value) {
                     setState(() {
                       selectedCustomer =
-                          allCustomers.where((CustomerModel customer) {
+                          filteredCustomers.where((CustomerModel customer) {
                         return '${customer.name} ${customer.surname}' == value;
                       }).first;
                       widget.onCustomerChange(selectedCustomer);
                     });
                   },
-                  items: allCustomers
+                  items: filteredCustomers
                       .map((CustomerModel customer) =>
                           '${customer.name} ${customer.surname}')
                       .toList()
@@ -80,9 +82,9 @@ class CustomerDropdownState extends State<CustomerDropdown> {
             alignment: Alignment.centerRight,
             child: Container(
               height: 40,
-              width: 1.5,
+              width: 2,
               margin: const EdgeInsets.only(right: 25),
-              color: Colors.black,
+              color: const Color(0xffeaeef6),
             ),
           )
         ],

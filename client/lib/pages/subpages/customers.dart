@@ -17,8 +17,8 @@ class CustomersPage extends StatefulWidget {
 
 class _CustomersPageState extends State<CustomersPage>
     with HoverMixin<CustomersPage> {
-  CustomerModel currentCustomer = allCustomers.isNotEmpty
-      ? allCustomers.first
+  CustomerModel currentCustomer = filteredCustomers.isNotEmpty
+      ? filteredCustomers.first
       : CustomerModel(
           userId: 1,
           email: '',
@@ -126,7 +126,7 @@ class _CustomersPageState extends State<CustomersPage>
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'You have total ${allCustomers.length} customers.',
+                      'You have total ${filteredCustomers.length} customers.',
                       style: const TextStyle(
                         color: Color(0xff708dab),
                         fontSize: 13,
@@ -376,9 +376,9 @@ class _CustomersPageState extends State<CustomersPage>
                 height: dh(context) / 1.6,
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: allCustomers.length,
+                  itemCount: filteredCustomers.length,
                   itemBuilder: (context, index) {
-                    final customer = allCustomers[index];
+                    final customer = filteredCustomers[index];
                     return Column(
                       children: [
                         Container(

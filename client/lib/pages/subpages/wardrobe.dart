@@ -18,8 +18,8 @@ class _WardrobePageState extends State<WardrobePage>
     with HoverMixin<WardrobePage> {
   int currentIndex = 0;
   List<String> imageTypes = ['hat/cap', 'top', 'bottom', 'shoes'];
-  CustomerModel currentCustomer = allCustomers.isNotEmpty
-      ? allCustomers.first
+  CustomerModel currentCustomer = filteredCustomers.isNotEmpty
+      ? filteredCustomers.first
       : CustomerModel(
           userId: 1,
           email: '',
@@ -39,7 +39,7 @@ class _WardrobePageState extends State<WardrobePage>
 
   @override
   Widget build(BuildContext context) {
-    if (allCustomers.isEmpty) {
+    if (filteredCustomers.length <= 1) {
       return const Center(
         child: Text('No customers found'),
       );
@@ -106,10 +106,9 @@ class _WardrobePageState extends State<WardrobePage>
                                 curve: Curves.easeInOut,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
                                   border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.5,
-                                  ),
+                                      color: const Color(0xffeaeef6), width: 2),
                                 ),
                                 width: dw(context) / 4,
                                 height: dh(context) / 1,
@@ -135,8 +134,8 @@ class _WardrobePageState extends State<WardrobePage>
                               enlargeCenterPage: true,
                               enableInfiniteScroll: true,
                               scrollDirection: Axis.vertical,
-                              onPageChanged:
-                                  (int index, CarouselPageChangedReason reason) {
+                              onPageChanged: (int index,
+                                  CarouselPageChangedReason reason) {
                                 if (mounted) {
                                   setState(() {
                                     currentIndex = index;
@@ -266,7 +265,9 @@ class _WardrobePageState extends State<WardrobePage>
             ],
           ),
         Padding(
-          padding: const EdgeInsets.only(left: 30,),
+          padding: const EdgeInsets.only(
+            left: 30,
+          ),
           child: Align(
             alignment: Alignment.topLeft,
             child: SizedBox(
