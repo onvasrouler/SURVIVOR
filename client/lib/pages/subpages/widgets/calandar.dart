@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:soul_connection/constants/constants.dart';
+import 'package:intl/intl.dart';
 
 class CalendarExample extends StatefulWidget {
   const CalendarExample({super.key});
@@ -8,31 +10,23 @@ class CalendarExample extends StatefulWidget {
   State<CalendarExample> createState() => _CalendarExampleState();
 }
 
+Map<DateTime, List<Event>> loadDynamicEvents() {
+  Map<DateTime, List<Event>> _events = {};
+  for (var eventData in allEvents) {
+    DateTime eventDate = DateFormat('dd-MM-yyyy').parse(eventData.date);
+
+    Event singleEvent = Event(eventData.name, Colors.blue);
+    _events[eventDate] = [singleEvent];
+  }
+  return _events;
+}
+
 class _CalendarExampleState extends State<CalendarExample> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
 
-  final Map<DateTime, List<Event>> _events = {
-    DateTime(2024, 7, 2): [
-      Event('Lorem Ipsum passage - Product Release', Colors.blue)
-    ],
-    DateTime(2024, 7, 3): [
-      Event('1:30p Reader will be distracted', Colors.red)
-    ],
-    DateTime(2024, 7, 4): [Event('The leap into electronic', Colors.blue)],
-    DateTime(2024, 7, 7): [Event('4p Jidehse gegoj fupelone.', Colors.red)],
-    DateTime(2024, 7, 14): [Event('1:30p Rabfov va hezow.', Colors.green)],
-    DateTime(2024, 7, 16): [Event('4p Ke uzipiz zip.', Colors.lightBlueAccent)],
-    DateTime(2024, 7, 17): [
-      Event('5a Rujfogve kabwih haznojuf.', Colors.red),
-      Event('7a simply dummy text of the printin', Colors.blue),
-    ],
-    DateTime(2024, 7, 18): [
-      Event('Piece of classical Latin literature', Colors.blue),
-      Event('More events', Colors.blue),
-    ],
-  };
+  final Map<DateTime, List<Event>> _events = loadDynamicEvents();
 
   List<Event> _getEventsForDay(DateTime day) {
     DateTime key = DateTime(day.year, day.month, day.day);
