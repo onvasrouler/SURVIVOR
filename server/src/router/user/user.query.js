@@ -3,7 +3,7 @@ const checkAuthenticated = require("../../middleware/auth.js");
 
 module.exports = function (app) {
     app.post("/register", useractions.register);
-    app.post("/register_employee", useractions.register_employee);
+    app.post("/register_employee", checkAuthenticated, useractions.register_employee);
     app.post("/login", useractions.login);
     app.get("/logout", checkAuthenticated, useractions.logout);
     app.get("/logouteverywhere", checkAuthenticated, useractions.logouteverywhere);

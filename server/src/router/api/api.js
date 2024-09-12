@@ -71,11 +71,9 @@ exports.soul_connection_api = async (req, res) => {
             return api_formatter(req, res, 404, "notFound", "data not found", null, null, null);
         if (req.params.COLLECTIONNAME.includes("image") && formatPng) {
             try {
-                if (!soulData) {
+                if (!soulData)
                     return api_formatter(req, res, 404, "notFound", "picture not found", null, null, null);
-                }
-                res.setHeader('Content-Type', 'image/png');
-                res.send(soulData["image"].buffer);
+                return res.setHeader('Content-Type', 'image/png').send(soulData["image"].buffer);
             } catch (error) {
                 console.error(error);
                 return api_formatter(req, res, 500, "errorOccured", "Error occured when trying to get data", null, error, null);
@@ -122,16 +120,29 @@ exports.internal_api_get_one = async (req, res) => {
         return api_formatter(req, res, 401, "noSession", "vous n'êtes pas connecté", null, null, null);
 
     try {
+        params = req.params.ID;
+        formatPng = false;
+        if (params.includes(".png")) {
+            params = params.split(".png")[0];
+            formatPng = true;
+        }
+        console.log(params);
         const data = await mainDB.collection("users").findOne({
             $or: [
-                { unique_id: req.params.ID },
-                { username: req.params.ID },
-                { email: req.params.ID }
+                { unique_id: params },
+                { username: params },
+                { email: params }
             ]
         });
-        if (!data) {
+        if (!data)
             return api_formatter(req, res, 404, "notFound", "data not found", null, null, null);
-        }
+
+        if (formatPng) {
+            if (!data.profilePicture) 
+                return api_formatter(req, res, 404, "notFound", "picture not found", null, null, null);
+            return res.setHeader('Content-Type', 'image/png').send(data.profilePicture.buffer);
+        } else {
+        
         let buffer = {
             "username": data.username,
             "email": data.email,
@@ -141,6 +152,7 @@ exports.internal_api_get_one = async (req, res) => {
             "unique_id": data.unique_id
         };
         return api_formatter(req, res, 200, "success", "successfully received data", buffer, null, null);
+    }
     } catch (error) {
         return api_formatter(req, res, 500, "errorOccured", "Error occured when trying to get data", null, error, null);
     }
@@ -273,6 +285,32 @@ exports.internal_api_unassign = async (req, res) => {
         }
     } catch (error) {
         return api_formatter(req, res, 500, "errorOccured", "Error occured when trying to unassign a coach with a customers", null, error, null);
+    }
+}
+
+exports.internal_api_set_pp = async (req, res) => {
+    if (!req.user || req.user == null)
+        return api_formatter(req, res, 401, "noSession", "vous n'êtes pas connecté", null, null, null);
+    try {
+        params = req.params.ID;
+
+        const user = await mainDB.collection("users").findOne({
+            $or: [
+                { unique_id: params },
+                { username: params },
+                { email: params }
+            ]
+        });
+        if (!user)
+            return api_formatter(req, res, 404, "notFound", "user not found", null, null, null);
+        if (!req.file)
+            return api_formatter(req, res, 400, "badRequest", "missing data", null, null, null);
+        
+        await mainDB.collection("users").updateOne({unique_id: user.unique_id}, { $set: { profilePicture: req.file.buffer }});
+
+        return api_formatter(req, res, 200, "success", "successfully updated profile picture", null, null, null);
+    } catch (error) {
+        return api_formatter(req, res, 500, "errorOccured", "Error occured when trying to update profile picture", null, error, null);
     }
 }
 

@@ -20,10 +20,10 @@ server-install:
 	cd server && npm install
 
 server-pm2-dev:
-	pm2 reload ecosystem.config.js --only soul-connection-api-dev --env development
+	cd server && pm2 reload ecosystem.config.js --only soul-connection-api-dev --env development
 
 server-pm2-prod:
-	pm2 reload ecosystem.config.js --only soul-connection-api-prod --env production
+	cd server && pm2 reload ecosystem.config.js --only soul-connection-api-prod --env production
 
 server:
 	cd server && npm run dev
