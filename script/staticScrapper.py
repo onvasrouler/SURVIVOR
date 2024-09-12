@@ -346,11 +346,11 @@ def fetch_events():
                         db["small_event"].update_one({"event_id": event["id"]}, {"$set": event})
                 
                 full_event = make_request(base_url + "/api/events/" + str(event["id"]))
-                full_event = {**full_event, "event_id": str(event["id"]), "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                full_event = {**full_event, "event_id": str(event["id"])}
                 if not db["event"].find_one({"event_id": str(event["id"])}):
-                    db["event"].insert_one(full_event)
+                    db["event"].insert_one({**full_event, "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
                 else:
-                    db["event"].update_one({"event_id": event["id"]}, {"$set": full_event})
+                    db["event"].update_one({"event_id": event["id"]}, {"$set": {**full_event, "updated_at": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}})
 
                 if db["employee"].find_one({"employee_id": str(full_event["employee_id"])}):
                     db["employee"].update_one({"employee_id": str(full_event["employee_id"])}, {"$addToSet": {"events": full_event}})
