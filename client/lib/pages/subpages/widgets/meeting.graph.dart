@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
+import 'package:soul_connection/models/encounter.module.dart';
 
 class PieChartSample extends StatelessWidget {
   const PieChartSample({super.key});
@@ -54,8 +55,53 @@ class PieChartSample extends StatelessWidget {
     );
   }
 
+  double calculatePercentage(int counter, int total) {
+    if (total == 0) return 0;
+    return (counter / total) * 100;
+  }
+
+  List<Map<String, Object>> encountersSummary() {
+    Map<String, int> sourceCount = {};
+
+    // Step 1: Count occurrences of each source in allEncounters
+    for (EncounterModel encounter in allEncounters) {
+      String source = encounter.source;
+      if (sourceCount.containsKey(source)) {
+        sourceCount[source] = sourceCount[source]! + 1;
+      } else {
+        sourceCount[source] = 1;
+      }
+    }
+
+    // Step 2: Convert the map to a list of maps and cast explicitly
+    List<Map<String, Object>> result = sourceCount.entries.map((entry) {
+      return {
+        'name': entry.key as Object, // Ensure 'name' is of type Object
+        'counter': entry.value as Object // Ensure 'counter' is of type Object
+      };
+    }).toList();
+
+    // Step 3: Sort the list in descending order based on 'counter'
+    result.sort((a, b) => (b['counter'] as int).compareTo(a['counter'] as int));
+
+    // Step 4: Extract the top 3
+    List<Map<String, Object>> top3 = result.take(3).toList();
+
+    // Step 5: Calculate the "Other" counter (sum of remaining counters)
+    int otherCounter =
+        result.skip(3).fold(0, (sum, item) => sum + (item['counter'] as int));
+
+    // Step 6: Append the "Other" entry
+    top3.add({'name': 'Other', 'counter': otherCounter as Object});
+
+    return top3;
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<Map<String, Object>> summary = encountersSummary();
+    int totalCounter = encountersSummary()
+        .fold(0, (sum, item) => sum + (item['counter'] as int));
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       SizedBox(
         height: 150,
@@ -63,7 +109,9 @@ class PieChartSample extends StatelessWidget {
           PieChartData(
             sectionsSpace: 4,
             centerSpaceRadius: 30,
-            sections: _buildSections(),
+            sections: _buildSections(
+              encountersSummary().map((e) => e['counter'] as int).toList(),
+            ),
           ),
         ),
       ),
@@ -77,17 +125,21 @@ class PieChartSample extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 legend(
-                  'Dating app',
-                  305,
+                  encountersSummary()[0]['name'] as String,
+                  encountersSummary()[0]['counter'] as int,
                   const Color(0xff748bff),
-                  45,
+                  calculatePercentage(
+                          summary[0]['counter'] as int, totalCounter)
+                      .toInt(),
                 ),
                 sw(20),
                 legend(
-                  'Social Media',
-                  205,
+                  encountersSummary()[1]['name'] as String,
+                  encountersSummary()[1]['counter'] as int,
                   const Color(0xffbbabff),
-                  35,
+                  calculatePercentage(
+                          summary[1]['counter'] as int, totalCounter)
+                      .toInt(),
                 ),
               ],
             ),
@@ -96,17 +148,21 @@ class PieChartSample extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 legend(
-                  'XXX app',
-                  35,
+                  encountersSummary()[2]['name'] as String,
+                  encountersSummary()[2]['counter'] as int,
                   const Color(0xffffa4cf),
-                  15,
+                  calculatePercentage(
+                          summary[2]['counter'] as int, totalCounter)
+                      .toInt(),
                 ),
                 sw(20),
                 legend(
-                  'XX Media',
-                  15,
+                  encountersSummary()[3]['name'] as String,
+                  encountersSummary()[3]['counter'] as int,
                   const Color(0xffffda69),
-                  5,
+                  calculatePercentage(
+                          summary[3]['counter'] as int, totalCounter)
+                      .toInt(),
                 ),
               ],
             ),
@@ -116,29 +172,29 @@ class PieChartSample extends StatelessWidget {
     ]);
   }
 
-  List<PieChartSectionData> _buildSections() {
+  List<PieChartSectionData> _buildSections(List<int> values) {
     return [
       PieChartSectionData(
         color: const Color(0xff748bff),
-        value: 45,
+        value: values[0].toDouble(),
         radius: 60,
         showTitle: false,
       ),
       PieChartSectionData(
         color: const Color(0xffbbabff),
-        value: 20,
+        value: values[1].toDouble(),
         radius: 60,
         showTitle: false,
       ),
       PieChartSectionData(
         color: const Color(0xffffa4cf),
-        value: 15,
+        value: values[2].toDouble(),
         radius: 60,
         showTitle: false,
       ),
       PieChartSectionData(
         color: const Color(0xffffda69),
-        value: 10,
+        value: values[3].toDouble(),
         radius: 60,
         showTitle: false,
       ),

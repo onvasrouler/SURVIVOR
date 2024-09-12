@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/subpages/widgets/customers.graph.dart';
 import 'package:soul_connection/pages/subpages/widgets/events.graph.dart';
@@ -14,7 +15,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<String> countries = ['United States', 'United Kingdom', 'India'];
+  final List<String> countries = ['France'];
+
+  String calculateAverageCustomersByCoach() {
+    if (allCoaches.isEmpty) return '0';
+    int totalCustomers =
+        allCoaches.fold(0, (sum, coach) => sum + coach.assignedCustomer.length);
+    return (totalCustomers / allCoaches.length).toStringAsFixed(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -255,9 +264,9 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 sh(5),
-                                const Text(
-                                  '2,500',
-                                  style: TextStyle(
+                                Text(
+                                  allCustomers.length.toString(),
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 20,
                                   ),
@@ -265,14 +274,14 @@ class _HomePageState extends State<HomePage> {
                                 const Row(
                                   children: [
                                     Icon(
-                                      Icons.arrow_downward,
-                                      color: Color(0xfffc4648),
+                                      Icons.arrow_upward,
+                                      color: Color(0xff26efc8),
                                       size: 10,
                                     ),
                                     Text(
-                                      '12.48%',
+                                      '100%',
                                       style: TextStyle(
-                                        color: Color(0xfffc4648),
+                                        color: Color(0xff26efc8),
                                         fontSize: 12,
                                       ),
                                     ),
@@ -291,9 +300,22 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 sh(5),
-                                const Text(
-                                  '28.48%',
-                                  style: TextStyle(
+                                Text(
+                                  '${allCustomers.where((customer) {
+                                    DateTime now = DateTime.now();
+                                    int currentMonth = now.month;
+                                    int currentYear = now.year;
+                                    return customer.encouters.isNotEmpty &&
+                                        customer.encouters.any((encounter) {
+                                          DateTime encounterDate =
+                                              DateFormat('dd-MM-yyyy')
+                                                  .parse(encounter.date);
+                                          return encounterDate.month ==
+                                                  currentMonth &&
+                                              encounterDate.year == currentYear;
+                                        });
+                                  }).length}%',
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 20,
                                   ),
@@ -302,14 +324,14 @@ class _HomePageState extends State<HomePage> {
                                 const Row(
                                   children: [
                                     Icon(
-                                      Icons.arrow_upward,
-                                      color: Color(0xff26efc8),
+                                      Icons.arrow_downward_outlined,
+                                      color: Color(0xfffc4648),
                                       size: 10,
                                     ),
                                     Text(
-                                      '12.48%',
+                                      '-100%',
                                       style: TextStyle(
-                                        color: Color(0xff26efc8),
+                                        color: Color(0xfffc4648),
                                         fontSize: 12,
                                       ),
                                     ),
@@ -328,9 +350,9 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 sh(5),
-                                const Text(
-                                  '34',
-                                  style: TextStyle(
+                                Text(
+                                  calculateAverageCustomersByCoach(),
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 20,
                                   ),
@@ -412,9 +434,16 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 sh(5),
-                                const Text(
-                                  '83',
-                                  style: TextStyle(
+                                Text(
+                                  '${((allEvents.where((event) {
+                                        final DateFormat dateFormat =
+                                            DateFormat('dd-MM-yyyy');
+                                        DateTime now = DateTime.now();
+                                        DateTime eventDate =
+                                            dateFormat.parse(event.date);
+                                        return eventDate.month == now.month;
+                                      }).length / allEvents.length) * 100).toStringAsFixed(1)}%',
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 20,
                                   ),
@@ -427,7 +456,7 @@ class _HomePageState extends State<HomePage> {
                                       size: 10,
                                     ),
                                     Text(
-                                      '12.48%',
+                                      '-100%',
                                       style: TextStyle(
                                         color: Color(0xfffc4648),
                                         fontSize: 12,
@@ -595,11 +624,11 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(
+                                SizedBox(
                                   width: 100,
                                   child: Text(
-                                    '1,500',
-                                    style: TextStyle(
+                                    allCustomers.length.toString(),
+                                    style: const TextStyle(
                                       color: Color(0xff3b546d),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w900,
@@ -607,7 +636,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 const Text(
-                                  '29%',
+                                  '100%',
                                   style: TextStyle(
                                     color: Color(0xff95a9c0),
                                     fontSize: 14,

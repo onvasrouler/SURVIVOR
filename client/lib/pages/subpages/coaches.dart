@@ -425,7 +425,7 @@ class _CoachesPageState extends State<CoachesPage> {
                                       ),
                                     ),
                                     Container(
-                                      width: 100,
+                                      width: 120,
                                       alignment: Alignment.centerLeft,
                                       child: const Text(
                                         '+33 6 77 88 99 00',

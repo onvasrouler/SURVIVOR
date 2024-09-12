@@ -78,7 +78,7 @@ class _CustomersPageState extends State<CustomersPage>
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'You have total ${allCustomers.length} customers.',
+                        'You have total ${filteredCustomers.length} customers.',
                         style: const TextStyle(
                           color: Color(0xff708dab),
                           fontSize: 13,
@@ -346,9 +346,9 @@ class _CustomersPageState extends State<CustomersPage>
                   height: dh(context) / 1.6,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: allCustomers.length,
+                    itemCount: filteredCustomers.length,
                     itemBuilder: (context, index) {
-                      final customer = allCustomers[index];
+                      final customer = filteredCustomers[index];
                       return GestureDetector(
                         onTap: () {
                           setState(() {
