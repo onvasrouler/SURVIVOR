@@ -65,10 +65,8 @@ class CircleProgressIndicatorState extends State<CircleProgressIndicator>
                   borderRadius: BorderRadius.circular(200)),
               child: const CircularProgressIndicator(
                 value: 1.0,
-                strokeWidth: 3.0,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Color.fromARGB(255, 207, 207, 207),
-                ),
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xffeaeef6)),
                 backgroundColor: Colors.transparent,
               ),
             ),
@@ -81,8 +79,8 @@ class CircleProgressIndicatorState extends State<CircleProgressIndicator>
                 width: size,
                 child: CustomPaint(
                   painter: HeartPainter(
-                    1,
-                    const Color.fromARGB(255, 207, 207, 207),
+                    2,
+                    const Color(0xffeaeef6),
                   ),
                 ),
               ),
