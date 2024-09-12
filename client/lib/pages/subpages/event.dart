@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/models/event.module.dart';
@@ -42,7 +43,7 @@ class CustomMapState extends State<CustomMap> {
               type: '',
               maxParticipants: 0,
               name: 'No event',
-              date: 'No date',
+              date: '00-00-0000',
               locationName: 'No location',
               locationX: '0',
               locationY: '0',
@@ -54,7 +55,7 @@ class CustomMapState extends State<CustomMap> {
           position: markerPosition,
           infoWindow: InfoWindow(
             title: '${event.name}\nMax participants: ${event.maxParticipants}',
-            snippet: '${event.locationName}\n${event.date}',
+            snippet: '${event.locationName}\n${DateFormat('dd MMMM yyyy').format(DateFormat('dd-MM-yyyy').parse(event.date))}',
           ),
         );
       }).toSet();
