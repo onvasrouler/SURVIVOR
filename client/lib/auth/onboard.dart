@@ -48,7 +48,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
       );
     }
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xfff5f6fa),
       body: SizedBox(
         width: dw(context),
         height: dh(context),
@@ -59,13 +59,14 @@ class _OnBoardPageState extends State<OnBoardPage> {
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: const Color(0xffeaeef6), width: 2),
               ),
               child: const Text(
                 "Connection Method",
                 style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 55,
+                  color: Color(0xff3b546d),
+                  fontSize: 45,
                   fontWeight: FontWeight.w900,
                 ),
                 textAlign: TextAlign.center,
@@ -88,15 +89,16 @@ class _OnBoardPageState extends State<OnBoardPage> {
                 width: 250,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  border: Border.all(color: Colors.black, width: 1.5),
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: const Color(0xffeaeef6), width: 2),
                 ),
                 alignment: Alignment.center,
                 child: const Text(
                   "Sign In",
                   style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700,
+                    color: Color(0xff415a7e),
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
               ),

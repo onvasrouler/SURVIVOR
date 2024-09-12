@@ -118,9 +118,9 @@ class _LoginPageState extends State<SignInPage> {
       );
     }
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xfff5f6fa),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xfff5f6fa),
         elevation: 0,
         title: const Text(
           "Sign in",
@@ -135,6 +135,11 @@ class _LoginPageState extends State<SignInPage> {
         width: dw(context),
         height: dh(context),
         padding: const EdgeInsets.symmetric(horizontal: 50),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(color: const Color(0xffeaeef6), width: 2),
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -203,7 +208,8 @@ class _LoginPageState extends State<SignInPage> {
                 width: 250,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  border: Border.all(color: Colors.black, width: 1.5),
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: const Color(0xffeaeef6), width: 2),
                 ),
                 alignment: Alignment.center,
                 child: loader
@@ -211,9 +217,9 @@ class _LoginPageState extends State<SignInPage> {
                     : const Text(
                         "Sign in",
                         style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700,
+                          color: Color(0xff415a7e),
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
               ),

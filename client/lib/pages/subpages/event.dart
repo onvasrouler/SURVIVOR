@@ -18,7 +18,7 @@ class _EventPageState extends State<EventPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
+        Container(
           width: dw(context),
           height: dh(context) / 1.5,
           child: const CalendarExample(),
