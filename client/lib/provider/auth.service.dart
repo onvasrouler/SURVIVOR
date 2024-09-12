@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:soul_connection/constants/constants.dart';
 
@@ -12,7 +11,6 @@ class AuthService {
     String birthday,
     String surname,
     String work,
-    Uint8List image,
   ) async {
     final url = Uri.parse('http://$apiUrl/register_employee');
 

@@ -1,8 +1,5 @@
-import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/models/employees.module.dart';
 import 'package:soul_connection/provider/auth.service.dart';
@@ -22,7 +19,6 @@ class _LoginPageState extends State<SignUpPage> {
   late TextEditingController _gender;
   late TextEditingController _surname;
   bool loader = false;
-  Uint8List? _image;
 
   @override
   void initState() {
@@ -148,7 +144,6 @@ class _LoginPageState extends State<SignUpPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _userImage(),
             sh(30),
             TextField(
               controller: _username,
@@ -201,7 +196,6 @@ class _LoginPageState extends State<SignUpPage> {
                   _birthday.text,
                   _surname.text,
                   'Coach',
-                  _image!,
                 );
                 if (resonse['status'] == 200) {
                   allCoaches.add(
@@ -256,79 +250,6 @@ class _LoginPageState extends State<SignUpPage> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Future<void> getImage() async {
-    final image = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 10);
-    if (image == null) {
-      return;
-    }
-    final bytes = await image.readAsBytes();
-
-    setState(() {
-      _image = bytes;
-    });
-  }
-
-  Widget _userImage() {
-    return Hero(
-      tag: 'PP',
-      child: Stack(
-        children: [
-          if (_image == null)
-            IgnorePointer(
-              child: Container(
-                height: 140,
-                width: 140,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                    color: Colors.grey, shape: BoxShape.circle),
-                child: const Icon(
-                  CupertinoIcons.person_crop_circle,
-                  size: 140,
-                  color: Colors.white,
-                ),
-              ),
-            )
-          else
-            IgnorePointer(
-              child: Container(
-                height: 140,
-                width: 140,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                    color: Colors.grey, shape: BoxShape.circle),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(70),
-                  child: Image.memory(
-                    _image!,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
-          GestureDetector(
-            onTap: getImage,
-            child: Container(
-              width: 140,
-              height: 140,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color.fromARGB(23, 0, 0, 0),
-              ),
-              child: const Center(
-                child: Icon(
-                  CupertinoIcons.camera,
-                  size: 40,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

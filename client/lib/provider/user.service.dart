@@ -14,18 +14,16 @@ class UserService {
     if (response.statusCode == 200) {
       dynamic bodyUser = jsonDecode(response.body)['data'];
       if (bodyUser.containsKey("soul_employee")) {
-        if (bodyUser['soul_employee']['work'] == 'Coach') {
-          final userId = bodyUser['soul_employee']['employee_id'];
-          final fetchEmployee = await http.get(
-            Uri.parse('http://$apiUrl/soul_connection_api/employee/$userId'),
-            headers: {
-              'session': localUser.getString('token')!,
-            },
-          );
-          if (fetchEmployee.statusCode == 200) {
-            dynamic bodyUser = jsonDecode(fetchEmployee.body)['data'];
-            user = EmployeeModel.fromJson(bodyUser);
-          }
+        final userId = bodyUser['soul_employee']['employee_id'];
+        final fetchEmployee = await http.get(
+          Uri.parse('http://$apiUrl/soul_connection_api/employee/$userId'),
+          headers: {
+            'session': localUser.getString('token')!,
+          },
+        );
+        if (fetchEmployee.statusCode == 200) {
+          dynamic bodyUser = jsonDecode(fetchEmployee.body)['data'];
+          user = EmployeeModel.fromJson(bodyUser);
         }
       }
       return true;

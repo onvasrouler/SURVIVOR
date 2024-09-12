@@ -16,10 +16,15 @@ class CustomersService {
       allCustomers =
           bodyCustomers.map((json) => CustomerModel.fromJson(json)).toList();
 
-      filteredCustomers = bodyCustomers
-          .map((json) => CustomerModel.fromJson(json))
-          .where((e) => user?.assignedCustomer.contains(e.userId) ?? false)
-          .toList();
+      if (user!.work == 'Coach') {
+        filteredCustomers = bodyCustomers
+            .map((json) => CustomerModel.fromJson(json))
+            .where((e) => (user?.assignedCustomer.contains(e.userId) ?? false))
+            .toList();
+      } else {
+        filteredCustomers =
+            bodyCustomers.map((json) => CustomerModel.fromJson(json)).toList();
+      }
       return true;
     } else {
       return false;

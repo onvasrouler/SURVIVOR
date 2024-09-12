@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:soul_connection/constants/constants.dart';
 
 class Utility {
   static List<String> tabName() {
@@ -8,7 +7,6 @@ class Utility {
       'Dashboard',
       'Coaches',
       'Customers',
-      if (user!.work != 'Coach') 'Statistics',
       'Wardrobe',
       'Matches',
       'Tips',
