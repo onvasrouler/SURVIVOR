@@ -6,16 +6,17 @@ class CustomMapboxMap extends StatefulWidget {
   final LatLng startPosition;
   final List<EventModel> markersData;
 
-  CustomMapboxMap({
+  const CustomMapboxMap({
+    super.key,
     required this.startPosition,
     required this.markersData,
   });
 
   @override
-  _CustomMapboxMapState createState() => _CustomMapboxMapState();
+  CustomMapboxMapState createState() => CustomMapboxMapState();
 }
 
-class _CustomMapboxMapState extends State<CustomMapboxMap> {
+class CustomMapboxMapState extends State<CustomMapboxMap> {
   MapboxMapController? mapController;
   Symbol? selectedSymbol;
   String? popupContent;
@@ -38,7 +39,7 @@ class _CustomMapboxMapState extends State<CustomMapboxMap> {
       await mapController?.addSymbol(SymbolOptions(
         geometry: LatLng(
             double.parse(marker.locationX), double.parse(marker.locationY)),
-        iconImage: 'marker-15', // Replace with your custom symbol asset
+        iconImage: 'marker-15',
         iconSize: 3,
       ));
       print("marker added");

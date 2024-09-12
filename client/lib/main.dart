@@ -102,7 +102,9 @@ class _MyAppState extends State<MyApp> {
       title: 'Soul Connection',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xffa5b6ff),
+            primary: const Color(0xffebeeff)),
         useMaterial3: true,
       ),
       home: page(),

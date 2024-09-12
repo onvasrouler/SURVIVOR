@@ -216,6 +216,7 @@ class _LoginPageState extends State<SignUpPage> {
                       work: 'Coach',
                       employeeId: resonse['data'],
                       assignedCustomer: [],
+                      profilePicture: '',
                     ),
                   );
                 }
@@ -259,7 +260,8 @@ class _LoginPageState extends State<SignUpPage> {
   }
 
   Future<void> getImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 10);
+    final image = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 10);
     if (image == null) {
       return;
     }

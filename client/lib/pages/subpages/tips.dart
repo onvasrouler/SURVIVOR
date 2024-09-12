@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
-import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
 
 class TipsPage extends StatefulWidget {
   const TipsPage({super.key});
@@ -14,165 +12,104 @@ class TipsPage extends StatefulWidget {
 class _TipsPageState extends State<TipsPage> with HoverMixin<TipsPage> {
   @override
   Widget build(BuildContext context) {
-    if (!kIsWeb) {
-      return ListView.builder(
-        physics:
-            isWearOs(context) ? const NeverScrollableScrollPhysics() : null,
-        shrinkWrap: true,
-        scrollDirection: Axis.vertical,
-        itemCount: allTips.length,
-        itemBuilder: (context, index) {
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            margin: EdgeInsets.only(
-                top: isWearOs(context) ? 10 : 0,
-                bottom: 20,
-                left: isWearOs(context) ? 16 : 20,
-                right: isWearOs(context) ? 16 : 20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Colors.black, width: 1.5),
-            ),
-            padding: const EdgeInsets.all(10.0),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    allTips[index].title,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: isWearOs(context) ? 13 : 19,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    allTips[index].tips,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: isWearOs(context) ? 9 : 15,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
     return SizedBox(
       height: dh(context),
       width: dw(context),
-      child: Stack(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+          sh(10),
+          SizedBox(
+            width: dw(context),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                appBar(context, 'Tips'),
-                Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 10.0,
-                      crossAxisSpacing: 10.0,
-                      childAspectRatio: 2.0,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Tips for Coaches',
+                        style: TextStyle(
+                          color: Color(0xff3b546d),
+                          fontSize: 25,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
                     ),
-                    scrollDirection: Axis.vertical,
-                    itemCount: allTips.length,
-                    itemBuilder: (context, index) {
-                      return Builder(
-                        builder: (context) {
-                          return MouseRegion(
-                            onEnter: (event) {
-                              final renderBox =
-                                  context.findRenderObject() as RenderBox;
-                              onHoverCard(event, index, renderBox);
-                            },
-                            onHover: (event) {
-                              final renderBox =
-                                  context.findRenderObject() as RenderBox;
-                              onHoverCard(event, index, renderBox);
-                            },
-                            onExit: onExit,
-                            child: Transform(
-                              transform: hoveredIndex == index
-                                  ? getTransformMatrix()
-                                  : Matrix4.identity(),
-                              alignment: FractionalOffset.center,
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeInOut,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      color: Colors.black, width: 1.5),
-                                ),
-                                padding: const EdgeInsets.all(10.0),
-                                child: Center(
-                                    child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      allTips[index].title,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Text(
-                                      allTips[index].tips,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                )),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
+                  ],
                 ),
               ],
             ),
           ),
-          IgnorePointer(
-            ignoring: true,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: dw(context),
-                height: 200,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.white,
-                      for (double i = 1; i > 0; i -= 0.1)
-                        Colors.white.withOpacity(i)
-                    ],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
+          sh(40),
+          SizedBox(
+            height: dh(context) - 183,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: allTips.length,
+              itemBuilder: (context, index) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(
+                        color: const Color(0xffeaeef6),
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Theme(
+                      data: Theme.of(context)
+                          .copyWith(dividerColor: Colors.transparent),
+                      child: ExpansionTile(
+                        collapsedBackgroundColor: Colors.white,
+                        backgroundColor: Colors.white,
+                        collapsedIconColor: Colors.black,
+                        title: Text(
+                          allTips[index].title,
+                          style: const TextStyle(
+                            color: Color(0xff3b546d),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        childrenPadding: const EdgeInsets.all(0),
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                height: 2,
+                                color: const Color(0xffeaeef6),
+                                width: dw(context),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 16, right: 16, bottom: 10, top: 5),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    allTips[index].tips,
+                                    style: const TextStyle(
+                                      color: Color(0xff3b546d),
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
-          )
+          ),
         ],
       ),
     );
