@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/models/customer.module.dart';
 import 'package:soul_connection/pages/subpages/interface/mouse_pointer.dart';
-import 'package:soul_connection/pages/subpages/widgets/appbar.dart';
 import 'package:soul_connection/pages/subpages/widgets/drop_down_button.dart';
 import 'package:soul_connection/pages/subpages/widgets/progress_circle.dart';
 
@@ -176,85 +175,56 @@ class _MatchesPageState extends State<MatchesPage>
         child: Text('No customers found'),
       );
     }
-    return SizedBox(
-      height: dh(context),
-      width: dw(context),
-      child: Column(
-        children: [
-          appBar(context, 'Matches'),
-          if (!kIsWeb)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                profilePic(0),
-                CircleProgressIndicator(
-                  key: key,
-                  hoveredIndex: hoveredIndex,
-                  compatibility: calculerCompatibilite(
-                    firstCustomer.astrologicalSign,
-                    secondCustomer.astrologicalSign,
-                  ),
-                ),
-                profilePic(1),
-                sw(20),
-              ],
-            )
-          else
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 44),
-              child: Container(
-                height: dh(context) / 1.4,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: CustomPaint(
-                  painter: GridPainter(),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      sw(20),
-                      profilePic(0),
-                      Builder(
-                        builder: (context) {
-                          return MouseRegion(
-                            onEnter: (event) {
-                              final renderBox =
-                                  context.findRenderObject() as RenderBox;
-                              onHoverCard(event, 2, renderBox);
-                            },
-                            onHover: (event) {
-                              final renderBox =
-                                  context.findRenderObject() as RenderBox;
-                              onHoverCard(event, 2, renderBox);
-                            },
-                            onExit: onExit,
-                            child: Transform(
-                              transform: hoveredIndex == 2
-                                  ? getTransformMatrix()
-                                  : Matrix4.identity(),
-                              alignment: FractionalOffset.center,
-                              child: CircleProgressIndicator(
-                                key: key,
-                                hoveredIndex: hoveredIndex,
-                                compatibility: calculerCompatibilite(
-                                  firstCustomer.astrologicalSign,
-                                  secondCustomer.astrologicalSign,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+    return Container(
+      height: dh(context) / 1.4,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: const Color(0xffeaeef6), width: 2),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            sw(20),
+            profilePic(0),
+            Builder(
+              builder: (context) {
+                return MouseRegion(
+                  onEnter: (event) {
+                    final renderBox = context.findRenderObject() as RenderBox;
+                    onHoverCard(event, 2, renderBox);
+                  },
+                  onHover: (event) {
+                    final renderBox = context.findRenderObject() as RenderBox;
+                    onHoverCard(event, 2, renderBox);
+                  },
+                  onExit: onExit,
+                  child: Transform(
+                    transform: hoveredIndex == 2
+                        ? getTransformMatrix()
+                        : Matrix4.identity(),
+                    alignment: FractionalOffset.center,
+                    child: CircleProgressIndicator(
+                      key: key,
+                      hoveredIndex: hoveredIndex,
+                      compatibility: calculerCompatibilite(
+                        firstCustomer.astrologicalSign,
+                        secondCustomer.astrologicalSign,
                       ),
-                      profilePic(1),
-                      sw(20),
-                    ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
-        ],
+            profilePic(1),
+            sw(20),
+          ],
+        ),
       ),
     );
   }

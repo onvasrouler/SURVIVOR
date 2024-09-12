@@ -1,3 +1,5 @@
+import 'package:soul_connection/constants/constants.dart';
+
 class EmployeeModel {
   int id;
   String email;
@@ -8,6 +10,7 @@ class EmployeeModel {
   String work;
   String lastSession;
   String employeeId;
+  String profilePicture;
   List<int> assignedCustomer;
 
   EmployeeModel({
@@ -21,6 +24,7 @@ class EmployeeModel {
     required this.lastSession,
     required this.employeeId,
     required this.assignedCustomer,
+    required this.profilePicture,
   });
 
   factory EmployeeModel.fromJson(Map<String, dynamic> json) {
@@ -42,6 +46,8 @@ class EmployeeModel {
       employeeId: json['employee_id'],
       lastSession: json['lastConnection'] ?? 'Never',
       assignedCustomer: assignedCustomer,
+      profilePicture:
+          'http://$apiUrl/soul_connection_api/customer_image/${json['id']}.png?session=${localUser.getString('token')!}',
     );
   }
 
@@ -57,6 +63,7 @@ class EmployeeModel {
       'employee_id': employeeId,
       'lastConnection': lastSession,
       'assigned_customers': assignedCustomer,
+      'profilePicture': profilePicture,
     };
   }
 }

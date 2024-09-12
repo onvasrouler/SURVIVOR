@@ -5,7 +5,7 @@ import 'package:soul_connection/constants/constants.dart';
 class Utility {
   static List<String> tabName() {
     return [
-      'Home',
+      'Dashboard',
       'Coaches',
       'Customers',
       if (user!.work != 'Coach') 'Statistics',
@@ -27,5 +27,36 @@ class Utility {
       const Icon(Icons.lightbulb, color: Colors.black),
       const Icon(Icons.event, color: Colors.black),
     ][index];
+  }
+
+  static String getMonthName(int month) {
+    switch (month) {
+      case 1:
+        return 'Jan';
+      case 2:
+        return 'Feb';
+      case 3:
+        return 'Mar';
+      case 4:
+        return 'Apr';
+      case 5:
+        return 'May';
+      case 6:
+        return 'Jun';
+      case 7:
+        return 'Jul';
+      case 8:
+        return 'Aug';
+      case 9:
+        return 'Sep';
+      case 10:
+        return 'Oct';
+      case 11:
+        return 'Nov';
+      case 12:
+        return 'Dec';
+      default:
+        return '';
+    }
   }
 }

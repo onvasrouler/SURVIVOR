@@ -216,6 +216,7 @@ class _LoginPageState extends State<SignUpPage> {
                       work: 'Coach',
                       employeeId: resonse['data'],
                       assignedCustomer: [],
+                      profilePicture: '',
                     ),
                   );
                 }
@@ -237,7 +238,8 @@ class _LoginPageState extends State<SignUpPage> {
                 width: 250,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  border: Border.all(color: Colors.black, width: 1.5),
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: const Color(0xffeaeef6), width: 2),
                 ),
                 alignment: Alignment.center,
                 child: loader
@@ -259,7 +261,8 @@ class _LoginPageState extends State<SignUpPage> {
   }
 
   Future<void> getImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery, imageQuality: 10);
+    final image = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 10);
     if (image == null) {
       return;
     }
@@ -272,60 +275,61 @@ class _LoginPageState extends State<SignUpPage> {
 
   Widget _userImage() {
     return Hero(
-        tag: 'PP',
-        child: Stack(
-          children: [
-            if (_image == null)
-              IgnorePointer(
-                child: Container(
-                  height: 140,
-                  width: 140,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                      color: Colors.grey, shape: BoxShape.circle),
-                  child: const Icon(
-                    CupertinoIcons.person_crop_circle,
-                    size: 140,
-                    color: Colors.white,
-                  ),
-                ),
-              )
-            else
-              IgnorePointer(
-                child: Container(
-                  height: 140,
-                  width: 140,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                      color: Colors.grey, shape: BoxShape.circle),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(70),
-                    child: Image.memory(
-                      _image!,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+      tag: 'PP',
+      child: Stack(
+        children: [
+          if (_image == null)
+            IgnorePointer(
+              child: Container(
+                height: 140,
+                width: 140,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                    color: Colors.grey, shape: BoxShape.circle),
+                child: const Icon(
+                  CupertinoIcons.person_crop_circle,
+                  size: 140,
+                  color: Colors.white,
                 ),
               ),
-            GestureDetector(
-              onTap: getImage,
+            )
+          else
+            IgnorePointer(
               child: Container(
-                width: 140,
                 height: 140,
+                width: 140,
+                alignment: Alignment.center,
                 decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color.fromARGB(23, 0, 0, 0),
-                ),
-                child: const Center(
-                  child: Icon(
-                    CupertinoIcons.camera,
-                    size: 40,
-                    color: Colors.white,
+                    color: Colors.grey, shape: BoxShape.circle),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(70),
+                  child: Image.memory(
+                    _image!,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
-          ],
-        ));
+          GestureDetector(
+            onTap: getImage,
+            child: Container(
+              width: 140,
+              height: 140,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color.fromARGB(23, 0, 0, 0),
+              ),
+              child: const Center(
+                child: Icon(
+                  CupertinoIcons.camera,
+                  size: 40,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

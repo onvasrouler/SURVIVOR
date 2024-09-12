@@ -8,6 +8,7 @@ import 'package:soul_connection/constants/constants.dart';
 import 'package:soul_connection/pages/menu.dart';
 import 'package:soul_connection/provider/coachs.service.dart';
 import 'package:soul_connection/provider/customers.service.dart';
+import 'package:soul_connection/provider/encounters.service.dart';
 import 'package:soul_connection/provider/events.service.dart';
 import 'package:soul_connection/provider/tips.service.dart';
 import 'package:soul_connection/provider/user.service.dart';
@@ -48,9 +49,10 @@ class _MyAppState extends State<MyApp> {
         UserService.fetchUsers().then((value) {
           CustomersService.fetchCustomers();
           CoachsService.fetchEmployees();
+          EncounterService.fetchEncounter();
+          TipsService.fetchTips();
+          EventService.fetchEvent();
         }),
-        TipsService.fetchTips(),
-        EventService.fetchEvent(),
       ]);
     } catch (e) {
       if (kDebugMode) {
@@ -60,8 +62,10 @@ class _MyAppState extends State<MyApp> {
       if (!kIsWeb && !Platform.isAndroid) WatchOSWrapper.sendDataToAppleWatch();
       if (!kIsWeb && !Platform.isAndroid) WearOSWrapper.sendDataToWearOs();
       if (mounted) {
-        setState(() {
-          isLoading = false;
+        Future.delayed(const Duration(seconds: 1), () {
+          setState(() {
+            isLoading = false;
+          });
         });
       }
     }
@@ -102,7 +106,9 @@ class _MyAppState extends State<MyApp> {
       title: 'Soul Connection',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xffa5b6ff),
+            primary: const Color(0xffebeeff)),
         useMaterial3: true,
       ),
       home: page(),

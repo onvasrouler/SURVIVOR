@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:soul_connection/models/customer.module.dart';
 import 'package:soul_connection/models/employees.module.dart';
+import 'package:soul_connection/models/encounter.module.dart';
 import 'package:soul_connection/models/event.module.dart';
 import 'package:soul_connection/models/tips.module.dart';
 
@@ -19,6 +20,8 @@ List<EmployeeModel> allCoaches = [];
 List<TipsModel> allTips = [];
 
 List<EventModel> allEvents = [];
+
+List<EncounterModel> allEncounters = [];
 
 String apiUrl = '82.65.59.34:3333';
 

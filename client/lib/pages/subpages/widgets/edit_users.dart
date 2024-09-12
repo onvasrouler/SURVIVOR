@@ -90,6 +90,7 @@ class _EditCustomersState extends State<EditCustomers> {
                               if (!widget.permission) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
+                                    backgroundColor: Color(0xff748bff),
                                     content: Text(
                                         'You do not have permission to edit customers'),
                                   ),
@@ -139,11 +140,14 @@ class _EditCustomersState extends State<EditCustomers> {
                     if (assignResult == 'Successfully assigned') {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
+                            backgroundColor: Color(0xff748bff),
                             content: Text('Customers assigned successfully!')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(assignResult)),
+                        SnackBar(
+                            backgroundColor: Color(0xff748bff),
+                            content: Text(assignResult)),
                       );
                     }
                   }
@@ -155,12 +159,15 @@ class _EditCustomersState extends State<EditCustomers> {
                     if (unassignResult == 'Successfully assigned') {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
+                            backgroundColor: Color(0xff748bff),
                             content:
                                 Text('Customers unassigned successfully!')),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(unassignResult)),
+                        SnackBar(
+                            backgroundColor: Color(0xff748bff),
+                            content: Text(unassignResult)),
                       );
                     }
                   }
