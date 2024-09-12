@@ -63,7 +63,6 @@ class PieChartSample extends StatelessWidget {
   List<Map<String, Object>> encountersSummary() {
     Map<String, int> sourceCount = {};
 
-    // Step 1: Count occurrences of each source in allEncounters
     for (EncounterModel encounter in allEncounters) {
       String source = encounter.source;
       if (sourceCount.containsKey(source)) {
@@ -73,25 +72,17 @@ class PieChartSample extends StatelessWidget {
       }
     }
 
-    // Step 2: Convert the map to a list of maps and cast explicitly
     List<Map<String, Object>> result = sourceCount.entries.map((entry) {
-      return {
-        'name': entry.key as Object, // Ensure 'name' is of type Object
-        'counter': entry.value as Object // Ensure 'counter' is of type Object
-      };
+      return {'name': entry.key as Object, 'counter': entry.value as Object};
     }).toList();
 
-    // Step 3: Sort the list in descending order based on 'counter'
     result.sort((a, b) => (b['counter'] as int).compareTo(a['counter'] as int));
 
-    // Step 4: Extract the top 3
     List<Map<String, Object>> top3 = result.take(3).toList();
 
-    // Step 5: Calculate the "Other" counter (sum of remaining counters)
     int otherCounter =
         result.skip(3).fold(0, (sum, item) => sum + (item['counter'] as int));
 
-    // Step 6: Append the "Other" entry
     top3.add({'name': 'Other', 'counter': otherCounter as Object});
 
     return top3;

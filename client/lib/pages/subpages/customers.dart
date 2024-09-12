@@ -23,7 +23,9 @@ class _CustomersPageState extends State<CustomersPage>
   CustomerModel? currentCustomer;
 
   String fillPaymentTable(PayementModel payment, int index) {
-    if (index == 0) return DateFormat('dd MMMM yyyy').format(DateTime.parse(payment.date));
+    if (index == 0) {
+      return DateFormat('dd MMMM yyyy').format(DateTime.parse(payment.date));
+    }
     if (index == 1) return '-\$${payment.amount}';
     if (index == 2) return payment.paymentMethod;
     if (index == 3) return payment.comment;
@@ -31,7 +33,9 @@ class _CustomersPageState extends State<CustomersPage>
   }
 
   String fillEncouterTable(EncounterModel encounter, int index) {
-    if (index == 0) return DateFormat('dd MMMM yyyy').format(DateTime.parse(encounter.date));
+    if (index == 0) {
+      return DateFormat('dd MMMM yyyy').format(DateTime.parse(encounter.date));
+    }
     if (index == 1) return '${encounter.rating}/5';
     if (index == 2) return encounter.comment;
     if (index == 3) return encounter.source;
@@ -355,143 +359,156 @@ class _CustomersPageState extends State<CustomersPage>
                             currentCustomer = customer;
                           });
                         },
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 2,
-                              width: dw(context),
-                              color: const Color(0xffeaeef6),
-                            ),
-                            Container(
-                              height: 50,
-                              width: dw(context),
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: Row(
-                                children: [
-                                  Checkbox(
-                                    value: false,
-                                    onChanged: (value) {},
-                                    activeColor: const Color(0xff0065b9),
-                                  ),
-                                  SizedBox(
-                                    height: 30,
-                                    width: dw(context) - 106,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          width: 200,
-                                          child: Row(
-                                            children: [
-                                              sw(10),
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(100),
-                                                child: SizedBox(
-                                                  height: 30,
-                                                  width: 30,
-                                                  child: CachedNetworkImage(
-                                                    imageUrl:
-                                                        customer.profilePicture,
-                                                    fit: BoxFit.cover,
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                            Container(
-                                                      color: [
-                                                        const Color(0xff748bff),
-                                                        const Color(0xfffc403c),
-                                                        const Color(0xff253384),
-                                                        const Color(0xffffb05f),
-                                                        const Color(0xff0064b9),
-                                                      ][index % 5],
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Text(
-                                                        (customer.name
-                                                                    .substring(
-                                                                        0, 1) +
-                                                                customer.surname
-                                                                    .substring(
-                                                                        0, 1))
-                                                            .toUpperCase(),
-                                                        style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 9,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                        child: Container(
+                          width: dw(context),
+                          color: Colors.transparent,
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 2,
+                                width: dw(context),
+                                color: const Color(0xffeaeef6),
+                              ),
+                              Container(
+                                height: 50,
+                                width: dw(context),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Row(
+                                  children: [
+                                    Checkbox(
+                                      value: false,
+                                      onChanged: (value) {},
+                                      activeColor: const Color(0xff0065b9),
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                      width: dw(context) - 106,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                            width: 200,
+                                            child: Row(
+                                              children: [
+                                                sw(10),
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                  child: SizedBox(
+                                                    height: 30,
+                                                    width: 30,
+                                                    child: CachedNetworkImage(
+                                                      imageUrl: customer
+                                                          .profilePicture,
+                                                      fit: BoxFit.cover,
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Container(
+                                                        color: [
+                                                          const Color(
+                                                              0xff748bff),
+                                                          const Color(
+                                                              0xfffc403c),
+                                                          const Color(
+                                                              0xff253384),
+                                                          const Color(
+                                                              0xffffb05f),
+                                                          const Color(
+                                                              0xff0064b9),
+                                                        ][index % 5],
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          (customer.name
+                                                                      .substring(
+                                                                          0,
+                                                                          1) +
+                                                                  customer
+                                                                      .surname
+                                                                      .substring(
+                                                                          0, 1))
+                                                              .toUpperCase(),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 9,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
+                                                sw(10),
+                                                Text(
+                                                  '${customer.name} ${customer.surname}',
+                                                  style: const TextStyle(
+                                                    color: Color(0xff3b546d),
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w900,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 230,
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              customer.email,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xff9da9bd),
+                                                fontWeight: FontWeight.bold,
                                               ),
-                                              sw(10),
-                                              Text(
-                                                '${customer.name} ${customer.surname}',
-                                                style: const TextStyle(
-                                                  color: Color(0xff3b546d),
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w900,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 150,
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              customer.phoneNumber,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xff9da9bd),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 170,
+                                            alignment: Alignment.centerLeft,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              child: SizedBox(
+                                                width: 70,
+                                                height: 30,
+                                                child: Image.asset(
+                                                  getImage(customer.payements
+                                                      .last.paymentMethod),
+                                                  fit: BoxFit.contain,
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          width: 230,
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            customer.email,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xff9da9bd),
-                                              fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                        ),
-                                        Container(
-                                          width: 150,
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            customer.phoneNumber,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xff9da9bd),
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            textAlign: TextAlign.start,
-                                          ),
-                                        ),
-                                        Container(
-                                          width: 170,
-                                          alignment: Alignment.centerLeft,
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            child: SizedBox(
-                                              width: 70,
-                                              height: 30,
-                                              child: Image.asset(
-                                                getImage(customer.payements.last
-                                                    .paymentMethod),
-                                                fit: BoxFit.contain,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: const Icon(Icons.more_horiz),
-                                        )
-                                      ],
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: const Icon(Icons.more_horiz),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -752,7 +769,8 @@ class _CustomersPageState extends State<CustomersPage>
                               ),
                             ),
                             Text(
-                              DateFormat('dd MMMM yyyy').format(DateTime.parse(currentCustomer!.encouters.last.date)),
+                              DateFormat('dd MMMM yyyy').format(DateTime.parse(
+                                  currentCustomer!.encouters.last.date)),
                               style: const TextStyle(
                                 color: Color(0xff3b546d),
                                 fontWeight: FontWeight.w700,
