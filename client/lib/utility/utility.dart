@@ -5,7 +5,7 @@ import 'package:soul_connection/constants/constants.dart';
 class Utility {
   static List<String> tabName() {
     return [
-      'Home',
+      'Dashboard',
       'Coaches',
       'Customers',
       if (user!.work != 'Coach') 'Statistics',

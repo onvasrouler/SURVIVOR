@@ -18,7 +18,7 @@ class CustomersService {
 
       filteredCustomers = bodyCustomers
           .map((json) => CustomerModel.fromJson(json))
-          .where((e) => user!.assignedCustomer.contains(e.userId))
+          .where((e) => user?.assignedCustomer.contains(e.userId) ?? false)
           .toList();
       return true;
     } else {
