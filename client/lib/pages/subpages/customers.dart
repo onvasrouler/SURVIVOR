@@ -23,7 +23,7 @@ class _CustomersPageState extends State<CustomersPage>
   CustomerModel? currentCustomer;
 
   String fillPaymentTable(PayementModel payment, int index) {
-    if (index == 0) return payment.date;
+    if (index == 0) return DateFormat('dd MMMM yyyy').format(DateTime.parse(payment.date));
     if (index == 1) return '-\$${payment.amount}';
     if (index == 2) return payment.paymentMethod;
     if (index == 3) return payment.comment;
@@ -31,7 +31,7 @@ class _CustomersPageState extends State<CustomersPage>
   }
 
   String fillEncouterTable(EncounterModel encounter, int index) {
-    if (index == 0) return encounter.date;
+    if (index == 0) return DateFormat('dd MMMM yyyy').format(DateTime.parse(encounter.date));
     if (index == 1) return '${encounter.rating}/5';
     if (index == 2) return encounter.comment;
     if (index == 3) return encounter.source;
@@ -78,7 +78,7 @@ class _CustomersPageState extends State<CustomersPage>
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'You have total ${filteredCustomers.length} customers.',
+                        'You have total ${allCustomers.length} customers.',
                         style: const TextStyle(
                           color: Color(0xff708dab),
                           fontSize: 13,
@@ -346,9 +346,9 @@ class _CustomersPageState extends State<CustomersPage>
                   height: dh(context) / 1.6,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: filteredCustomers.length,
+                    itemCount: allCustomers.length,
                     itemBuilder: (context, index) {
-                      final customer = filteredCustomers[index];
+                      final customer = allCustomers[index];
                       return GestureDetector(
                         onTap: () {
                           setState(() {
@@ -752,7 +752,7 @@ class _CustomersPageState extends State<CustomersPage>
                               ),
                             ),
                             Text(
-                              currentCustomer!.encouters.last.date,
+                              DateFormat('dd MMMM yyyy').format(DateTime.parse(currentCustomer!.encouters.last.date)),
                               style: const TextStyle(
                                 color: Color(0xff3b546d),
                                 fontWeight: FontWeight.w700,
