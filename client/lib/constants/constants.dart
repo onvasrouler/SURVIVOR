@@ -23,7 +23,7 @@ List<EventModel> allEvents = [];
 
 List<EncounterModel> allEncounters = [];
 
-String apiUrl = '82.65.59.34:3333';
+String apiUrl = 'your_api_url';
 
 double dh(BuildContext context) {
   return MediaQuery.of(context).size.height;

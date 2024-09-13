@@ -15,7 +15,7 @@ this project is build using [NodeJs](https://nodejs.org/) and [MongoDB](https://
 <br/>
 
 ## Installation
-Use the package manager [npm]([https://pip.pypa.io/en/stable/](https://www.npmjs.com/)) to install required dependencies.
+Use the package manager [npm](https://www.npmjs.com/) to install required dependencies.
 ```bash
 npm i
 ```
@@ -33,6 +33,9 @@ You can also install [nodemon](https://www.npmjs.com/package/nodemon) as a devel
 ```bash
 npm install --save-dev nodemon # or using yarn: yarn add nodemon -D
 ```
+
+fill a .env file by following the .env.example
+
 <br/>
 
 ## Usage
