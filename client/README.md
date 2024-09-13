@@ -3,7 +3,7 @@
 
 ## 💼 Technologies and Tools:
 <div align="center">
-    <code><img height="40" src="https://github.com/aimeric44uwu/aimeric44uwu/blob/main/img/flutter.svg?raw=true" alt="flutter"></code>
+    <code><img height="80" src="https://github.com/aimeric44uwu/aimeric44uwu/blob/main/img/flutter.svg?raw=true" alt="flutter"></code>
 </div>
 
 <br/>

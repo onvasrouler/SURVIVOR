@@ -2,7 +2,7 @@
 
 ## 💼 Technologies and Tools:
 <div align="center">
-    <code><img height="40" src="https://github.com/aimeric44uwu/aimeric44uwu/blob/main/img/python.png?raw=true" alt="python"></code>
+    <code><img height="80" src="https://github.com/aimeric44uwu/aimeric44uwu/blob/main/img/python.png?raw=true" alt="python"></code>
 
   <code><img height="80" src="https://github.com/aimeric44uwu/aimeric44uwu/blob/main/img/mongodb.png?raw=true" alt="mongodb"></code>
 </div>
